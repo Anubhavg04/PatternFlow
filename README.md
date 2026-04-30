@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="./public/Solvee.png" alt="PatternFlow AI Solve Flow" width="700" />
+  <img src="./public/Solvee.png" alt="PatternFlow AI Solve Flow" width="500" />
 </p>
 
 > Stop memorizing solutions. Start recognizing patterns.
