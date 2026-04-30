@@ -41,6 +41,13 @@ Instead of giving answers, PatternFlow:
 
 ---
 
+## Solve Preview
+<p align="center">
+  <img src="./public/solve.png" alt="PatternFlow Solve" width="600" />
+</p>
+
+---
+
 ## ✨ Features
 
 ### 🧩 Solve Flow
