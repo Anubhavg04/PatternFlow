@@ -1,6 +1,12 @@
 # 🚀 PatternFlow — AI-powered DSA Learning System
 <p align="center">
-  <img src="./public/dashboard.png" alt="PatternFlow Dashboard" width="100%" />
+  <b>Understand DSA. Not memorize it.</b>
+</p>
+<p align="center">
+  <img src="./public/dashboard.png" alt="PatternFlow Dashboard" width="600" />
+</p>
+<p align="center">
+  <i>AI-powered pattern recognition dashboard</i>
 </p>
 
 > Stop memorizing solutions. Start recognizing patterns.
