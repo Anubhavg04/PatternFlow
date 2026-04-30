@@ -1,38 +1,48 @@
 # 🚀 PatternFlow — AI-powered DSA Learning System
+
 <p align="center">
-  <b>Understand DSA. Not memorize it.</b>
+  <b>Learn how top candidates think — not just solve.</b>
 </p>
+
 <p align="center">
-  <img src="./public/dashboard.png" alt="PatternFlow Dashboard" width="700" />
-</p>
-<p align="center">
-  <i>AI-powered pattern recognition dashboard</i>
+  <img src="./public/Solve.png" alt="PatternFlow AI Solve Flow" width="700" />
 </p>
 
 > Stop memorizing solutions. Start recognizing patterns.
 
-PatternFlow is an AI-powered platform that helps developers learn Data Structures & Algorithms by focusing on **pattern recognition**, not brute-force solution memorization.
+PatternFlow is an AI-powered platform that helps developers learn Data Structures & Algorithms through **pattern recognition**, not brute-force solution memorization.
+
+---
+
+## 🎯 What makes PatternFlow different?
+
+- No instant solutions  
+- Forces you to think first  
+- Teaches patterns, not answers  
+- Builds long-term intuition  
+- Simulates real interview thinking  
+
+**This is not a problem-solving tool.**  
+**This is a thinking system.**
 
 ---
 
 ## 🧠 Problem
 
-Most platforms (LeetCode, GFG, etc.) focus on:
-- ❌ Giving full solutions too early  
-- ❌ Encouraging passive learning  
-- ❌ No pattern-level understanding  
+Most DSA platforms optimize for solving — not understanding.
+
+- ❌ Solutions too early  
+- ❌ Passive learning  
+- ❌ No pattern abstraction  
 - ❌ No personalized feedback  
 
-**Result:**  
-Users solve problems but fail in interviews.
+**Result:** You can solve problems, but struggle in interviews.
 
 ---
 
 ## 💡 Solution
 
-```
-Problem → Think First → Guided Hints → Pattern Recognition → Learning Reinforced
-```
+> Problem → Think → Hint → Pattern → Memory → Mastery
 
 Instead of giving answers, PatternFlow:
 - Trains thinking  
@@ -41,16 +51,25 @@ Instead of giving answers, PatternFlow:
 
 ---
 
-## Solve Preview
+## ⚡ AI Solve Flow (Core Experience)
+
 <p align="center">
-  <img src="./public/solve.png" alt="PatternFlow Solve" width="600" />
+  <img src="./public/solve.png" alt="PatternFlow Solve Flow" width="650" />
+</p>
+
+---
+
+## 📊 Dashboard Preview
+
+<p align="center">
+  <img src="./public/dashboard.png" alt="PatternFlow Dashboard" width="700" />
 </p>
 
 ---
 
 ## ✨ Features
 
-### 🧩 Solve Flow
+### 🧩 AI-Guided Solve Flow
 - Paste problem (LeetCode, GFG, Codeforces supported)
 - AI extracts:
   - Problem summary
@@ -60,17 +79,17 @@ Instead of giving answers, PatternFlow:
 
 ---
 
-### 🔒 Smart Paywall (Learning-first)
+### 💰 Learning-first Monetization
 Free users get:
 - Think-first prompt
 - 2 hints
 
-Locked:
-- Final hint
-- Pattern reveal
-- Memory hook
-- Similar problems
-- Missing concepts
+Unlock:
+- Final hint  
+- Pattern reveal  
+- Memory hook  
+- Similar problems  
+- Missing concepts  
 
 ---
 
@@ -81,19 +100,19 @@ Locked:
 
 ---
 
-### 📊 Dashboard
-- Problems solved
-- Patterns seen
-- Pattern mastery
-- Streak tracking
-- Recent solves
+### 📊 Progress Tracking
+- Problems solved  
+- Patterns seen  
+- Pattern mastery  
+- Streak tracking  
+- Recent solves  
 
 ---
 
-### ⚡ AI Optimization
-- Rate limiting
-- Token usage tracking
-- Semantic caching (in progress)
+### ⚡ Performance Optimizations
+- Rate limiting  
+- Token usage tracking  
+- Semantic caching (in progress)  
 
 ---
 
@@ -106,12 +125,11 @@ Locked:
 
 ### Backend
 - Next.js API Routes
-- Supabase (PostgreSQL DB)
+- Supabase (PostgreSQL)
 - Clerk Auth 
 
 ### AI
 - OpenAI API
-- Prompt engineering (pattern-focused)
 
 ### Payments
 - Razorpay
@@ -179,16 +197,13 @@ Recommended: Vercel
 npx vercel
 ```
 
-
 ---
 
 ## 🧠 Learning Philosophy
 
-PatternFlow is built on:
-
 > “Don’t solve problems. Understand patterns.”
 
-We enforce:
+PatternFlow enforces:
 - Delayed answers  
 - Active thinking  
 - Pattern abstraction  
@@ -207,7 +222,8 @@ We enforce:
 
 ## 📬 Contact
 
-🔗 [Twitter](https://twitter.com/@Dev_code_04) | [LinkedIn](https://linkedin.com/in/anubhav-gupta-957927229/)
+Have feedback or ideas? Reach out:  
+🔗 [Twitter](https://twitter.com/Dev_code_04) | [LinkedIn](https://linkedin.com/in/anubhav-gupta-957927229/)
 
 ---
 
