@@ -3,7 +3,7 @@
   <b>Understand DSA. Not memorize it.</b>
 </p>
 <p align="center">
-  <img src="./public/dashboard.png" alt="PatternFlow Dashboard" width="600" />
+  <img src="./public/dashboard.png" alt="PatternFlow Dashboard" width="700" />
 </p>
 <p align="center">
   <i>AI-powered pattern recognition dashboard</i>
@@ -94,16 +94,6 @@ Locked:
 - Rate limiting
 - Token usage tracking
 - Semantic caching (in progress)
-- Cost control
-
----
-
-### 💳 Monetization
-- Razorpay integration
-- Plans:
-  - Free
-  - Basic (₹149/month)
-  - Pro (₹299/month)
 
 ---
 
@@ -189,15 +179,6 @@ Recommended: Vercel
 npx vercel
 ```
 
----
-
-## 🔐 Payment Flow
-
-```
-Frontend → Create Order → Razorpay Popup  
-→ Payment Success → Backend Verification  
-→ DB Update → Plan Activated
-```
 
 ---
 
@@ -224,16 +205,9 @@ We enforce:
 
 ---
 
-## 🤝 Contributing
-
-Currently early-stage / private.
-
----
-
 ## 📬 Contact
 
-Built by: Anubhav Gupta  
-(Add your Twitter / LinkedIn here)
+🔗 [Twitter](https://twitter.com/@Dev_code_04) | [LinkedIn](https://linkedin.com/in/anubhav-gupta-957927229/)
 
 ---
 
