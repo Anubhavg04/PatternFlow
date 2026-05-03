@@ -21,6 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { ResultCard, type SolveResult } from "@/components/ResultCard";
 import { EXAMPLE_PROBLEMS } from "@/lib/problems";
 import { useAuth } from "@clerk/nextjs";
+import { analytics } from "@/lib/posthog-events";
 
 const LOADING_LINES = [
   "> Parsing problem statement...",
@@ -32,18 +33,8 @@ const LOADING_LINES = [
 ];
 
 export default function SolvePage() {
-  const [problem, setProblem] = useState<string>(() => {
-    if (typeof window === "undefined") return EXAMPLE_PROBLEMS["two-sum"].content;
-    return localStorage.getItem("patternflow_last_problem") || EXAMPLE_PROBLEMS["two-sum"].content;
-  });
-
-  const [result, setResult] = useState<SolveResult | null>(() => {
-    if (typeof window === "undefined") return null;
-    try {
-      const saved = localStorage.getItem("patternflow_last_result");
-      return saved ? JSON.parse(saved) : null;
-    } catch { return null; }
-  });
+  const [problem, setProblem] = useState<string>(EXAMPLE_PROBLEMS["two-sum"].content);
+  const [result, setResult] = useState<SolveResult | null>(null);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -56,6 +47,20 @@ export default function SolvePage() {
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const solveKeyRef = useRef("");
   const { userId } = useAuth();
+
+  // Load persisted data on mount
+  useEffect(() => {
+    const savedProblem = localStorage.getItem("patternflow_last_problem");
+    const savedResult = localStorage.getItem("patternflow_last_result");
+    if (savedProblem) setProblem(savedProblem);
+    if (savedResult) {
+      try {
+        setResult(JSON.parse(savedResult));
+      } catch (e) {
+        console.error("Failed to parse saved result", e);
+      }
+    }
+  }, []);
 
   // Fetch plan + usage on mount
   useEffect(() => {
@@ -135,6 +140,7 @@ export default function SolvePage() {
     setResult(null);
     setLineIndex(0);
     localStorage.removeItem("patternflow_last_result");
+    analytics.trackSolveClicked();
 
     try {
       const response = await fetch("/api/solve", {
@@ -244,14 +250,17 @@ export default function SolvePage() {
             </button>
           ))}
         </div>
-
         <div className="mt-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {error ? <p className="text-sm text-red-500">{error}</p> : null}
+            {error ? (
+              <p className="animate-in fade-in zoom-in text-sm font-medium text-red-500 duration-300">
+                {error}
+              </p>
+            ) : null}
             {!error && result ? (
               <span className="inline-flex items-center gap-1 text-sm text-green-600">
                 <CheckCircle2 size={14} />
-                Ready
+                Analysis Complete
               </span>
             ) : null}
           </div>
@@ -260,7 +269,7 @@ export default function SolvePage() {
               type="button"
               variant="outline"
               onClick={handleCopy}
-              disabled={!problem.trim()}
+              disabled={!problem.trim() || loading}
               className="border-[#e8e2d9] bg-white px-3 font-mono text-[#6b6560] hover:border-[#1a1814] hover:text-[#1a1814]"
             >
               {copied ? <CheckCircle2 size={14} /> : <Copy size={14} />}
@@ -269,6 +278,7 @@ export default function SolvePage() {
               type="button"
               variant="outline"
               onClick={handleReset}
+              disabled={loading}
               className="border-[#e8e2d9] bg-white px-3 font-mono text-[#6b6560] hover:border-[#1a1814] hover:text-[#1a1814]"
             >
               <RotateCcw size={14} />
@@ -276,11 +286,14 @@ export default function SolvePage() {
             <Button
               onClick={handleSolve}
               disabled={loading || !problem.trim()}
-              className="bg-[#1a1814] px-6 font-mono text-[#faf8f3] hover:bg-[#2d2926] disabled:opacity-40"
+              className="min-w-[140px] bg-[#1a1814] px-6 font-mono text-[#faf8f3] hover:bg-[#2d2926] disabled:opacity-70"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
-                  <span className="h-3 w-3 animate-spin rounded-full border-2 border-[#faf8f3]/30 border-t-[#faf8f3]" />
+                  <svg className="h-4 w-4 animate-spin text-[#86efac]" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
                   Analyzing...
                 </span>
               ) : (
@@ -292,22 +305,37 @@ export default function SolvePage() {
           </div>
         </div>
 
-        {loading ? (
-          <div className="mt-8 rounded-xl bg-[#1a1814] p-5 font-mono text-sm">
-            {LOADING_LINES.slice(0, lineIndex).map((line) => (
-              <p key={line} className="text-[#86efac]">
-                {line}
-              </p>
-            ))}
-            {lineIndex >= LOADING_LINES.length ? (
-              <span className="animate-pulse text-[#86efac]">█</span>
-            ) : null}
-          </div>
-        ) : null}
-
-        {!loading && result ? (
-          <ResultCard result={result} plan={userPlan} userId={userId} />
-        ) : null}
+        {/* LOADING & RESULT CONTAINER (Layout Stable) */}
+        <div className="mt-8 min-h-[400px]">
+          {loading ? (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="rounded-xl bg-[#1a1814] p-6 font-mono text-sm shadow-2xl ring-1 ring-white/10">
+                <div className="mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
+                  <div className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-[#27c93f]" />
+                  <span className="ml-2 text-[10px] uppercase tracking-[0.2em] text-white/30">patternflow-engine.log</span>
+                </div>
+                
+                <div className="space-y-1.5">
+                  {LOADING_LINES.slice(0, lineIndex).map((line) => (
+                    <p key={line} className="text-[#86efac]">
+                      {line}
+                    </p>
+                  ))}
+                  <p className="flex items-center gap-1.5 text-[#86efac]">
+                    <span className="flex h-1.5 w-1.5 animate-pulse rounded-full bg-[#86efac]" />
+                    {LOADING_LINES[lineIndex] || "Finishing analysis..."}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : result ? (
+            <div className="animate-in fade-in duration-700">
+              <ResultCard result={result} plan={userPlan} userId={userId} />
+            </div>
+          ) : null}
+        </div>
 
         <div className="mt-10 flex items-center justify-center gap-5 text-[#a89f96]">
           <ChevronRight size={16} />

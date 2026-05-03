@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Space_Mono, Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
+import { PHProvider, PostHogAuth } from "@/components/providers/PostHogProvider";
+import NextTopLoader from 'nextjs-toploader';
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -35,19 +37,39 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${inter.variable} ${spaceMono.variable}`}>
       <body className={inter.className}>
-        {clerkEnabled ? <ClerkProvider>{children}</ClerkProvider> : children}
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            style: {
-              fontFamily: "var(--font-mono)",
-              fontSize: "13px",
-              border: "1px solid #e8e2d9",
-              background: "#faf8f3",
-              color: "#1a1814",
-            },
-          }}
+        <NextTopLoader 
+          color="#1a1814"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={false}
+          easing="ease"
+          speed={200}
+          shadow="0 0 10px #1a1814,0 0 5px #1a1814"
         />
+        <PHProvider>
+          {clerkEnabled ? (
+            <ClerkProvider>
+              <PostHogAuth />
+              {children}
+            </ClerkProvider>
+          ) : (
+            children
+          )}
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              style: {
+                fontFamily: "var(--font-mono)",
+                fontSize: "13px",
+                border: "1px solid #e8e2d9",
+                background: "#faf8f3",
+                color: "#1a1814",
+              },
+            }}
+          />
+        </PHProvider>
       </body>
     </html>
   );

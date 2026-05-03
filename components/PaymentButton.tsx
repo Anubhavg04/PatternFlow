@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@clerk/nextjs"
 import { ChevronRight, Loader2 } from "lucide-react"
+import { analytics } from "@/lib/posthog-events"
 
 declare global {
   interface Window {
@@ -41,6 +42,7 @@ export function PaymentButton({ plan, className, children }: PaymentButtonProps)
       return
     }
 
+    analytics.trackUpgradeClicked(plan)
     setLoading(true)
     setError("")
 
@@ -98,6 +100,7 @@ export function PaymentButton({ plan, className, children }: PaymentButtonProps)
           const verifyData = await verifyRes.json()
 
           if (verifyData.success) {
+            analytics.trackPaymentSuccess(orderData.amount / 100, orderData.currency)
             window.location.href = "/dashboard?payment=success"
           } else {
             setError("Payment verification failed. Contact support.")
