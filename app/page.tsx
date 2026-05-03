@@ -21,7 +21,6 @@ import {
   HelpCircle,
   Layers,
   Lightbulb,
-  Send,
   Sparkles,
   Target,
   Timer,
@@ -114,9 +113,9 @@ export default function Home() {
               <div className="mt-2 inline-flex rounded-md bg-[#f0ede6] p-2">
                 <Brain className="h-6 w-6 text-[#1a1814]" />
               </div>
-              <h3 className="mt-3 font-mono text-base text-[#1a1814]">Think, don't memorize</h3>
+              <h3 className="mt-3 font-mono text-base text-[#1a1814]">Think, don&apos;t memorize</h3>
               <p className="mt-2 text-sm text-[#6b6560]">
-                AI guides you to think — hints, Socratic questions, pattern reveal only when you're ready.
+                AI guides you to think — hints, Socratic questions, pattern reveal only when you&apos;re ready.
               </p>
             </article>
             <article className="rounded-lg border border-[#e8e2d9] bg-[#ffffff] p-6 transition hover:border-[#d4cdc4]">
@@ -285,7 +284,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-6">
           <p className="font-mono text-xs text-[#6b6560]">{"// pricing"}</p>
           <h2 className="mt-2 font-mono text-3xl text-[#1a1814] md:text-[32px]">Simple, honest pricing</h2>
-          <p className="mt-2 text-base text-[#6b6560]">Start free. Upgrade when you're ready.</p>
+          <p className="mt-2 text-base text-[#6b6560]">Start free. Upgrade when you&apos;re ready.</p>
 
           <div className="mt-12 flex flex-wrap justify-center gap-6">
 

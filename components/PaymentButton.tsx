@@ -8,6 +8,7 @@ import { analytics } from "@/lib/posthog-events"
 
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     Razorpay: any
   }
 }
@@ -83,7 +84,7 @@ export function PaymentButton({ plan, className, children }: PaymentButtonProps)
         name: "PatternFlow",
         description: orderData.planName,
         order_id: orderData.orderId,
-        handler: async (response: any) => {
+        handler: async (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => {
           // Verify payment
           const verifyRes = await fetch("/api/verify-payment", {
             method: "POST",
@@ -119,8 +120,8 @@ export function PaymentButton({ plan, className, children }: PaymentButtonProps)
         setLoading(false)
       })
       rzp.open()
-    } catch (err) {
-      setError("Something went wrong. Try again.")
+    } catch {
+      alert("Something went wrong with Razorpay. Try again.")
       setLoading(false)
     }
   }

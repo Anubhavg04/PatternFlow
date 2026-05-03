@@ -64,7 +64,7 @@ export function ConfidenceRating({ patternName, onRate }: Props) {
 
   return (
     <div className="rounded-xl border-2 border-[#e8e2d9] bg-[#faf8f3] p-5">
-      <p className="font-mono text-xs text-[#a89f96] mb-1">// self-check</p>
+      <p className="font-mono text-xs text-[#a89f96] mb-1">{"// self-check"}</p>
       <p className="text-sm font-medium text-[#1a1814] mb-1">
         How confident are you with <span className="font-bold">{patternName}</span>?
       </p>

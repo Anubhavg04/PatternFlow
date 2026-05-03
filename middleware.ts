@@ -14,7 +14,7 @@ export default function middleware(req: Request) {
     return NextResponse.next();
   }
 
-  return clerkHandler(req);
+  return clerkHandler(req as any, {} as any);
 }
 
 export const config = {

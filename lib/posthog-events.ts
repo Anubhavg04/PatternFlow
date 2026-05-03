@@ -4,9 +4,9 @@ import posthog from 'posthog-js'
  * Track a custom event in PostHog.
  * This can be used in client components.
  */
-export const trackEvent = (eventName: string, properties?: Record<string, any>) => {
+export const trackEvent = (event: string, properties?: Record<string, unknown>) => {
   if (typeof window !== 'undefined' && posthog) {
-    posthog.capture(eventName, properties)
+    posthog.capture(event, properties)
   }
 }
 
