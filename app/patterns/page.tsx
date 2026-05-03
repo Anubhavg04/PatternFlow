@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo, memo } from "react"
 import { Navbar } from "@/components/Navbar"
 import { PATTERNS, type Pattern } from "@/lib/patterns"
 import { Badge } from "@/components/ui/badge"
@@ -15,27 +15,31 @@ import {
   Sparkles,
 } from "lucide-react"
 
-const diffColor = {
+const DIFF_COLOR = {
   Beginner: "bg-green-100 text-green-700",
   Intermediate: "bg-amber-100 text-amber-700",
   Advanced: "bg-red-100 text-red-700",
 }
 
-const categories = ["All", ...Array.from(new Set(PATTERNS.map((p) => p.category)))]
+const CATEGORIES = ["All", ...Array.from(new Set(PATTERNS.map((p) => p.category)))]
 
 export default function PatternsPage() {
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null)
   const [filter, setFilter] = useState("All")
   const [search, setSearch] = useState("")
 
-  const filtered = PATTERNS.filter((p) => {
-    const matchesCategory = filter === "All" || p.category === filter
-    const matchesSearch =
-      !search ||
-      p.name.toLowerCase().includes(search.toLowerCase()) ||
-      p.keySignals.some((s) => s.toLowerCase().includes(search.toLowerCase()))
-    return matchesCategory && matchesSearch
-  })
+  // Memoize the filtered list to prevent expensive recalculations on every keystroke
+  const filtered = useMemo(() => {
+    const searchLower = search.toLowerCase()
+    return PATTERNS.filter((p) => {
+      const matchesCategory = filter === "All" || p.category === filter
+      const matchesSearch =
+        !search ||
+        p.name.toLowerCase().includes(searchLower) ||
+        p.keySignals.some((s) => s.toLowerCase().includes(searchLower))
+      return matchesCategory && matchesSearch
+    })
+  }, [filter, search])
 
   return (
     <div className="min-h-screen bg-[#faf8f3] text-[#1a1814]">
@@ -45,7 +49,7 @@ export default function PatternsPage() {
           <p className="mb-1 font-mono text-sm text-[#a89f96]">{"// pattern library"}</p>
           <h1 className="text-3xl font-bold text-[#1a1814]">Learn the Patterns</h1>
           <p className="mt-2 text-sm text-[#6b6560] leading-relaxed max-w-lg">
-            Master these 25 core algorithm patterns. Each one has signals to recognize it,
+            Master these core algorithm patterns. Each one has signals to recognize it,
             step-by-step thinking, common mistakes, and practice problems.
           </p>
         </div>
@@ -63,7 +67,7 @@ export default function PatternsPage() {
             />
           </div>
           <div className="flex flex-wrap gap-2">
-            {categories.map((cat) => (
+            {CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
@@ -109,7 +113,8 @@ export default function PatternsPage() {
   )
 }
 
-function PatternCard({
+// Memoized Card component to prevent re-rendering 25+ cards on every keystroke
+const PatternCard = memo(({
   pattern,
   isExpanded,
   onToggle,
@@ -117,7 +122,7 @@ function PatternCard({
   pattern: Pattern
   isExpanded: boolean
   onToggle: () => void
-}) {
+}) => {
   return (
     <div className="rounded-xl border border-[#e8e2d9] bg-white transition-all hover:border-[#d4cdc4]">
       {/* Header — always visible */}
@@ -134,7 +139,7 @@ function PatternCard({
               <h3 className="font-mono text-sm font-bold text-[#1a1814]">{pattern.name}</h3>
               <Badge
                 className={`text-[10px] font-mono px-2 py-0 ${
-                  diffColor[pattern.difficulty]
+                  DIFF_COLOR[pattern.difficulty]
                 }`}
               >
                 {pattern.difficulty}
@@ -152,113 +157,117 @@ function PatternCard({
         />
       </button>
 
-      {/* Expanded Content */}
+      {/* Expanded Content — Optimized with grid and conditional mounting */}
       <div
         className={`grid transition-all duration-200 ease-in-out ${
           isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
         }`}
       >
         <div className="overflow-hidden">
-          <div className="border-t border-[#e8e2d9] px-5 pb-5 pt-4 space-y-5">
-            {/* When to use */}
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Target size={14} className="text-[#1a1814]" />
-                <span className="font-mono text-xs font-bold text-[#1a1814]">When to use</span>
+          {isExpanded && (
+            <div className="border-t border-[#e8e2d9] px-5 pb-5 pt-4 space-y-5">
+              {/* When to use */}
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Target size={14} className="text-[#1a1814]" />
+                  <span className="font-mono text-xs font-bold text-[#1a1814]">When to use</span>
+                </div>
+                <p className="text-sm text-[#6b6560] leading-relaxed">{pattern.whenToUse}</p>
               </div>
-              <p className="text-sm text-[#6b6560] leading-relaxed">{pattern.whenToUse}</p>
-            </div>
 
-            {/* Key Signals */}
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles size={14} className="text-[#1a1814]" />
-                <span className="font-mono text-xs font-bold text-[#1a1814]">
-                  Spot it in problems
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {pattern.keySignals.map((signal) => (
-                  <span
-                    key={signal}
-                    className="rounded-full bg-[#f0ede6] px-3 py-1 font-mono text-xs text-[#1a1814]"
-                  >
-                    {signal}
+              {/* Key Signals */}
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Sparkles size={14} className="text-[#1a1814]" />
+                  <span className="font-mono text-xs font-bold text-[#1a1814]">
+                    Spot it in problems
                   </span>
-                ))}
-              </div>
-            </div>
-
-            {/* How to Think */}
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Lightbulb size={14} className="text-[#1a1814]" />
-                <span className="font-mono text-xs font-bold text-[#1a1814]">How to think</span>
-              </div>
-              <ol className="space-y-2">
-                {pattern.howToThink.map((step, i) => (
-                  <li key={i} className="flex items-start gap-2.5">
-                    <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#1a1814] text-[10px] font-bold text-[#faf8f3]">
-                      {i + 1}
-                    </span>
-                    <span className="text-sm text-[#6b6560] leading-relaxed">{step}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
-
-            {/* Common Mistakes */}
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <AlertTriangle size={14} className="text-amber-500" />
-                <span className="font-mono text-xs font-bold text-[#1a1814]">
-                  Common mistakes
-                </span>
-              </div>
-              <ul className="space-y-1.5">
-                {pattern.commonMistakes.map((mistake, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-[#6b6560]">
-                    <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-amber-400" />
-                    {mistake}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Practice Problems */}
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <BookOpen size={14} className="text-[#1a1814]" />
-                <span className="font-mono text-xs font-bold text-[#1a1814]">Practice these</span>
-              </div>
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                {pattern.practiceProblems.map((prob) => (
-                  <div
-                    key={prob.name}
-                    className="flex items-center justify-between rounded-lg border border-[#e8e2d9] bg-[#faf8f3] px-3 py-2"
-                  >
-                    <div>
-                      <p className="text-xs font-medium text-[#1a1814]">{prob.name}</p>
-                      <p className="font-mono text-[10px] text-[#a89f96]">{prob.platform}</p>
-                    </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {pattern.keySignals.map((signal) => (
                     <span
-                      className={`font-mono text-[10px] ${
-                        prob.difficulty === "Easy"
-                          ? "text-green-600"
-                          : prob.difficulty === "Hard"
-                          ? "text-red-500"
-                          : "text-amber-600"
-                      }`}
+                      key={signal}
+                      className="rounded-full bg-[#f0ede6] px-3 py-1 font-mono text-xs text-[#1a1814]"
                     >
-                      {prob.difficulty}
+                      {signal}
                     </span>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+
+              {/* How to Think */}
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Lightbulb size={14} className="text-[#1a1814]" />
+                  <span className="font-mono text-xs font-bold text-[#1a1814]">How to think</span>
+                </div>
+                <ol className="space-y-2">
+                  {pattern.howToThink.map((step, i) => (
+                    <li key={i} className="flex items-start gap-2.5">
+                      <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#1a1814] text-[10px] font-bold text-[#faf8f3]">
+                        {i + 1}
+                      </span>
+                      <span className="text-sm text-[#6b6560] leading-relaxed">{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+
+              {/* Common Mistakes */}
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <AlertTriangle size={14} className="text-amber-500" />
+                  <span className="font-mono text-xs font-bold text-[#1a1814]">
+                    Common mistakes
+                  </span>
+                </div>
+                <ul className="space-y-1.5">
+                  {pattern.commonMistakes.map((mistake, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-[#6b6560]">
+                      <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-amber-400" />
+                      {mistake}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Practice Problems */}
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <BookOpen size={14} className="text-[#1a1814]" />
+                  <span className="font-mono text-xs font-bold text-[#1a1814]">Practice these</span>
+                </div>
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {pattern.practiceProblems.map((prob) => (
+                    <div
+                      key={prob.name}
+                      className="flex items-center justify-between rounded-lg border border-[#e8e2d9] bg-[#faf8f3] px-3 py-2"
+                    >
+                      <div>
+                        <p className="text-xs font-medium text-[#1a1814]">{prob.name}</p>
+                        <p className="font-mono text-[10px] text-[#a89f96]">{prob.platform}</p>
+                      </div>
+                      <span
+                        className={`font-mono text-[10px] ${
+                          prob.difficulty === "Easy"
+                            ? "text-green-600"
+                            : prob.difficulty === "Hard"
+                            ? "text-red-500"
+                            : "text-amber-600"
+                        }`}
+                      >
+                        {prob.difficulty}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
   )
-}
+})
+
+PatternCard.displayName = "PatternCard"

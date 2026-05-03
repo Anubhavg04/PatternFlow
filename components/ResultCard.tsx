@@ -6,6 +6,7 @@ import {
   Brain, Lightbulb, Eye, BookOpen, Clock,
   Target, Layers, GraduationCap, ChevronDown, HelpCircle, X
 } from "lucide-react"
+import { analytics } from "@/lib/posthog-events"
 
 export type SolveResult = {
   problem_summary: string
@@ -203,7 +204,11 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                 return (
                   <div key={i} className="rounded-lg bg-[#f0ede6] p-3 text-center">
                     <p className="text-xs text-[#6b6560] mb-2">🔒 Hint {i + 1} locked</p>
-                    <a href="/#pricing" className="text-xs font-mono text-[#1a1814] underline">
+                    <a 
+                      href="/#pricing" 
+                      className="text-xs font-mono text-[#1a1814] underline"
+                      onClick={() => analytics.trackPaywallShown(`hint_${i + 1}`)}
+                    >
                       Unlock next insight →
                     </a>
                   </div>
@@ -222,7 +227,10 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                     <Button
                       variant="outline"
                       className="w-full border-dashed border-[#d4cdc4] text-[#6b6560] hover:border-[#1a1814] hover:text-[#1a1814] text-sm"
-                      onClick={() => setHintsUnlocked(i + 1)}
+                      onClick={() => {
+                        setHintsUnlocked(i + 1)
+                        analytics.trackHintUnlocked(i + 1)
+                      }}
                     >
                       <Lightbulb size={14} className="mr-2" />
                       {i === 0 ? "Show hint" : "Show next hint"}
@@ -257,6 +265,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
               <a
                 href="/#pricing"
                 className="inline-block bg-[#1a1814] text-[#faf8f3] font-mono text-sm px-5 py-2 rounded-lg hover:bg-[#2d2926] transition-colors"
+                onClick={() => analytics.trackPaywallShown('progressive_hints')}
               >
                 Unlockk pattern →
               </a>
