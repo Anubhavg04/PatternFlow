@@ -14,18 +14,18 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PatternFlow — AI-powered DSA pattern visualizer",
+  title: "PatternFlow",
   description:
     "Paste any DSA problem. Get instant pattern detection, visualization, memory hooks, and similar problems. Built for interview prep.",
   keywords: "DSA, LeetCode, algorithm, pattern recognition, interview prep, visualization",
   openGraph: {
-    title: "PatternFlow — understand DSA patterns instantly",
+    title: "PatternFlow",
     description: "AI-powered pattern recognition for DSA problems. Free to use.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PatternFlow — AI DSA pattern visualizer",
+    title: "PatternFlow",
     description: "Paste any DSA problem. Get pattern + visualization + memory hook instantly.",
   },
 };
