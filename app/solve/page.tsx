@@ -40,7 +40,6 @@ export default function SolvePage() {
   const [error, setError] = useState("");
   const [solvesUsed, setSolvesUsed] = useState(0);
   const [solveLimit, setSolveLimit] = useState(5);
-  const [solvePeriod, setSolvePeriod] = useState("day");
   const [lineIndex, setLineIndex] = useState(0);
   const [copied, setCopied] = useState(false);
   const [userPlan, setUserPlan] = useState<"free" | "basic" | "pro">("free");
@@ -76,7 +75,7 @@ export default function SolvePage() {
         .then(d => {
           setSolvesUsed(d.used || 0);
           setSolveLimit(d.limit > 0 ? d.limit : -1);
-          setSolvePeriod(d.period || "day");
+          setSolveLimit(d.limit > 0 ? d.limit : -1);
         })
         .catch(() => {});
     } else {
@@ -86,7 +85,7 @@ export default function SolvePage() {
       const stored = Number.parseInt(localStorage.getItem(key) ?? "0", 10);
       setSolvesUsed(Number.isNaN(stored) ? 0 : Math.min(5, stored));
       setSolveLimit(5);
-      setSolvePeriod("day");
+      setSolveLimit(5);
     }
   }, [userId]);
 

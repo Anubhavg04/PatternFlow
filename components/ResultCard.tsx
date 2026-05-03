@@ -165,7 +165,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
           <div className={headerClass}>
             <HelpCircle size={16} className="text-[#a89f96]" />
-            <span className={labelClass}>// problem understood</span>
+            <span className={labelClass}>{"// problem understood"}</span>
             <span className={`ml-auto text-xs font-mono font-bold ${diffColor}`}>
               {result.difficulty}
             </span>
@@ -177,7 +177,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         <div className="rounded-xl border-2 border-[#1a1814] bg-[#faf8f3] p-6">
           <div className={headerClass}>
             <Brain size={16} className="text-[#1a1814]" />
-            <span className="text-xs font-mono text-[#1a1814] font-bold">// think first</span>
+            <span className="text-xs font-mono text-[#1a1814] font-bold">{"// think first"}</span>
           </div>
           <p className="text-[#1a1814] text-sm leading-relaxed font-medium mb-2">
             Before looking at hints — ask yourself:
@@ -194,7 +194,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
           <div className={headerClass}>
             <Lightbulb size={16} className="text-[#a89f96]" />
-            <span className={labelClass}>// hints (reveal one at a time)</span>
+            <span className={labelClass}>{"// hints (reveal one at a time)"}</span>
           </div>
 
           <div className="space-y-3">
@@ -244,7 +244,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
           {!isPaid && hintsUnlocked >= 2 && (
             <div className="mt-4 rounded-xl border-2 border-[#1a1814] bg-[#faf8f3] p-5 text-center">
               <p className="text-xs font-mono text-[#a89f96] mb-2">
-                2 hints used • You're close
+                2 hints used • You&apos;re close
               </p>
               <div className="w-8 h-8 rounded-full bg-[#1a1814] flex items-center justify-center mx-auto mb-3">
                 <Lightbulb size={16} className="text-[#faf8f3]" />
@@ -284,9 +284,9 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                 </Button>
               ) : (
                 <div className="rounded-xl border-2 border-[#1a1814] bg-[#faf8f3] p-4">
-                  <p className="text-xs font-mono text-[#a89f96] mb-1">// quick check</p>
+                  <p className="text-xs font-mono text-[#a89f96] mb-1">{"// quick check"}</p>
                   <p className="text-sm font-medium text-[#1a1814] mb-3">
-                    Explain in your own words — why does this problem need an efficient lookup? What happens if you don't have one?
+                    Explain in your own words — why does this problem need an efficient lookup? What happens if you don&apos;t have one?
                   </p>
                   {answerFeedback === null && (
                     <>
@@ -310,7 +310,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                       <div className="rounded-lg bg-green-50 border border-green-200 p-3">
                         <p className="text-sm font-medium text-green-800 mb-1">✓ Good thinking!</p>
                         <p className="text-xs text-green-700 leading-relaxed">
-                          You explained your reasoning clearly. That's exactly the skill interviewers look for.
+                          You explained your reasoning clearly. That&apos;s exactly the skill interviewers look for.
                         </p>
                       </div>
                       <Button
@@ -372,7 +372,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
           <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
             <div className={headerClass}>
               <Brain size={16} className="text-[#a89f96]" />
-              <span className={labelClass}>// pattern</span>
+              <span className={labelClass}>{"// pattern"}</span>
             </div>
             <div className="flex items-start gap-4 mb-4">
               <div className="min-w-[140px] rounded-lg bg-[#f0ede6] px-4 py-3 text-center">
@@ -412,7 +412,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
           <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
             <div className={headerClass}>
               <BookOpen size={16} className="text-[#a89f96]" />
-              <span className={labelClass}>// how to think through this</span>
+              <span className={labelClass}>{"// how to think through this"}</span>
             </div>
             <p className="text-xs text-[#a89f96] font-mono mb-4">
               No code — just the thinking process
@@ -434,12 +434,12 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
           <div className={headerClass}>
             <Target size={16} className="text-[#a89f96]" />
-            <span className={labelClass}>// memory hook</span>
+            <span className={labelClass}>{"// memory hook"}</span>
           </div>
           {!isPaid ? (
             <div className="relative">
               <p className="text-sm font-medium italic leading-relaxed text-[#1a1814] blur-sm select-none">
-                "{result.memory_hook}"
+                &quot;{result.memory_hook}&quot;
               </p>
               <div className="absolute inset-0 flex items-center justify-center">
                 <a href="/#pricing" className="text-xs font-mono text-[#1a1814] bg-[#f0ede6] px-3 py-1.5 rounded-lg border border-[#e8e2d9] hover:border-[#1a1814]">
@@ -450,7 +450,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
           ) : (
             <div className="border-l-2 border-[#1a1814] pl-4">
               <p className="text-sm font-medium italic leading-relaxed text-[#1a1814]">
-                "{result.memory_hook}"
+                &quot;{result.memory_hook}&quot;
               </p>
             </div>
           )}
@@ -460,7 +460,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
           <div className={headerClass}>
             <GraduationCap size={16} className="text-[#a89f96]" />
-            <span className={labelClass}>// spot this in interviews</span>
+            <span className={labelClass}>{"// spot this in interviews"}</span>
           </div>
           {plan === "free" ? (
             <div className="rounded-lg bg-[#f0ede6] p-4 text-center">
@@ -490,12 +490,12 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
           <div className={headerClass}>
             <HelpCircle size={16} className="text-[#a89f96]" />
-            <span className={labelClass}>// concepts you need to know first</span>
+            <span className={labelClass}>{"// concepts you need to know first"}</span>
           </div>
           {!isPaid ? (
             <div className="rounded-lg bg-[#f0ede6] p-4 text-center">
               <p className="text-sm text-[#6b6560] mb-2">
-                🔒 See what prerequisite concepts you're missing
+                🔒 See what prerequisite concepts you&apos;re missing
               </p>
               <a href="/#pricing" className="text-xs font-mono text-[#1a1814] underline">
                 Upgrade to Basic to unlock →
@@ -522,7 +522,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                     rel="noopener noreferrer"
                     className="text-xs font-mono text-[#1a1814] underline hover:opacity-70"
                   >
-                    Search: "{c.learn_query}" →
+                    Search: &quot;{c.learn_query}&quot; →
                   </a>
                 </div>
               ))}
@@ -534,7 +534,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
           <div className={headerClass}>
             <Layers size={16} className="text-[#a89f96]" />
-            <span className={labelClass}>// practice these next</span>
+            <span className={labelClass}>{"// practice these next"}</span>
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             {(result.similar_problems || []).map((p, i) => (
@@ -582,7 +582,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
           <div className={headerClass}>
             <Lightbulb size={16} className="text-[#a89f96]" />
-            <span className={labelClass}>// memorize this pattern</span>
+            <span className={labelClass}>{"// memorize this pattern"}</span>
           </div>
           {plan !== "pro" ? (
             <div className="rounded-lg bg-[#f0ede6] p-4 text-center">
@@ -661,7 +661,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
           <div className={headerClass}>
             <Eye size={16} className="text-[#a89f96]" />
-            <span className={labelClass}>// practice under pressure</span>
+            <span className={labelClass}>{"// practice under pressure"}</span>
           </div>
           {plan === "free" ? (
             <div className="rounded-lg bg-[#f0ede6] p-4 text-center">

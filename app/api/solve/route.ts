@@ -201,7 +201,7 @@ Respond ONLY with valid JSON, no markdown fences:
     }
 
     return Response.json({ ...result, _meta: { cacheHit: false } })
-  } catch (err) {
+  } catch {
     return Response.json({ error: "Failed to analyze. Try again." }, { status: 500 })
   }
 }
