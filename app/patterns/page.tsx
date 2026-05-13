@@ -11,8 +11,14 @@ import {
   Lightbulb,
   Search,
   Target,
-  Brain,
   Sparkles,
+  Hash,
+  Box,
+  Network,
+  Share2,
+  Zap,
+  RefreshCw,
+  Divide
 } from "lucide-react"
 
 const DIFF_COLOR = {
@@ -44,10 +50,10 @@ export default function PatternsPage() {
   return (
     <div className="min-h-screen bg-[#faf8f3] text-[#1a1814]">
       <Navbar />
-      <main className="mx-auto max-w-4xl px-6 py-12">
+      <main className="mx-auto max-w-4xl px-4 py-8 pt-24 sm:px-6 sm:py-12">
         <div className="mb-8">
           <p className="mb-1 font-mono text-sm text-[#a89f96]">{"// pattern library"}</p>
-          <h1 className="text-3xl font-bold text-[#1a1814]">Learn the Patterns</h1>
+          <h1 className="text-2xl font-bold text-[#1a1814] sm:text-3xl">Learn the Patterns</h1>
           <p className="mt-2 text-sm text-[#6b6560] leading-relaxed max-w-lg">
             Master these core algorithm patterns. Each one has signals to recognize it,
             step-by-step thinking, common mistakes, and practice problems.
@@ -113,6 +119,17 @@ export default function PatternsPage() {
   )
 }
 
+const CATEGORY_ICONS: Record<string, any> = {
+  "Array": Hash,
+  "Search": Search,
+  "Data Structure": Box,
+  "Tree": Network,
+  "Graph": Share2,
+  "Optimization": Zap,
+  "Exhaustive Search": RefreshCw,
+  "Math": Divide,
+}
+
 // Memoized Card component to prevent re-rendering 25+ cards on every keystroke
 const PatternCard = memo(({
   pattern,
@@ -123,6 +140,8 @@ const PatternCard = memo(({
   isExpanded: boolean
   onToggle: () => void
 }) => {
+  const Icon = CATEGORY_ICONS[pattern.category] || Box
+
   return (
     <div className="rounded-xl border border-[#e8e2d9] bg-white transition-all hover:border-[#d4cdc4]">
       {/* Header — always visible */}
@@ -130,23 +149,23 @@ const PatternCard = memo(({
         onClick={onToggle}
         className="flex w-full items-center justify-between p-5 text-left"
       >
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="flex-shrink-0 rounded-lg bg-[#1a1814] p-2">
-            <Brain size={16} className="text-[#faf8f3]" />
+        <div className="flex items-center gap-4 min-w-0 flex-1">
+          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-[#1a1814] sm:h-12 sm:w-12">
+            <Icon size={20} className="text-[#faf8f3]" />
           </div>
-          <div className="min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="font-mono text-sm font-bold text-[#1a1814]">{pattern.name}</h3>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+              <h3 className="font-mono text-xs font-bold text-[#1a1814] truncate sm:text-sm">{pattern.name}</h3>
               <Badge
-                className={`text-[10px] font-mono px-2 py-0 ${
+                className={`text-[9px] font-mono px-1.5 py-0 sm:text-[10px] sm:px-2 ${
                   DIFF_COLOR[pattern.difficulty]
                 }`}
               >
                 {pattern.difficulty}
               </Badge>
-              <span className="font-mono text-[10px] text-[#a89f96]">{pattern.category}</span>
+              <span className="font-mono text-[9px] text-[#a89f96] sm:text-[10px]">{pattern.category}</span>
             </div>
-            <p className="mt-1 text-xs text-[#6b6560] line-clamp-1">{pattern.description}</p>
+            <p className="mt-0.5 text-[10px] text-[#6b6560] line-clamp-1 sm:mt-1 sm:text-xs">{pattern.description}</p>
           </div>
         </div>
         <ChevronDown

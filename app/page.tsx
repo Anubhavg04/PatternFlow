@@ -36,7 +36,7 @@ export default function Home() {
       <Navbar />
 
       {/* Hero */}
-      <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#faf8f3] px-6 pt-24">
+      <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#faf8f3] px-4 pt-24 sm:px-6">
         <div className="relative z-10 mx-auto max-w-[680px] text-center">
           <Badge
             variant="outline"
@@ -229,7 +229,7 @@ export default function Home() {
           <div className="flex flex-col items-center gap-10 md:flex-row md:gap-16">
             {/* Visual */}
             <div className="flex-shrink-0">
-              <div className="relative w-[220px] rounded-2xl border-2 border-[#1a1814] bg-[#1a1814] p-6 shadow-lg">
+              <div className="relative w-full max-w-[220px] rounded-2xl border-2 border-[#1a1814] bg-[#1a1814] p-6 shadow-lg">
                 <p className="font-mono text-[10px] text-[#a89f96] mb-1">interview mode</p>
                 <div className="flex items-center gap-3 mb-4">
                   <Clock className="h-5 w-5 text-[#faf8f3]" />
@@ -286,10 +286,10 @@ export default function Home() {
           <h2 className="mt-2 font-mono text-3xl text-[#1a1814] md:text-[32px]">Simple, honest pricing</h2>
           <p className="mt-2 text-base text-[#6b6560]">Start free. Upgrade when you&apos;re ready.</p>
 
-          <div className="mt-12 flex flex-wrap justify-center gap-6">
+          <div className="mt-12 flex flex-col items-center gap-5 sm:flex-row sm:flex-wrap sm:justify-center">
 
             {/* FREE */}
-            <article className="w-64 rounded-xl border border-[#e8e2d9] bg-white p-7">
+            <article className="w-full max-w-xs rounded-xl border border-[#e8e2d9] bg-white p-7">
               <Badge className="bg-[#f0ede6] font-mono text-[#6b6560] hover:bg-[#f0ede6]">Free</Badge>
               <div className="mt-5 flex items-end gap-2">
                 <p className="font-mono text-[36px] leading-none text-[#1a1814]">₹0</p>
@@ -328,7 +328,7 @@ export default function Home() {
             </article>
 
             {/* BASIC */}
-            <article className="w-64 rounded-xl border border-[#e8e2d9] bg-white p-7">
+            <article className="w-full max-w-xs rounded-xl border border-[#e8e2d9] bg-white p-7">
               <Badge className="bg-[#f0ede6] font-mono text-[#6b6560] hover:bg-[#f0ede6]">Basic</Badge>
               <div className="mt-5 flex items-end gap-2">
                 <p className="font-mono text-[36px] leading-none text-[#1a1814]">₹149</p>
@@ -369,7 +369,7 @@ export default function Home() {
             </article>
 
             {/* PRO */}
-            <article className="relative w-64 rounded-xl border-2 border-[#1a1814] bg-[#1a1814] p-7">
+            <article className="relative w-full max-w-xs rounded-xl border-2 border-[#1a1814] bg-[#1a1814] p-7">
               <Badge className="absolute -top-3 right-4 bg-[#faf8f3] font-mono text-[11px] text-[#1a1814] hover:bg-[#faf8f3]">
                 Most popular
               </Badge>
@@ -433,11 +433,11 @@ export default function Home() {
               },
               {
                 q: "What patterns does PatternFlow detect?",
-                a: "15+ core algorithm patterns including Sliding Window, Two Pointers, Binary Search, BFS/DFS, Dynamic Programming, Greedy, Backtracking, Union-Find, Topological Sort, Monotonic Stack, and more. The AI identifies the best-fit pattern for each problem.",
+                a: "25+ core algorithm patterns including Sliding Window, Two Pointers, Binary Search, BFS/DFS, Dynamic Programming, Greedy, Backtracking, Union-Find, Topological Sort, Monotonic Stack, and more. The AI identifies the best-fit pattern for each problem.",
               },
               {
                 q: "Do I need to sign up to use it?",
-                a: "No. You get 5 free solves per day without any signup. Just paste a problem and go. Sign up only when you want to track history or unlock paid features.",
+                a: "Yes. for testing you get 5 free solves per day after signup. Just paste a problem and go.",
               },
               {
                 q: "What kind of problems can I paste?",
@@ -482,15 +482,6 @@ export default function Home() {
                 >
                   <X className="h-3.5 w-3.5" />
                   Twitter
-                </a>
-                <a
-                  href="https://github.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 rounded-lg border border-[#e8e2d9] px-3 py-2 text-xs font-mono text-[#6b6560] hover:border-[#1a1814] hover:text-[#1a1814] transition-all"
-                >
-                  <GitBranch className="h-3.5 w-3.5" />
-                  GitHub
                 </a>
               </div>
             </div>
@@ -542,7 +533,7 @@ export default function Home() {
 
           <div className="mt-12 pt-6 border-t border-[#e8e2d9] flex flex-wrap items-center justify-between gap-4">
             <p className="font-mono text-xs text-[#a89f96]">
-              © 2026 PatternFlow · Built for students, by a developer
+              © 2026 PatternFlow · Built for DSA Hustlers, by a developer.
             </p>
             <div className="flex items-center gap-4">
               <span className="font-mono text-xs text-[#a89f96]">Payments secured by Razorpay</span>
