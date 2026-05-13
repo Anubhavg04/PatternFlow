@@ -181,10 +181,10 @@ export default function SolvePage() {
   return (
     <div className="min-h-screen bg-[#faf8f3] text-[#1a1814]">
       <Navbar />
-      <main className="mx-auto max-w-3xl px-6 py-12">
+      <main className="mx-auto max-w-3xl px-4 py-8 pt-24 sm:px-6 sm:py-12 sm:pt-24">
         <div className="mb-8">
           <p className="mb-1 font-mono text-sm text-[#a89f96]">{"// ai pattern solver"}</p>
-          <h1 className="mb-1 text-3xl font-bold text-[#1a1814]">Paste your problem</h1>
+          <h1 className="mb-1 text-2xl font-bold text-[#1a1814] sm:text-3xl">Paste your problem</h1>
           <p className="mb-8 text-sm text-[#6b6560]">
             Works with LeetCode, GFG, Codeforces — paste the full thing, noise included.
           </p>
@@ -249,7 +249,7 @@ export default function SolvePage() {
             </button>
           ))}
         </div>
-        <div className="mt-4 flex items-center justify-between">
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2">
             {error ? (
               <p className="animate-in fade-in zoom-in text-sm font-medium text-red-500 duration-300">
@@ -263,7 +263,7 @@ export default function SolvePage() {
               </span>
             ) : null}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 self-end sm:self-auto">
             <Button
               type="button"
               variant="outline"
@@ -285,7 +285,7 @@ export default function SolvePage() {
             <Button
               onClick={handleSolve}
               disabled={loading || !problem.trim()}
-              className="min-w-[140px] bg-[#1a1814] px-6 font-mono text-[#faf8f3] hover:bg-[#2d2926] disabled:opacity-70"
+              className="w-full bg-[#1a1814] px-6 font-mono text-[#faf8f3] hover:bg-[#2d2926] disabled:opacity-70 sm:w-auto sm:min-w-[140px]"
             >
               {loading ? (
                 <span className="flex items-center gap-2">

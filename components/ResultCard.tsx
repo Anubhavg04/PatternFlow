@@ -374,8 +374,8 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
               <Brain size={16} className="text-[#a89f96]" />
               <span className={labelClass}>{"// pattern"}</span>
             </div>
-            <div className="flex items-start gap-4 mb-4">
-              <div className="min-w-[140px] rounded-lg bg-[#f0ede6] px-4 py-3 text-center">
+            <div className="flex flex-col gap-4 mb-4 sm:flex-row sm:items-start">
+              <div className="rounded-lg bg-[#f0ede6] px-4 py-3 text-center sm:min-w-[140px]">
                 <p className="font-mono text-lg font-bold text-[#1a1814]">
                   { isPaid ? result.pattern_reveal.name : "🔒 Hidden Pattern"}
                 </p>
