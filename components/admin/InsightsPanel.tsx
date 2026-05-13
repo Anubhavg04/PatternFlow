@@ -1,5 +1,5 @@
 import { AdminStats } from "@/lib/admin-queries"
-import { TrendingDown, TrendingUp, Zap, AlertCircle } from "lucide-react"
+import { TrendingUp, Zap, AlertCircle } from "lucide-react"
 
 type InsightsPanelProps = {
   stats: AdminStats

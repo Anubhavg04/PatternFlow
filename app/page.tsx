@@ -17,7 +17,6 @@ import {
   Clock,
   Code2,
   Fingerprint,
-  GitBranch,
   HelpCircle,
   Layers,
   Lightbulb,

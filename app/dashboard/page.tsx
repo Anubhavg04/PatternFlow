@@ -1,7 +1,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
-import { BookOpen, Brain, Clock, TrendingUp, ChevronRight, Crown, Mail, MessageCircle, Shield, Target, AlertCircle, Zap, Share2, Sparkles, History, ArrowRight, CheckCircle2 } from "lucide-react";
+import { BookOpen, Brain, Clock, TrendingUp, ChevronRight, Shield, Target, AlertCircle, Zap, Sparkles, History, ArrowRight, CheckCircle2 } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
 import { DashboardNotifications } from "@/components/DashboardNotifications";
@@ -266,12 +266,6 @@ export default async function Dashboard({
 
   // ── Smart Insights ──
   const topPattern = [...patternAnalysis].sort((a, b) => b.count - a.count)[0]
-  const recentSolvesCount = allStats.filter(s => {
-    const d = new Date(s.created_at)
-    const weekAgo = new Date()
-    weekAgo.setDate(weekAgo.getDate() - 7)
-    return d >= weekAgo
-  }).length
 
   const smartInsight = topPattern && topPattern.count > 0
     ? `You're mastering ${topPattern.name} — ${topPattern.count} solves already!`
@@ -620,7 +614,7 @@ export default async function Dashboard({
                   </div>
                   <h3 className="text-base font-black text-[#1a1814]">Upgrade to Pro</h3>
                   <p className="text-xs text-[#6b6560] mt-1.5 mb-6 leading-relaxed">
-                    You're missing <span className="font-bold text-[#1a1814]">Missing Concept Detection</span> and full solve analysis. Master patterns 2x faster.
+                    You&apos;re missing <span className="font-bold text-[#1a1814]">Missing Concept Detection</span> and full solve analysis. Master patterns 2x faster.
                   </p>
                   <Link
                     href="/#pricing"

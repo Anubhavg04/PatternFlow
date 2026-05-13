@@ -119,6 +119,7 @@ export default function PatternsPage() {
   )
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CATEGORY_ICONS: Record<string, any> = {
   "Array": Hash,
   "Search": Search,

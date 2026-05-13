@@ -126,7 +126,7 @@ export function AdminDashboardClient({ initialStats, initialRange, fetchStats }:
         {/* Revenue header — Stripe-style */}
         <div className="flex flex-col gap-4 border-b border-[#f0ede6] px-4 py-5 sm:flex-row sm:items-start sm:justify-between sm:px-6">
           <div>
-            <p className="font-mono text-[10px] text-[#a89f96] sm:text-xs">// revenue</p>
+            <p className="font-mono text-[10px] text-[#a89f96] sm:text-xs">{"// revenue"}</p>
             <p className="mt-0.5 text-xs text-[#6b6560] sm:text-sm">Total Revenue</p>
             <p className="mt-1 font-mono text-3xl font-bold tracking-tight text-[#1a1814] sm:text-4xl">
               {revenue}
@@ -162,7 +162,7 @@ export function AdminDashboardClient({ initialStats, initialRange, fetchStats }:
       {/* ── Section 3: Funnel + Insights ── */}
       <div id="funnel" className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div className="rounded-xl border border-[#e8e2d9] bg-white p-6 shadow-sm">
-          <p className="mb-1 font-mono text-xs text-[#a89f96]">// funnel</p>
+          <p className="mb-1 font-mono text-xs text-[#a89f96]">{"// funnel"}</p>
           <p className="mb-5 text-sm font-medium text-[#1a1814]">Conversion steps</p>
           <Funnel
             totalUsers={stats.funnelData.totalUsers}
@@ -172,7 +172,7 @@ export function AdminDashboardClient({ initialStats, initialRange, fetchStats }:
         </div>
 
         <div className="rounded-xl border border-[#e8e2d9] bg-white p-6 shadow-sm">
-          <p className="mb-1 font-mono text-xs text-[#a89f96]">// insights</p>
+          <p className="mb-1 font-mono text-xs text-[#a89f96]">{"// insights"}</p>
           <p className="mb-5 text-sm font-medium text-[#1a1814]">Smart observations</p>
           <InsightsPanel stats={stats} days={days} />
         </div>
@@ -180,7 +180,7 @@ export function AdminDashboardClient({ initialStats, initialRange, fetchStats }:
 
       {/* ── Section 4: Feature Usage ── */}
       <div id="features" className="rounded-xl border border-[#e8e2d9] bg-white p-6 shadow-sm">
-        <p className="mb-1 font-mono text-xs text-[#a89f96]">// features</p>
+        <p className="mb-1 font-mono text-xs text-[#a89f96]">{"// features"}</p>
         <p className="mb-6 text-sm font-medium text-[#1a1814]">What users rely on most</p>
         <div className="space-y-5">
           {features.map(({ icon: Icon, label, value }) => {
