@@ -24,36 +24,40 @@ export type AdminStats = {
   }
 }
 
+// Plan prices in INR (matching route.ts: basic=9900 paise, pro=19900 paise)
+const PLAN_PRICES: Record<string, number> = { basic: 99, pro: 199 }
+
 export async function fetchAdminStats(days: number): Promise<AdminStats> {
   const sb = getSb()
 
-  // Run all queries in parallel
+  // Run all queries in parallel against the 4 existing tables:
+  // solves, subscriptions, usage_log, problem_cache
   const [
-    usersResult,
     solvesCountResult,
     paidResult,
-    revenueResult,
+    subscriptionsResult,
     growthResult,
-    hintsResult,
     recentSolvesResult,
+    allSolversResult,
+    activeSolversResult,
   ] = await Promise.all([
-    // Total users
-    sb.from("users").select("id", { count: "exact", head: true }),
-
-    // Problems solved in range
+    // Problems solved in date range
     sb
       .from("solves")
       .select("id", { count: "exact", head: true })
       .gte("created_at", daysAgo(days)),
 
-    // Paid users (active subscriptions)
+    // Paid users — count active subscriptions
     sb
       .from("subscriptions")
       .select("user_id", { count: "exact", head: true })
       .eq("status", "active"),
 
-    // Total revenue
-    sb.from("payments").select("amount"),
+    // All active subscriptions with plan — for revenue calculation
+    sb
+      .from("subscriptions")
+      .select("plan")
+      .eq("status", "active"),
 
     // Growth chart: solves per day in range
     sb
@@ -62,41 +66,45 @@ export async function fetchAdminStats(days: number): Promise<AdminStats> {
       .gte("created_at", daysAgo(days))
       .order("created_at", { ascending: true }),
 
-    // Hints used in range (from solves table — hints are tracked via solve metadata)
-    sb
-      .from("solves")
-      .select("id", { count: "exact", head: true })
-      .gte("created_at", daysAgo(days)),
-
-    // Recent activity: last 10 solves with user info
+    // Recent activity: last 10 solves
     sb
       .from("solves")
       .select("user_id, pattern_name, created_at")
       .order("created_at", { ascending: false })
       .limit(10),
+
+    // All-time distinct solvers — for Total Users
+    sb.from("solves").select("user_id"),
+
+    // Distinct solvers in date range — for Active Users
+    sb
+      .from("solves")
+      .select("user_id")
+      .gte("created_at", daysAgo(days)),
   ])
 
-  // Active users: distinct solvers in the range
-  const { data: activeData } = await sb
-    .from("solves")
-    .select("user_id")
-    .gte("created_at", daysAgo(days))
-  const activeUsers = new Set((activeData || []).map((r) => r.user_id)).size
+  // Total users = distinct user_ids across all solves (all time)
+  const totalUsers = new Set(
+    (allSolversResult.data ?? []).map((r) => r.user_id)
+  ).size
 
-  // Compute values
-  const totalUsers = usersResult.count ?? 0
+  // Active users = distinct user_ids who solved in the selected range
+  const activeUsers = new Set(
+    (activeSolversResult.data ?? []).map((r) => r.user_id)
+  ).size
+
   const totalSolves = solvesCountResult.count ?? 0
   const paidUsers = paidResult.count ?? 0
   const conversionRate =
     totalUsers > 0 ? Math.round((paidUsers / totalUsers) * 100) : 0
 
-  const payments = revenueResult.data ?? []
-  const revenue = payments.reduce(
-    (sum, p) => sum + (typeof p.amount === "number" ? p.amount : 0),
+  // Revenue = sum of plan prices for all active subscriptions
+  const revenue = (subscriptionsResult.data ?? []).reduce(
+    (sum, s) => sum + (PLAN_PRICES[s.plan] ?? 0),
     0
   )
 
-  // Group growth by date
+  // Group solves by date for the growth chart
   const grouped: Record<string, number> = {}
   for (const s of growthResult.data ?? []) {
     const d = new Date(s.created_at).toISOString().split("T")[0]
@@ -107,11 +115,9 @@ export async function fetchAdminStats(days: number): Promise<AdminStats> {
     count,
   }))
 
-  // Recent activity
+  // Recent activity feed
   const recentActivity = (recentSolvesResult.data ?? []).map((r) => ({
-    email: r.user_id
-      ? `${r.user_id.slice(0, 8)}…`
-      : "anonymous",
+    email: r.user_id ? `${r.user_id.slice(0, 8)}…` : "anonymous",
     action: r.pattern_name ? `Solved: ${r.pattern_name}` : "Problem solved",
     timestamp: r.created_at,
   }))
@@ -125,7 +131,7 @@ export async function fetchAdminStats(days: number): Promise<AdminStats> {
     revenue,
     growthChart,
     featureUsage: {
-      hints: hintsResult.count ?? 0,
+      hints: totalSolves, // solves used as proxy for feature usage
       patternUnlocks: paidUsers,
     },
     recentActivity,
