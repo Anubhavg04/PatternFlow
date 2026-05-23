@@ -444,8 +444,8 @@ export default async function Dashboard({
                   
                   <div className="relative flex items-center justify-between mb-6 z-10">
                     <div className="flex items-center gap-2">
-                      <Zap size={18} className="text-amber-400 fill-amber-400" />
-                      <span className="font-mono text-xs font-black uppercase tracking-widest text-amber-400">Daily Challenge</span>
+                      <Zap size={18} className="text-amber-700 fill-amber-700 dark:text-amber-400 dark:fill-amber-400 transition-colors" />
+                      <span className="font-mono text-xs font-black uppercase tracking-widest text-amber-700 dark:text-amber-400 transition-colors">Daily Challenge</span>
                     </div>
                     <div className="flex items-center gap-1.5 rounded-full bg-card/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider">
                        <Clock size={12} />
