@@ -17,7 +17,6 @@ import {
   ChevronRight,
   ClipboardPaste,
   Clock,
-  Code2,
   Fingerprint,
   HelpCircle,
   Layers,
@@ -151,9 +150,9 @@ export default function Home() {
                       </div>
                     </div>
 <div className="mt-8">
-                    <h3 className="font-mono text-lg font-bold text-foreground transition-colors duration-500 group-hover:text-amber-600 dark:group-hover:text-amber-400">Think, don't memorize</h3>
+                    <h3 className="font-mono text-lg font-bold text-foreground transition-colors duration-500 group-hover:text-amber-600 dark:group-hover:text-amber-400">Think, don&apos;t memorize</h3>
                     <p className="mt-3 text-sm leading-relaxed text-muted-foreground transition-colors duration-500 group-hover:text-foreground/80">
-                      AI guides you to think — hints, Socratic questions, pattern reveal only when you're ready.
+                      AI guides you to think — hints, Socratic questions, pattern reveal only when you&apos;re ready.
                     </p>
                   </div>
                 </div>
