@@ -180,6 +180,31 @@ Respond ONLY with valid JSON, no markdown fences:
 
     // ── 4. Async Finalization (Parallel saves) ──
     try {
+      const updateStreak = async () => {
+        const { data: profile } = await sb.from("profiles").select("current_streak, last_solve_date").eq("user_id", userId).single()
+        if (profile) {
+          const todayStr = new Date().toISOString().split('T')[0]
+          const lastSolveStr = profile.last_solve_date ? new Date(profile.last_solve_date).toISOString().split('T')[0] : null
+          
+          if (lastSolveStr === todayStr) return // Already solved today
+          
+          let newStreak = 1
+          if (lastSolveStr) {
+            const yesterday = new Date()
+            yesterday.setDate(yesterday.getDate() - 1)
+            const yesterdayStr = yesterday.toISOString().split('T')[0]
+            if (lastSolveStr === yesterdayStr) {
+              newStreak = (profile.current_streak || 0) + 1
+            }
+          }
+          
+          await sb.from("profiles").update({ 
+            current_streak: newStreak, 
+            last_solve_date: new Date().toISOString() 
+          }).eq("user_id", userId)
+        }
+      }
+
       await Promise.all([
         sb.from("solves").insert({
           user_id: userId,
@@ -193,7 +218,9 @@ Respond ONLY with valid JSON, no markdown fences:
           ? sb.from("usage_log").insert({ user_id: userId, tokens_used: tokens }).then(res => { if (res.error) console.error("Usage logs error:", res.error) })
           : Promise.resolve(),
           
-        sb.from("problem_cache").insert({ problem_hash: problemHash, normalized_problem: normalized, result: result })
+        sb.from("problem_cache").insert({ problem_hash: problemHash, normalized_problem: normalized, result: result }),
+        
+        updateStreak().catch(e => console.error("Streak update error:", e))
       ])
     } catch (saveErr) {
       console.error("Background save failed (non-blocking):", saveErr);
