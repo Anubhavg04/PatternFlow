@@ -381,12 +381,20 @@ export default async function Dashboard({
                 <p className="font-mono text-2xl font-black text-[#1a1814]">{streak}d</p>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-[#a89f96]">Streak</p>
               </div>
-              <div className="group rounded-2xl border border-[#e8e2d9] bg-white p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5">
+              <div className="group flex flex-col justify-between rounded-2xl border border-[#e8e2d9] bg-white p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5 relative">
                 <Target size={16} className="mb-3 text-[#a89f96] group-hover:text-amber-500 transition-colors" />
-                <p className="font-mono text-2xl font-black text-[#1a1814]">
-                  {patternAnalysis.filter(p => p.mastery === "Mastered" || p.mastery === "Confident").length}
-                </p>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-[#a89f96]">Mastered</p>
+                <div>
+                  <p className="font-mono text-2xl font-black text-[#1a1814]">
+                    {patternAnalysis.filter(p => p.mastery === "Mastered" || p.mastery === "Confident").length}
+                  </p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#a89f96]">Mastered</p>
+                </div>
+                
+                {/* Tooltip */}
+                <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity bottom-full mb-2 left-1/2 -translate-x-1/2 bg-[#1a1814] text-white text-[10px] px-2 py-1 rounded pointer-events-none whitespace-nowrap z-10 font-mono">
+                  Requires 6+ solves per pattern
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#1a1814]"></div>
+                </div>
               </div>
             </div>
 
