@@ -95,6 +95,19 @@
 }
 
 .dark {
+  --bg: #09090b;
+  --bg-card: #18181b;
+  --bg-card-hover: #27272a;
+  --border: #27272a;
+  --border-hover: #3f3f46;
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --text-dim: #71717a;
+  --accent: #fafafa;
+  --accent-hover: #f4f4f5;
+  --green: #22c55e;
+  --mono-bg: #27272a;
+
   --background: var(--bg);
   --foreground: var(--text);
   --card: var(--bg-card);
@@ -102,19 +115,19 @@
   --popover: var(--bg-card);
   --popover-foreground: var(--text);
   --primary: var(--accent);
-  --primary-foreground: var(--bg);
+  --primary-foreground: #09090b;
   --secondary: var(--bg-card-hover);
   --secondary-foreground: var(--text);
   --muted: var(--bg-card-hover);
   --muted-foreground: var(--text-muted);
-  --accent-foreground: var(--bg);
-  --destructive: #ef4444;
+  --accent-foreground: #09090b;
+  --destructive: #7f1d1d;
   --input: var(--border);
   --ring: var(--accent-hover);
   --sidebar: var(--bg-card);
   --sidebar-foreground: var(--text);
   --sidebar-primary: var(--accent);
-  --sidebar-primary-foreground: var(--bg);
+  --sidebar-primary-foreground: #09090b;
   --sidebar-accent: var(--bg-card-hover);
   --sidebar-accent-foreground: var(--text);
   --sidebar-border: var(--border);

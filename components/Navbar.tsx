@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useState } from "react"
 import { usePathname } from "next/navigation"
+import { ModeToggle } from "@/components/mode-toggle"
 
 export function Navbar() {
   const pathname = usePathname()
@@ -16,59 +17,63 @@ export function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 pt-4 px-4 pointer-events-none">
       <nav className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between pointer-events-auto">
-        <Link href="/" className="flex items-center gap-2 rounded-full bg-white/50 px-3 py-2 backdrop-blur-sm transition-colors hover:bg-white/80">
-          <Code2 className="h-5 w-5 text-[#1a1814]" />
-          <span className="text-[17px] font-bold text-[#1a1814] tracking-tight">PatternFlow</span>
+        <Link href="/" className="flex items-center gap-2 rounded-full bg-background/50 px-3 py-2 backdrop-blur-sm transition-colors hover:bg-background/80">
+          <Code2 className="h-5 w-5 text-foreground" />
+          <span className="text-[17px] font-bold text-foreground tracking-tight">PatternFlow</span>
         </Link>
 
         {/* Desktop Links (Floating Pill) */}
-        <div className="hidden items-center gap-1 rounded-full border border-[#e8e2d9]/60 bg-white/80 p-1 shadow-sm backdrop-blur-md md:flex">
+        <div className="hidden items-center gap-1 rounded-full border border-border/60 bg-background/80 p-1 shadow-sm backdrop-blur-md md:flex">
           <a
             href="/#how-it-works"
-            className="rounded-full px-4 py-1.5 font-mono text-sm font-medium text-[#6b6560] transition hover:bg-[#f0ede6] hover:text-[#1a1814]"
+            className="rounded-full px-4 py-1.5 font-mono text-sm font-medium text-muted-foreground transition hover:bg-accent hover:text-foreground"
           >
             How it works
           </a>
           <Link
             href="/patterns"
             className={`rounded-full px-4 py-1.5 font-mono text-sm font-medium transition ${pathname === "/patterns"
-              ? "bg-[#1a1814] text-white shadow-sm"
-              : "text-[#6b6560] hover:bg-[#f0ede6] hover:text-[#1a1814]"
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "text-muted-foreground hover:bg-accent hover:text-foreground"
               }`}
           >
             Patterns
           </Link>
           <a
             href="/#pricing"
-            className="rounded-full px-4 py-1.5 font-mono text-sm font-medium text-[#6b6560] transition hover:bg-[#f0ede6] hover:text-[#1a1814]"
+            className="rounded-full px-4 py-1.5 font-mono text-sm font-medium text-muted-foreground transition hover:bg-accent hover:text-foreground"
           >
             Pricing
           </a>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center gap-3">
             {clerkEnabled ? <ClerkAuthButtons /> : <FallbackAuthButtons />}
+            <ModeToggle />
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white/80 text-[#1a1814] shadow-sm backdrop-blur-md hover:bg-white md:hidden"
-          >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          <div className="flex items-center gap-2 md:hidden">
+            <ModeToggle />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-background/80 text-foreground shadow-sm backdrop-blur-md hover:bg-background border border-border/60"
+            >
+              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
         </div>
       </nav>
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="pointer-events-auto mt-2 mx-4 rounded-2xl border border-[#e8e2d9] bg-[#faf8f3]/95 p-6 shadow-xl backdrop-blur-md animate-in slide-in-from-top-2 md:hidden">
+        <div className="pointer-events-auto mt-2 mx-4 rounded-2xl border border-border bg-background/95 p-6 shadow-xl backdrop-blur-md animate-in slide-in-from-top-2 md:hidden">
           <div className="flex flex-col gap-5">
             <a
               href="/#how-it-works"
               onClick={() => setMobileMenuOpen(false)}
-              className="rounded-xl px-3 py-2 font-mono text-sm font-medium text-[#6b6560] hover:bg-[#f0ede6] hover:text-[#1a1814]"
+              className="rounded-xl px-3 py-2 font-mono text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground"
             >
               How it works
             </a>
@@ -76,8 +81,8 @@ export function Navbar() {
               href="/patterns"
               onClick={() => setMobileMenuOpen(false)}
               className={`rounded-xl px-3 py-2 font-mono text-sm font-medium transition ${pathname === "/patterns"
-                ? "bg-[#1a1814]/5 text-[#1a1814]"
-                : "text-[#6b6560] hover:bg-[#f0ede6] hover:text-[#1a1814]"
+                ? "bg-primary/5 text-primary"
+                : "text-muted-foreground hover:bg-accent hover:text-foreground"
                 }`}
             >
               Patterns
@@ -85,11 +90,11 @@ export function Navbar() {
             <a
               href="/#pricing"
               onClick={() => setMobileMenuOpen(false)}
-              className="rounded-xl px-3 py-2 font-mono text-sm font-medium text-[#6b6560] hover:bg-[#f0ede6] hover:text-[#1a1814]"
+              className="rounded-xl px-3 py-2 font-mono text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground"
             >
               Pricing
             </a>
-            <Separator className="bg-[#e8e2d9]" />
+            <Separator className="bg-border" />
             <div className="flex flex-col gap-3">
               {clerkEnabled ? (
                 <ClerkAuthButtons mobile onAction={() => setMobileMenuOpen(false)} />
@@ -115,8 +120,8 @@ function ClerkAuthButtons({ mobile, onAction }: { mobile?: boolean; onAction?: (
           href="/dashboard"
           onClick={onAction}
           className={`flex items-center gap-1.5 rounded-full px-4 py-2 font-mono text-sm font-medium transition ${pathname === "/dashboard"
-            ? "bg-[#1a1814] text-white shadow-sm"
-            : "bg-white/80 text-[#6b6560] shadow-sm backdrop-blur-md hover:bg-white hover:text-[#1a1814]"
+            ? "bg-primary text-primary-foreground shadow-sm"
+            : "bg-background/80 text-muted-foreground shadow-sm backdrop-blur-md hover:bg-background hover:text-foreground border border-border/60"
             } ${!mobile && "hidden md:flex"}`}
         >
           <LayoutDashboard size={14} />
@@ -126,14 +131,14 @@ function ClerkAuthButtons({ mobile, onAction }: { mobile?: boolean; onAction?: (
           href="/solve"
           onClick={onAction}
           className={`flex items-center gap-1.5 rounded-full px-4 py-2 font-mono text-sm font-medium transition ${pathname === "/solve"
-            ? "bg-[#1a1814] text-white shadow-sm"
-            : "bg-white/80 text-[#6b6560] shadow-sm backdrop-blur-md hover:bg-white hover:text-[#1a1814]"
+            ? "bg-primary text-primary-foreground shadow-sm"
+            : "bg-background/80 text-muted-foreground shadow-sm backdrop-blur-md hover:bg-background hover:text-foreground border border-border/60"
             } ${!mobile && "hidden md:inline-flex"}`}
         >
           Solve
         </Link>
         {!mobile && (
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/80 shadow-sm backdrop-blur-md hover:bg-white">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-background/80 shadow-sm backdrop-blur-md hover:bg-background border border-border/60">
             <UserButton afterSignOutUrl="/" />
           </div>
         )}
@@ -145,12 +150,12 @@ function ClerkAuthButtons({ mobile, onAction }: { mobile?: boolean; onAction?: (
   return (
     <div className={`flex items-center gap-2 ${mobile ? "flex-col items-stretch" : ""}`}>
       <SignInButton mode="modal">
-        <Button variant="ghost" size="sm" className="rounded-full px-4 text-sm font-medium text-[#6b6560] hover:bg-white hover:text-[#1a1814]">
+        <Button variant="ghost" size="sm" className="rounded-full px-4 text-sm font-medium text-muted-foreground hover:bg-background hover:text-foreground">
           Sign in
         </Button>
       </SignInButton>
       <SignUpButton mode="modal">
-        <Button size="sm" className="rounded-full bg-[#1a1814] px-5 text-sm font-medium text-[#faf8f3] shadow-md hover:bg-[#2d2926]">
+        <Button size="sm" className="rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground shadow-md hover:bg-primary/90">
           Launch App
         </Button>
       </SignUpButton>
@@ -161,10 +166,10 @@ function ClerkAuthButtons({ mobile, onAction }: { mobile?: boolean; onAction?: (
 function FallbackAuthButtons() {
   return (
     <div className="flex items-center gap-2">
-      <Button variant="ghost" size="sm" className="rounded-full px-4 text-sm font-medium text-[#6b6560] hover:bg-white hover:text-[#1a1814]">
+      <Button variant="ghost" size="sm" className="rounded-full px-4 text-sm font-medium text-muted-foreground hover:bg-background hover:text-foreground">
         Sign in
       </Button>
-      <Button size="sm" className="rounded-full bg-[#1a1814] px-5 text-sm font-medium text-[#faf8f3] shadow-md hover:bg-[#2d2926]">
+      <Button size="sm" className="rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground shadow-md hover:bg-primary/90">
         Launch App
       </Button>
     </div>
