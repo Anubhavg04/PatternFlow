@@ -81,7 +81,7 @@ export async function POST(req: Request) {
 
       // 2. Send Welcome Email via Resend
       const { error: emailError } = await resend.emails.send({
-        from: 'PatternFlow <onboarding@resend.dev>', // Change this once domain is verified
+        from: 'PatternFlow <anubhav@patternflowdsa.in>',
         to: [email],
         subject: 'Welcome to PatternFlow! Let\'s master DSA',
         html: `

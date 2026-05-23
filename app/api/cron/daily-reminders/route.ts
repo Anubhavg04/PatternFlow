@@ -36,7 +36,7 @@ export async function GET(request: Request) {
 
     // Send emails
     const emails = users.map((user) => ({
-      from: "PatternFlow <onboarding@resend.dev>", // Replace with your verified domain
+      from: "PatternFlow <anubhav@patternflowdsa.in>",
       to: [user.email],
       subject: `🔥 You're on a ${user.current_streak}-day streak!`,
       html: `
