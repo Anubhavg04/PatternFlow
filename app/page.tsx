@@ -142,7 +142,9 @@ export default function Home() {
 
           <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
-            <div className="group rounded-xl border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-sm">
+            <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
+  <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+  <div className="relative h-full w-full rounded-xl bg-card p-6">
               <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
                 <Brain className="h-5 w-5 text-primary-foreground" />
               </div>
@@ -151,8 +153,11 @@ export default function Home() {
                 Before any hints, you get a Socratic question designed to push you toward the right thinking direction.
               </p>
             </div>
+              </div>
 
-            <div className="group rounded-xl border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-sm">
+            <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
+  <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+  <div className="relative h-full w-full rounded-xl bg-card p-6">
               <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
                 <Fingerprint className="h-5 w-5 text-primary-foreground" />
               </div>
@@ -161,8 +166,11 @@ export default function Home() {
                 AI identifies the core algorithm pattern — Sliding Window, Two Pointers, BFS, DP, and 15+ more.
               </p>
             </div>
+              </div>
 
-            <div className="group rounded-xl border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-sm">
+            <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
+  <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+  <div className="relative h-full w-full rounded-xl bg-card p-6">
               <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
                 <Lightbulb className="h-5 w-5 text-primary-foreground" />
               </div>
@@ -171,8 +179,11 @@ export default function Home() {
                 Three-level hint system. Reveal one at a time — only when you&apos;re truly stuck. No spoilers.
               </p>
             </div>
+              </div>
 
-            <div className="group rounded-xl border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-sm">
+            <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
+  <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+  <div className="relative h-full w-full rounded-xl bg-card p-6">
               <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
                 <Target className="h-5 w-5 text-primary-foreground" />
               </div>
@@ -181,8 +192,11 @@ export default function Home() {
                 A memorable one-liner that anchors the pattern in your brain. Recall it during interviews instantly.
               </p>
             </div>
+              </div>
 
-            <div className="group rounded-xl border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-sm">
+            <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
+  <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+  <div className="relative h-full w-full rounded-xl bg-card p-6">
               <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
                 <Layers className="h-5 w-5 text-primary-foreground" />
               </div>
@@ -191,8 +205,11 @@ export default function Home() {
                 Get 3 related problems to reinforce the pattern. Click-to-solve for paid users — instant practice.
               </p>
             </div>
+              </div>
 
-            <div className="group rounded-xl border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-sm">
+            <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
+  <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+  <div className="relative h-full w-full rounded-xl bg-card p-6">
               <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
                 <HelpCircle className="h-5 w-5 text-primary-foreground" />
               </div>
@@ -201,6 +218,7 @@ export default function Home() {
                 Test your understanding before seeing the full approach. Explains your reasoning like an interviewer.
               </p>
             </div>
+              </div>
 
           </div>
         </div>
