@@ -436,10 +436,13 @@ export default async function Dashboard({
               {dailyChallenge ? (
                 <div className="group relative flex flex-col overflow-hidden rounded-[2rem] border-2 border-amber-100/50 bg-gradient-to-b from-amber-50/50 to-white p-8 text-foreground shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all hover:scale-[1.01] hover:shadow-[0_8px_30px_rgb(245,158,11,0.08)] dark:border-border dark:bg-card dark:bg-none dark:shadow-xl dark:hover:shadow-[0_0_30px_rgba(245,158,11,0.05)]">
                   {/* Frosted Chocolate Geometric Corner Accents */}
-                  <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-amber-900/10 backdrop-blur-3xl transition-transform duration-500 group-hover:scale-110 dark:bg-amber-900/20" />
-                  <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-amber-900/20 backdrop-blur-2xl transition-transform delay-75 duration-500 group-hover:scale-125 dark:bg-amber-900/40" />
+                  <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-amber-900/10 backdrop-blur-3xl transition-transform duration-500 group-hover:scale-110 dark:bg-amber-900/20" />
+                  <div className="pointer-events-none absolute -right-4 -top-4 h-16 w-16 rounded-full bg-amber-900/20 backdrop-blur-2xl transition-transform delay-75 duration-500 group-hover:scale-125 dark:bg-amber-900/40" />
                   
-                  <div className="relative flex items-center justify-between mb-6">
+                  <div className="pointer-events-none absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-amber-900/10 backdrop-blur-3xl transition-transform duration-500 group-hover:scale-110 dark:bg-amber-900/20" />
+                  <div className="pointer-events-none absolute -bottom-4 -left-4 h-16 w-16 rounded-full bg-amber-900/20 backdrop-blur-2xl transition-transform delay-75 duration-500 group-hover:scale-125 dark:bg-amber-900/40" />
+                  
+                  <div className="relative flex items-center justify-between mb-6 z-10">
                     <div className="flex items-center gap-2">
                       <Zap size={18} className="text-amber-400 fill-amber-400" />
                       <span className="font-mono text-xs font-black uppercase tracking-widest text-amber-400">Daily Challenge</span>
@@ -449,7 +452,7 @@ export default async function Dashboard({
                        <span>~15 min</span>
                     </div>
                   </div>
-                  <div className="mb-8">
+                  <div className="mb-8 relative z-10">
                     <h3 className="text-2xl font-black mb-2 leading-tight">{dailyChallenge.patternName}</h3>
                     <p className="text-sm leading-relaxed text-muted-foreground">
                       Paste any <span className="font-bold text-foreground">{dailyChallenge.patternName}</span> problem from LeetCode, GFG, or any platform. This is your weakest pattern — solving one will level up your mastery.
@@ -457,7 +460,7 @@ export default async function Dashboard({
                   </div>
                   <Link
                     href="/solve"
-                    className="mt-auto flex w-full items-center justify-center gap-3 rounded-2xl bg-[#f8f6f0] py-4 font-mono text-base font-black text-foreground shadow-sm transition-all hover:scale-[1.02] hover:bg-amber-100/50 active:scale-95 dark:bg-background dark:shadow-[0_10px_30px_rgba(250,248,243,0.1)] dark:hover:bg-card"
+                    className="relative z-10 mt-auto flex w-full items-center justify-center gap-3 rounded-2xl bg-[#f8f6f0] py-4 font-mono text-base font-black text-foreground shadow-sm transition-all hover:scale-[1.02] hover:bg-amber-100/50 active:scale-95 dark:bg-background dark:shadow-[0_10px_30px_rgba(250,248,243,0.1)] dark:hover:bg-card"
                   >
                     Start Challenge <ArrowRight size={18} />
                   </Link>
