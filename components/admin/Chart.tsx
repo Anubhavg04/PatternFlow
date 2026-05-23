@@ -18,7 +18,7 @@ type ChartProps = {
 function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null
   return (
-    <div className="rounded-lg border border-border bg-white px-3 py-2 shadow-md">
+    <div className="rounded-lg border border-border bg-card px-3 py-2 shadow-md">
       <p className="font-mono text-[10px] text-muted-foreground/70">{label}</p>
       <p className="font-mono text-sm font-bold text-foreground">
         {payload[0].value} solve{payload[0].value !== 1 ? "s" : ""}

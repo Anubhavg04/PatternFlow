@@ -69,7 +69,7 @@ export default function PatternsPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search patterns or keywords..."
-              className="w-full rounded-xl border border-border bg-white px-4 py-3 pl-11 font-mono text-sm text-foreground outline-none placeholder:text-muted-foreground/70 focus:border-primary focus:ring-1 focus:ring-[#1a1814]"
+              className="w-full rounded-xl border border-border bg-card px-4 py-3 pl-11 font-mono text-sm text-foreground outline-none placeholder:text-muted-foreground/70 focus:border-primary focus:ring-1 focus:ring-[#1a1814]"
             />
           </div>
           <div className="flex flex-wrap gap-2">
@@ -80,7 +80,7 @@ export default function PatternsPage() {
                 className={`rounded-full border px-3 py-1.5 font-mono text-xs transition-all ${
                   filter === cat
                     ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border bg-white text-muted-foreground hover:border-primary"
+                    : "border-border bg-card text-muted-foreground hover:border-primary"
                 }`}
               >
                 {cat}
@@ -144,7 +144,7 @@ const PatternCard = memo(({
   const Icon = CATEGORY_ICONS[pattern.category] || Box
 
   return (
-    <div className="rounded-xl border border-border bg-white transition-all hover:border-border/80">
+    <div className="rounded-xl border border-border bg-card transition-all hover:border-border/80">
       {/* Header — always visible */}
       <button
         onClick={onToggle}

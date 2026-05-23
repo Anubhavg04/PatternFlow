@@ -28,7 +28,7 @@ export function StatsCard({ icon: Icon, value, label, trend }: StatsCardProps) {
       : Minus
 
   return (
-    <div className="rounded-xl border border-border bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
+    <div className="rounded-xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md">
       {/* Icon chip */}
       <div className="mb-4 inline-flex rounded-lg bg-secondary p-2">
         <Icon size={15} className="text-muted-foreground" />

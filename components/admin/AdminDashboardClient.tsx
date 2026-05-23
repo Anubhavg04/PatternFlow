@@ -122,7 +122,7 @@ export function AdminDashboardClient({ initialStats, initialRange, fetchStats }:
       </div>
 
       {/* ── Section 2: Revenue Banner + Chart ── */}
-      <div id="growth" className="mb-8 rounded-xl border border-border bg-white shadow-sm overflow-hidden">
+      <div id="growth" className="mb-8 rounded-xl border border-border bg-card shadow-sm overflow-hidden">
         {/* Revenue header — Stripe-style */}
         <div className="flex flex-col gap-4 border-b border-[#f0ede6] px-4 py-5 sm:flex-row sm:items-start sm:justify-between sm:px-6">
           <div>
@@ -161,7 +161,7 @@ export function AdminDashboardClient({ initialStats, initialRange, fetchStats }:
 
       {/* ── Section 3: Funnel + Insights ── */}
       <div id="funnel" className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
           <p className="mb-1 font-mono text-xs text-muted-foreground/70">{"// funnel"}</p>
           <p className="mb-5 text-sm font-medium text-foreground">Conversion steps</p>
           <Funnel
@@ -171,7 +171,7 @@ export function AdminDashboardClient({ initialStats, initialRange, fetchStats }:
           />
         </div>
 
-        <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
           <p className="mb-1 font-mono text-xs text-muted-foreground/70">{"// insights"}</p>
           <p className="mb-5 text-sm font-medium text-foreground">Smart observations</p>
           <InsightsPanel stats={stats} days={days} />
@@ -179,7 +179,7 @@ export function AdminDashboardClient({ initialStats, initialRange, fetchStats }:
       </div>
 
       {/* ── Section 4: Feature Usage ── */}
-      <div id="features" className="rounded-xl border border-border bg-white p-6 shadow-sm">
+      <div id="features" className="rounded-xl border border-border bg-card p-6 shadow-sm">
         <p className="mb-1 font-mono text-xs text-muted-foreground/70">{"// features"}</p>
         <p className="mb-6 text-sm font-medium text-foreground">What users rely on most</p>
         <div className="space-y-5">

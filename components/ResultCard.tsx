@@ -131,7 +131,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
   }
 
   const timerColor = timeLeft < 60 ? "text-red-500" : timeLeft < 180 ? "text-amber-600" : "text-foreground"
-  const timerBorder = timeLeft < 60 ? "border-red-200 bg-red-50" : timeLeft < 180 ? "border-amber-200 bg-amber-50" : "border-border bg-white"
+  const timerBorder = timeLeft < 60 ? "border-red-200 bg-red-50" : timeLeft < 180 ? "border-amber-200 bg-amber-50" : "border-border bg-card"
 
   return (
     <>
@@ -162,7 +162,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
       <section className="mt-10 space-y-5">
 
         {/* Problem Summary */}
-        <div className="rounded-xl border border-border bg-white p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className={headerClass}>
             <HelpCircle size={16} className="text-muted-foreground/70" />
             <span className={labelClass}>{"// problem understood"}</span>
@@ -191,7 +191,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         </div>
 
         {/* Progressive Hints */}
-        <div className="rounded-xl border border-border bg-white p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className={headerClass}>
             <Lightbulb size={16} className="text-muted-foreground/70" />
             <span className={labelClass}>{"// hints (reveal one at a time)"}</span>
@@ -294,7 +294,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                         value={userAnswer}
                         onChange={(e) => setUserAnswer(e.target.value)}
                         placeholder="Write your answer here... (2-3 sentences is enough)"
-                        className="w-full min-h-[80px] bg-white border border-border rounded-lg p-3 text-sm font-mono text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary resize-none mb-3"
+                        className="w-full min-h-[80px] bg-card border border-border rounded-lg p-3 text-sm font-mono text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary resize-none mb-3"
                       />
                       <Button
                         className="w-full bg-primary text-primary-foreground hover:bg-primary/90 text-sm"
@@ -369,7 +369,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
 
         {/* Pattern Reveal */}
         {showPattern && (
-          <div className="rounded-xl border border-border bg-white p-6">
+          <div className="rounded-xl border border-border bg-card p-6">
             <div className={headerClass}>
               <Brain size={16} className="text-muted-foreground/70" />
               <span className={labelClass}>{"// pattern"}</span>
@@ -409,7 +409,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
 
         {/* Thinking Steps */}
         {showApproach && (
-          <div className="rounded-xl border border-border bg-white p-6">
+          <div className="rounded-xl border border-border bg-card p-6">
             <div className={headerClass}>
               <BookOpen size={16} className="text-muted-foreground/70" />
               <span className={labelClass}>{"// how to think through this"}</span>
@@ -431,7 +431,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         )}
 
         {/* Memory Hook */}
-        <div className="rounded-xl border border-border bg-white p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className={headerClass}>
             <Target size={16} className="text-muted-foreground/70" />
             <span className={labelClass}>{"// memory hook"}</span>
@@ -457,7 +457,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         </div>
 
         {/* Interview Recognition */}
-        <div className="rounded-xl border border-border bg-white p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className={headerClass}>
             <GraduationCap size={16} className="text-muted-foreground/70" />
             <span className={labelClass}>{"// spot this in interviews"}</span>
@@ -487,7 +487,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         </div>
 
         {/* Missing Concepts */}
-        <div className="rounded-xl border border-border bg-white p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className={headerClass}>
             <HelpCircle size={16} className="text-muted-foreground/70" />
             <span className={labelClass}>{"// concepts you need to know first"}</span>
@@ -531,7 +531,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         </div>
 
         {/* Similar Problems */}
-        <div className="rounded-xl border border-border bg-white p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className={headerClass}>
             <Layers size={16} className="text-muted-foreground/70" />
             <span className={labelClass}>{"// practice these next"}</span>
@@ -548,7 +548,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                   )
                 }}
                 className={`group rounded-lg border border-border bg-background p-3 text-left transition-all
-                  ${isPaid ? "hover:border-primary hover:bg-white cursor-pointer" : "cursor-default opacity-70"}`}
+                  ${isPaid ? "hover:border-primary hover:bg-card cursor-pointer" : "cursor-default opacity-70"}`}
               >
                 <p className="text-sm font-medium text-foreground">{p.name}</p>
                 <div className="mt-1 flex items-center gap-2 mb-2">
@@ -579,7 +579,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         </div>
 
         {/* Pattern Flashcards — Pro only */}
-        <div className="rounded-xl border border-border bg-white p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className={headerClass}>
             <Lightbulb size={16} className="text-muted-foreground/70" />
             <span className={labelClass}>{"// memorize this pattern"}</span>
@@ -658,7 +658,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         </div>
 
         {/* Interview Mode — Basic+ */}
-        <div className="rounded-xl border border-border bg-white p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className={headerClass}>
             <Eye size={16} className="text-muted-foreground/70" />
             <span className={labelClass}>{"// practice under pressure"}</span>

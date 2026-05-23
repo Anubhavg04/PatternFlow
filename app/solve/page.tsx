@@ -190,7 +190,7 @@ export default function SolvePage() {
           </p>
           <Badge
             variant="outline"
-            className="border-border bg-white font-mono text-xs text-muted-foreground hover:bg-white"
+            className="border-border bg-card font-mono text-xs text-muted-foreground hover:bg-card"
           >
             <Brain size={14} className="mr-2 text-muted-foreground/70" />
             Pattern detection + memory hooks
@@ -234,7 +234,7 @@ export default function SolvePage() {
           ref={textAreaRef}
           value={problem}
           onChange={(event) => setProblem(event.target.value)}
-          className="min-h-[200px] w-full resize-none rounded-xl border border-border bg-white p-4 font-mono text-sm leading-relaxed text-foreground outline-none transition-all placeholder:text-muted-foreground/70 focus:border-primary focus:ring-1 focus:ring-[#1a1814]"
+          className="min-h-[200px] w-full resize-none rounded-xl border border-border bg-card p-4 font-mono text-sm leading-relaxed text-foreground outline-none transition-all placeholder:text-muted-foreground/70 focus:border-primary focus:ring-1 focus:ring-[#1a1814]"
           placeholder="Paste any DSA problem here..."
         />
 
@@ -243,7 +243,7 @@ export default function SolvePage() {
             <button
               key={label}
               onClick={() => setProblem(EXAMPLE_PROBLEMS[label as keyof typeof EXAMPLE_PROBLEMS].content)}
-              className="rounded-full border border-border bg-white px-3 py-1.5 font-mono text-xs text-muted-foreground transition-all hover:border-primary hover:text-foreground"
+              className="rounded-full border border-border bg-card px-3 py-1.5 font-mono text-xs text-muted-foreground transition-all hover:border-primary hover:text-foreground"
             >
               {label}
             </button>
@@ -269,7 +269,7 @@ export default function SolvePage() {
               variant="outline"
               onClick={handleCopy}
               disabled={!problem.trim() || loading}
-              className="border-border bg-white px-3 font-mono text-muted-foreground hover:border-primary hover:text-foreground"
+              className="border-border bg-card px-3 font-mono text-muted-foreground hover:border-primary hover:text-foreground"
             >
               {copied ? <CheckCircle2 size={14} /> : <Copy size={14} />}
             </Button>
@@ -278,7 +278,7 @@ export default function SolvePage() {
               variant="outline"
               onClick={handleReset}
               disabled={loading}
-              className="border-border bg-white px-3 font-mono text-muted-foreground hover:border-primary hover:text-foreground"
+              className="border-border bg-card px-3 font-mono text-muted-foreground hover:border-primary hover:text-foreground"
             >
               <RotateCcw size={14} />
             </Button>
@@ -313,7 +313,7 @@ export default function SolvePage() {
                   <div className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
                   <div className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
                   <div className="h-2.5 w-2.5 rounded-full bg-[#27c93f]" />
-                  <span className="ml-2 text-[10px] uppercase tracking-[0.2em] text-white/30">patternflow-engine.log</span>
+                  <span className="ml-2 text-[10px] uppercase tracking-[0.2em] text-card-foreground/30">patternflow-engine.log</span>
                 </div>
                 
                 <div className="space-y-1.5">

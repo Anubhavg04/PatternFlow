@@ -35,7 +35,7 @@ const navSections = [
 
 export function AdminSidebar() {
   return (
-    <aside className="fixed inset-y-0 left-0 z-50 hidden w-56 flex-col border-r border-border bg-white lg:flex">
+    <aside className="fixed inset-y-0 left-0 z-50 hidden w-56 flex-col border-r border-border bg-card lg:flex">
       {/* Brand */}
       <div className="flex h-16 flex-shrink-0 items-center gap-2.5 border-b border-border px-5">
         <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">

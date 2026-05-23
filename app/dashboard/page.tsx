@@ -307,7 +307,7 @@ export default async function Dashboard({
             </div>
             <Link
               href="/#pricing"
-              className="flex items-center gap-1 rounded-lg bg-amber-600 px-3 py-2 font-mono text-xs text-white hover:bg-amber-700 transition-colors"
+              className="flex items-center gap-1 rounded-lg bg-amber-600 px-3 py-2 font-mono text-xs text-card-foreground hover:bg-amber-700 transition-colors"
             >
               Renew <ChevronRight size={12} />
             </Link>
@@ -324,7 +324,7 @@ export default async function Dashboard({
 
           <div className="relative flex flex-col items-start justify-between gap-5 md:flex-row md:items-center">
             <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-2.5 py-0.5 backdrop-blur-md border border-white/5">
+              <div className="inline-flex items-center gap-2 rounded-full bg-card/10 px-2.5 py-0.5 backdrop-blur-md border border-white/5">
                 <TrendingUp size={12} className="text-amber-400" />
                 <span className="font-mono text-[8px] font-black uppercase tracking-widest text-amber-400">{streak} Day Streak</span>
               </div>
@@ -361,7 +361,7 @@ export default async function Dashboard({
 
             {/* Stats Grid */}
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <div className="group rounded-2xl border border-border bg-white p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5">
+              <div className="group rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5">
                 <div className="flex items-center justify-between mb-3">
                   <BookOpen size={16} className="text-muted-foreground/70 group-hover:text-amber-500 transition-colors" />
                   {solvedToday > 0 && (
@@ -371,17 +371,17 @@ export default async function Dashboard({
                 <p className="font-mono text-2xl font-black text-foreground">{totalSolves}</p>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">Solved</p>
               </div>
-              <div className="group rounded-2xl border border-border bg-white p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5">
+              <div className="group rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5">
                 <Brain size={16} className="mb-3 text-muted-foreground/70 group-hover:text-amber-500 transition-colors" />
                 <p className="font-mono text-2xl font-black text-foreground">{uniquePatterns}</p>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">Patterns</p>
               </div>
-              <div className={`group rounded-2xl border-2 p-5 shadow-sm transition-all hover:shadow-[0_0_20px_rgba(245,158,11,0.1)] hover:-translate-y-0.5 ${streak > 0 ? "border-amber-200 bg-amber-50/20" : "border-border bg-white hover:border-amber-200"}`}>
+              <div className={`group rounded-2xl border-2 p-5 shadow-sm transition-all hover:shadow-[0_0_20px_rgba(245,158,11,0.1)] hover:-translate-y-0.5 ${streak > 0 ? "border-amber-200 bg-amber-50/20" : "border-border bg-card hover:border-amber-200"}`}>
                 <TrendingUp size={16} className={`mb-3 ${streak > 0 ? "text-amber-500" : "text-muted-foreground/70 group-hover:text-amber-500 transition-colors"}`} />
                 <p className="font-mono text-2xl font-black text-foreground">{streak}d</p>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">Streak</p>
               </div>
-              <div className="group rounded-2xl border border-border bg-white p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5">
+              <div className="group rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5">
                 <Target size={16} className="mb-3 text-muted-foreground/70 group-hover:text-amber-500 transition-colors" />
                 <p className="font-mono text-2xl font-black text-foreground">
                   {patternAnalysis.filter(p => p.mastery === "Mastered" || p.mastery === "Confident").length}
@@ -405,7 +405,7 @@ export default async function Dashboard({
                       <Link
                         key={p.name}
                         href={`/patterns`}
-                        className="group relative flex items-center justify-between overflow-hidden rounded-2xl border border-border bg-white p-5 transition-all hover:border-primary hover:shadow-md"
+                        className="group relative flex items-center justify-between overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-primary hover:shadow-md"
                       >
                         <div className="absolute left-0 top-0 h-full w-1 bg-amber-400 opacity-0 transition-opacity group-hover:opacity-100" />
                         <div className="flex-1 min-w-0 pr-4">
@@ -426,7 +426,7 @@ export default async function Dashboard({
                       </Link>
                     ))
                   ) : (
-                    <div className="rounded-2xl border border-dashed border-border p-8 text-center bg-white/50">
+                    <div className="rounded-2xl border border-dashed border-border p-8 text-center bg-card/50">
                       <p className="text-xs font-medium text-muted-foreground/70">Mastery achieved! Pick a new concept. 🎉</p>
                     </div>
                   )}
@@ -441,7 +441,7 @@ export default async function Dashboard({
                       <Zap size={18} className="text-amber-400 fill-amber-400" />
                       <span className="font-mono text-xs font-black uppercase tracking-widest text-amber-400">Daily Challenge</span>
                     </div>
-                    <div className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider">
+                    <div className="flex items-center gap-1.5 rounded-full bg-card/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider">
                        <Clock size={12} />
                        <span>~15 min</span>
                     </div>
@@ -454,13 +454,13 @@ export default async function Dashboard({
                   </div>
                   <Link
                     href="/solve"
-                    className="mt-auto flex w-full items-center justify-center gap-3 rounded-2xl bg-background py-4 font-mono text-base font-black text-foreground transition-all hover:bg-white hover:scale-[1.02] active:scale-95 shadow-[0_10px_30px_rgba(250,248,243,0.1)]"
+                    className="mt-auto flex w-full items-center justify-center gap-3 rounded-2xl bg-background py-4 font-mono text-base font-black text-foreground transition-all hover:bg-card hover:scale-[1.02] active:scale-95 shadow-[0_10px_30px_rgba(250,248,243,0.1)]"
                   >
                     Start Challenge <ArrowRight size={18} />
                   </Link>
                 </div>
               ) : (
-                <div className="rounded-2xl border border-border bg-white p-6 flex items-center justify-center">
+                <div className="rounded-2xl border border-border bg-card p-6 flex items-center justify-center">
                   <p className="text-xs font-medium text-muted-foreground/70">Check back tomorrow for your next goal!</p>
                 </div>
               )}
@@ -478,7 +478,7 @@ export default async function Dashboard({
               </div>
 
               {solves.length === 0 ? (
-                <div className="rounded-2xl border-2 border-dashed border-border bg-white p-10 text-center shadow-sm">
+                <div className="rounded-2xl border-2 border-dashed border-border bg-card p-10 text-center shadow-sm">
                   {plan === "free" ? (
                     <div className="space-y-4">
                       <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-50 transition-transform group-hover:scale-110">
@@ -512,7 +512,7 @@ export default async function Dashboard({
                   {solves.slice(0, 6).map((solve) => (
                     <div
                       key={solve.id}
-                      className="group flex items-start justify-between rounded-xl border border-border bg-white p-3 transition-all hover:border-border/80 hover:shadow-sm"
+                      className="group flex items-start justify-between rounded-xl border border-border bg-card p-3 transition-all hover:border-border/80 hover:shadow-sm"
                     >
                       <div className="mr-3 min-w-0 flex-1">
                         <div className="flex items-center gap-2 mb-1">
@@ -539,7 +539,7 @@ export default async function Dashboard({
           <div className="space-y-8">
 
             {/* Readiness Score */}
-            <div className="group rounded-3xl border-2 border-border bg-white p-6 shadow-sm transition-all hover:border-primary">
+            <div className="group rounded-3xl border-2 border-border bg-card p-6 shadow-sm transition-all hover:border-primary">
               <div className="mb-6 flex items-center justify-between">
                 <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground/70">Readiness Score</h2>
                 <div className="group/info relative">
@@ -581,7 +581,7 @@ export default async function Dashboard({
             </div>
 
             {/* Pattern Mastery (Simplified) */}
-            <div className="rounded-2xl border border-border bg-white p-5 shadow-sm">
+            <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
               <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground/70 mb-4">Pattern Mastery</h2>
               <div className="space-y-3">
                 {sortedPatterns.filter(p => p.count > 0).slice(0, 5).map((p) => {
@@ -605,7 +605,7 @@ export default async function Dashboard({
             </div>
 
               {plan === "free" && (
-              <div className="group relative overflow-hidden rounded-2xl bg-white border-2 border-amber-100 p-6 shadow-md transition-all hover:shadow-[0_10px_40px_rgba(245,158,11,0.15)] hover:border-amber-300">
+              <div className="group relative overflow-hidden rounded-2xl bg-card border-2 border-amber-100 p-6 shadow-md transition-all hover:shadow-[0_10px_40px_rgba(245,158,11,0.15)] hover:border-amber-300">
                 <div className="absolute -left-6 -top-6 h-20 w-20 rounded-full bg-amber-50 transition-transform group-hover:scale-150" />
                 <div className="relative">
                   <div className="flex items-center justify-between mb-4">

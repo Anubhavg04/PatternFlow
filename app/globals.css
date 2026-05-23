@@ -94,7 +94,7 @@
   --sidebar-ring: var(--accent-hover);
 }
 
-.dark {
+:root.dark {
   --bg: #09090b;
   --bg-card: #18181b;
   --bg-card-hover: #27272a;

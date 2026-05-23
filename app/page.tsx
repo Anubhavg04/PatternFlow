@@ -140,7 +140,7 @@ export default function Home() {
 
           <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
-            <div className="group rounded-xl border border-border bg-white p-6 transition-all hover:border-primary hover:shadow-sm">
+            <div className="group rounded-xl border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-sm">
               <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
                 <Brain className="h-5 w-5 text-primary-foreground" />
               </div>
@@ -150,7 +150,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="group rounded-xl border border-border bg-white p-6 transition-all hover:border-primary hover:shadow-sm">
+            <div className="group rounded-xl border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-sm">
               <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
                 <Fingerprint className="h-5 w-5 text-primary-foreground" />
               </div>
@@ -160,7 +160,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="group rounded-xl border border-border bg-white p-6 transition-all hover:border-primary hover:shadow-sm">
+            <div className="group rounded-xl border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-sm">
               <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
                 <Lightbulb className="h-5 w-5 text-primary-foreground" />
               </div>
@@ -170,7 +170,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="group rounded-xl border border-border bg-white p-6 transition-all hover:border-primary hover:shadow-sm">
+            <div className="group rounded-xl border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-sm">
               <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
                 <Target className="h-5 w-5 text-primary-foreground" />
               </div>
@@ -180,7 +180,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="group rounded-xl border border-border bg-white p-6 transition-all hover:border-primary hover:shadow-sm">
+            <div className="group rounded-xl border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-sm">
               <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
                 <Layers className="h-5 w-5 text-primary-foreground" />
               </div>
@@ -190,7 +190,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="group rounded-xl border border-border bg-white p-6 transition-all hover:border-primary hover:shadow-sm">
+            <div className="group rounded-xl border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-sm">
               <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
                 <HelpCircle className="h-5 w-5 text-primary-foreground" />
               </div>
@@ -247,7 +247,7 @@ export default function Home() {
             </div>
             {/* Text */}
             <div className="max-w-md text-center md:text-left">
-              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-white px-3 py-1 mb-4">
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 mb-4">
                 <Timer className="h-3.5 w-3.5 text-foreground" />
                 <span className="font-mono text-[11px] text-muted-foreground">Available on Basic & Pro</span>
               </div>
@@ -260,15 +260,15 @@ export default function Home() {
                 Real interviews have time limits — so does Interview Mode. Get a timed challenge based on problem difficulty (Easy: 10 min, Medium: 20 min, Hard: 35 min) with a floating countdown timer. Build speed and confidence before the real thing.
               </p>
               <div className="mt-5 flex flex-wrap gap-3 justify-center md:justify-start">
-                <div className="flex items-center gap-1.5 rounded-lg bg-white border border-border px-3 py-1.5">
+                <div className="flex items-center gap-1.5 rounded-lg bg-card border border-border px-3 py-1.5">
                   <span className="font-mono text-xs text-foreground font-bold">10m</span>
                   <span className="font-mono text-[10px] text-muted-foreground/70">Easy</span>
                 </div>
-                <div className="flex items-center gap-1.5 rounded-lg bg-white border border-border px-3 py-1.5">
+                <div className="flex items-center gap-1.5 rounded-lg bg-card border border-border px-3 py-1.5">
                   <span className="font-mono text-xs text-foreground font-bold">20m</span>
                   <span className="font-mono text-[10px] text-muted-foreground/70">Medium</span>
                 </div>
-                <div className="flex items-center gap-1.5 rounded-lg bg-white border border-border px-3 py-1.5">
+                <div className="flex items-center gap-1.5 rounded-lg bg-card border border-border px-3 py-1.5">
                   <span className="font-mono text-xs text-foreground font-bold">35m</span>
                   <span className="font-mono text-[10px] text-muted-foreground/70">Hard</span>
                 </div>
@@ -288,7 +288,7 @@ export default function Home() {
           <div className="mt-12 flex flex-col items-center gap-5 sm:flex-row sm:flex-wrap sm:justify-center">
 
             {/* FREE */}
-            <article className="w-full max-w-xs rounded-xl border border-border bg-white p-7">
+            <article className="w-full max-w-xs rounded-xl border border-border bg-card p-7">
               <Badge className="bg-muted font-mono text-muted-foreground hover:bg-muted">Free</Badge>
               <div className="mt-5 flex items-end gap-2">
                 <p className="font-mono text-[36px] leading-none text-foreground">₹0</p>
@@ -327,7 +327,7 @@ export default function Home() {
             </article>
 
             {/* BASIC */}
-            <article className="w-full max-w-xs rounded-xl border border-border bg-white p-7">
+            <article className="w-full max-w-xs rounded-xl border border-border bg-card p-7">
               <Badge className="bg-muted font-mono text-muted-foreground hover:bg-muted">Basic</Badge>
               <div className="mt-5 flex items-end gap-2">
                 <p className="font-mono text-[36px] leading-none text-foreground">₹149</p>
@@ -553,7 +553,7 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
   return (
     <button
       onClick={() => setOpen(!open)}
-      className="w-full rounded-xl border border-border bg-white p-5 text-left transition-all hover:border-border/80"
+      className="w-full rounded-xl border border-border bg-card p-5 text-left transition-all hover:border-border/80"
     >
       <div className="flex items-center justify-between gap-4">
         <h3 className="font-mono text-sm font-medium text-foreground">{question}</h3>

@@ -26,7 +26,7 @@ export function Navbar() {
         <div className="hidden items-center gap-1 rounded-full border border-border/60 bg-background/80 p-1 shadow-sm backdrop-blur-md md:flex">
           <a
             href="/#how-it-works"
-            className="rounded-full px-4 py-1.5 font-mono text-sm font-medium text-muted-foreground transition hover:bg-accent hover:text-foreground"
+            className="rounded-full px-4 py-1.5 font-mono text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
           >
             How it works
           </a>
@@ -34,14 +34,14 @@ export function Navbar() {
             href="/patterns"
             className={`rounded-full px-4 py-1.5 font-mono text-sm font-medium transition ${pathname === "/patterns"
               ? "bg-primary text-primary-foreground shadow-sm"
-              : "text-muted-foreground hover:bg-accent hover:text-foreground"
+              : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
           >
             Patterns
           </Link>
           <a
             href="/#pricing"
-            className="rounded-full px-4 py-1.5 font-mono text-sm font-medium text-muted-foreground transition hover:bg-accent hover:text-foreground"
+            className="rounded-full px-4 py-1.5 font-mono text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
           >
             Pricing
           </a>
@@ -73,7 +73,7 @@ export function Navbar() {
             <a
               href="/#how-it-works"
               onClick={() => setMobileMenuOpen(false)}
-              className="rounded-xl px-3 py-2 font-mono text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground"
+              className="rounded-xl px-3 py-2 font-mono text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
             >
               How it works
             </a>
@@ -82,7 +82,7 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className={`rounded-xl px-3 py-2 font-mono text-sm font-medium transition ${pathname === "/patterns"
                 ? "bg-primary/5 text-primary"
-                : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
             >
               Patterns
@@ -90,7 +90,7 @@ export function Navbar() {
             <a
               href="/#pricing"
               onClick={() => setMobileMenuOpen(false)}
-              className="rounded-xl px-3 py-2 font-mono text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground"
+              className="rounded-xl px-3 py-2 font-mono text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
             >
               Pricing
             </a>

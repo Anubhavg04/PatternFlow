@@ -39,7 +39,7 @@ export default function RefundPolicy() {
           <section>
             <h2 className="text-base font-semibold text-foreground mb-3">How to request a refund</h2>
             <p>To request a refund, contact us within 7 days of purchase:</p>
-            <div className="mt-3 rounded-lg border border-border bg-white p-4">
+            <div className="mt-3 rounded-lg border border-border bg-card p-4">
               <p className="font-mono text-xs text-muted-foreground/70 mb-2">Contact us via</p>
               
                 href="https://twitter.com/Dev_code_04"
