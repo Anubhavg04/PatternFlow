@@ -332,10 +332,10 @@ export default async function Dashboard({
                 {streak > 0 ? `Keep it up, ${name}! 🔥` : `Ready, ${name}?`}
               </h1>
               <div className="flex flex-col gap-0.5">
-                <p className="text-sm font-medium text-muted-foreground">
+                <p className="text-sm font-medium text-foreground/80">
                   {smartInsight}
                 </p>
-                <div className="flex items-center gap-1.5 text-[10px] text-green-400/70">
+                <div className="flex items-center gap-1.5 text-[10px] font-semibold text-emerald-500 dark:text-emerald-400">
                    <Target size={10} />
                    <span>Ahead of {userPercentile}% of users this week</span>
                 </div>
