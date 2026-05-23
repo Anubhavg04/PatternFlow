@@ -328,8 +328,8 @@ export default async function Dashboard({
                 <TrendingUp size={12} className="text-amber-400" />
                 <span className="font-mono text-[8px] font-black uppercase tracking-widest text-amber-400">{streak} Day Streak</span>
               </div>
-              <h1 className="text-xl font-black tracking-tight sm:text-2xl">
-                {streak > 0 ? `Keep it up, ${name}! 🔥` : `Ready, ${name}?`}
+              <h1 className="text-xl font-black tracking-tight sm:text-2xl text-amber-600 dark:text-amber-400">
+                {streak > 0 ? `Keep it up, ${name}! 🚀` : `Ready, ${name}?`}
               </h1>
               <div className="flex flex-col gap-0.5">
                 <p className="text-sm font-medium text-foreground/80">
