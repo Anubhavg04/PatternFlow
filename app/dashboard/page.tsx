@@ -549,33 +549,48 @@ export default async function Dashboard({
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col items-center">
-                <div className="relative mb-6">
-                  <svg width="120" height="120" viewBox="0 0 100 100" className="-rotate-90">
-                    <circle cx="50" cy="50" r="44" fill="none" stroke="#f0ede6" strokeWidth="10" />
-                    <circle
-                      cx="50" cy="50" r="44" fill="none"
-                      stroke={readinessScore >= 60 ? "#22c55e" : readinessScore >= 30 ? "#f59e0b" : "#e8e2d9"}
-                      strokeWidth="10"
-                      strokeLinecap="round"
-                      strokeDasharray={`${(readinessScore / 100) * 276} 276`}
-                      className="transition-all duration-1000 ease-out"
-                    />
+              <div className="flex flex-col xl:flex-row items-center gap-6">
+                <div className="relative shrink-0">
+                  <svg width="120" height="120" viewBox="0 0 100 100" className="-rotate-90 drop-shadow-md">
+                    <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" className="text-muted/50" strokeWidth="10" />
+                    <circle cx="50" cy="50" r="44" fill="none" stroke="#3b82f6" strokeWidth="10" strokeLinecap="round" strokeDasharray={`${(coverageScore/100)*276.46} 276.46`} className="transition-all duration-1000 ease-out" />
+                    <circle cx="50" cy="50" r="44" fill="none" stroke="#8b5cf6" strokeWidth="10" strokeLinecap="round" strokeDasharray={`${(masteryScore/100)*276.46} 276.46`} strokeDashoffset={`-${(coverageScore/100)*276.46}`} className="transition-all duration-1000 ease-out" />
+                    <circle cx="50" cy="50" r="44" fill="none" stroke="#10b981" strokeWidth="10" strokeLinecap="round" strokeDasharray={`${(consistencyScore/100)*276.46} 276.46`} strokeDashoffset={`-${((coverageScore+masteryScore)/100)*276.46}`} className="transition-all duration-1000 ease-out" />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <span className={`font-mono text-3xl font-black ${readinessColor}`}>{readinessScore}%</span>
                   </div>
                 </div>
-                <div className="w-full space-y-4">
-                  <div className="flex flex-col items-center gap-1">
-                    <span className={`text-xs font-black uppercase tracking-widest ${readinessColor}`}>{readinessLabel}</span>
-                    <p className="text-center text-[10px] text-muted-foreground">How ready you are for technical interviews.</p>
+                
+                <div className="flex w-full flex-col gap-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="h-3 w-3 rounded-sm bg-blue-500" />
+                      <span className="text-xs font-semibold text-muted-foreground">Coverage</span>
+                    </div>
+                    <span className="font-mono text-xs font-bold text-foreground">{Math.round(coverageScore)}/40</span>
                   </div>
-                  <div className="h-px bg-[#e8e2d9]" />
-                  <div className="flex items-center justify-between px-2">
-                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Coverage</span>
-                    <span className="font-mono text-xs font-black text-foreground">{patternsAttempted}/{totalPatterns}</span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="h-3 w-3 rounded-sm bg-violet-500" />
+                      <span className="text-xs font-semibold text-muted-foreground">Mastery</span>
+                    </div>
+                    <span className="font-mono text-xs font-bold text-foreground">{Math.round(masteryScore)}/40</span>
                   </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="h-3 w-3 rounded-sm bg-emerald-500" />
+                      <span className="text-xs font-semibold text-muted-foreground">Consistency</span>
+                    </div>
+                    <span className="font-mono text-xs font-bold text-foreground">{Math.round(consistencyScore)}/20</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full space-y-4 pt-6">
+                <div className="flex flex-col items-center gap-1">
+                  <span className={`text-xs font-black uppercase tracking-widest ${readinessColor}`}>{readinessLabel}</span>
+                  <p className="text-center text-[10px] text-muted-foreground">How ready you are for technical interviews.</p>
                 </div>
               </div>
             </div>
