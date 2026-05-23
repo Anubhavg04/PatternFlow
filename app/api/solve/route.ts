@@ -143,7 +143,17 @@ Respond ONLY with valid JSON, no markdown fences:
     {"name": "Problem Name", "difficulty": "Medium", "platform": "LC", "why_similar": "One line"},
     {"name": "Problem Name", "difficulty": "Hard", "platform": "LC", "why_similar": "One line"}
   ],
-  "solve_time": "Easy: 10 min | Medium: 20 min | Hard: 35 min"
+  "solve_time": "Easy: 10 min | Medium: 20 min | Hard: 35 min",
+  "quiz_questions": [
+    {
+      "question": "A specific question about edge cases, time complexity, or why this approach works for THIS problem. Not generic.",
+      "expected_answer": "Key concepts/keywords a correct answer should contain"
+    },
+    {
+      "question": "A deeper question testing whether the student truly understands the pattern — e.g., what happens if input changes, or how to optimize further.",
+      "expected_answer": "Key concepts/keywords a correct answer should contain"
+    }
+  ]
 }`
 
   try {

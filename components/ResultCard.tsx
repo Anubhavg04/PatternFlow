@@ -1,10 +1,11 @@
 "use client"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { ConfidenceRating } from "@/components/ConfidenceRating"
 import {
   Brain, Lightbulb, Eye, BookOpen, Clock,
-  Target, Layers, GraduationCap, ChevronDown, HelpCircle, X
+  Target, Layers, GraduationCap, ChevronDown, HelpCircle, X,
+  Timer, CheckCircle, XCircle, Send, Loader2, SkipForward
 } from "lucide-react"
 import { analytics } from "@/lib/posthog-events"
 
@@ -34,6 +35,10 @@ export type SolveResult = {
     why_similar: string
   }[]
   solve_time: string
+  quiz_questions?: {
+    question: string
+    expected_answer: string
+  }[]
 }
 
 type ResultCardProps = {
@@ -47,6 +52,8 @@ const labelClass = "text-xs font-mono text-[#a89f96]"
 
 export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
   const isPaid = plan === "basic" || plan === "pro"
+
+  // --- Existing state ---
   const [hintsUnlocked, setHintsUnlocked] = useState(0)
   const [showApproach, setShowApproach] = useState(false)
   const [showPattern, setShowPattern] = useState(false)
@@ -57,9 +64,25 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
   const [currentFlashcard, setCurrentFlashcard] = useState(0)
   const [showFlashcards, setShowFlashcards] = useState(false)
   const [showAnswer, setShowAnswer] = useState(false)
+
+  // --- Timer state ---
   const [timerActive, setTimerActive] = useState(false)
   const [timeLeft, setTimeLeft] = useState(0)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const [timerStartedAt, setTimerStartedAt] = useState<number | null>(null)
+
+  // --- New Interview Flow state ---
+  const [showTimerPrompt, setShowTimerPrompt] = useState(isPaid) // auto-show for paid users
+  const [timerEnded, setTimerEnded] = useState(false)
+  const [timerSkipped, setTimerSkipped] = useState(false)
+  const [selfSolved, setSelfSolved] = useState<boolean | null>(null)
+
+  // --- Quiz state (Phase 3) ---
+  const [currentQuizIndex, setCurrentQuizIndex] = useState(0)
+  const [quizAnswer, setQuizAnswer] = useState("")
+  const [quizFeedback, setQuizFeedback] = useState<{ correct: boolean; feedback: string } | null>(null)
+  const [quizLoading, setQuizLoading] = useState(false)
+  const [quizCompleted, setQuizCompleted] = useState(false)
 
   const diffColor =
     result.difficulty === "Easy" ? "text-green-600" :
@@ -91,25 +114,60 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
 
   const timeLimit = result.difficulty === "Easy" ? 10 : result.difficulty === "Hard" ? 35 : 20
 
+  // --- Timer functions ---
   function startTimer() {
     setTimeLeft(timeLimit * 60)
     setTimerActive(true)
+    setTimerStartedAt(Date.now())
+    setShowTimerPrompt(false)
+    setTimerEnded(false)
+    setTimerSkipped(false)
   }
 
-  function stopTimer() {
+  const stopTimer = useCallback(() => {
     setTimerActive(false)
-    setTimeLeft(0)
     if (timerRef.current) clearTimeout(timerRef.current)
+  }, [])
+
+  function skipTimer() {
+    stopTimer()
+    setTimeLeft(0)
+    setTimerSkipped(true)
+    setShowTimerPrompt(false)
+    // Save that timer was skipped
+    saveTimerResult(null, null, false)
   }
+
+  // --- Save timer results ---
+  const saveTimerResult = useCallback((solveTimeSeconds: number | null, solved: boolean | null, timerUsed: boolean) => {
+    if (!userId) return
+    fetch("/api/save-timer-result", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId,
+        solveTimeSeconds: solveTimeSeconds,
+        selfSolved: solved,
+        timerUsed,
+      }),
+    }).catch(console.error)
+  }, [userId])
 
   useEffect(() => {
     if (!timerActive || timeLeft <= 0) {
-      if (timeLeft === 0 && timerActive) setTimerActive(false)
+      if (timeLeft === 0 && timerActive) {
+        // Timer just hit 0 — interview time is up
+        setTimerActive(false)
+        setTimerEnded(true)
+        // Calculate solve time
+        const elapsed = timerStartedAt ? Math.round((Date.now() - timerStartedAt) / 1000) : timeLimit * 60
+        saveTimerResult(elapsed, null, true)
+      }
       return
     }
     timerRef.current = setTimeout(() => setTimeLeft(t => t - 1), 1000)
     return () => { if (timerRef.current) clearTimeout(timerRef.current) }
-  }, [timerActive, timeLeft])
+  }, [timerActive, timeLeft, timerStartedAt, timeLimit, stopTimer, saveTimerResult])
 
   function formatTime(s: number) {
     const m = Math.floor(s / 60)
@@ -117,6 +175,33 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
     return `${m}:${sec.toString().padStart(2, "0")}`
   }
 
+
+
+  // --- Self-assessment handlers ---
+  function handleSolvedYes() {
+    setSelfSolved(true)
+    const elapsed = timerStartedAt ? Math.round((Date.now() - timerStartedAt) / 1000) : null
+    saveTimerResult(elapsed, true, true)
+  }
+
+  function handleSolvedNo() {
+    setSelfSolved(false)
+    saveTimerResult(
+      timerStartedAt ? Math.round((Date.now() - timerStartedAt) / 1000) : null,
+      false,
+      true
+    )
+  }
+
+  // --- "I finished early" handler ---
+  function handleFinishedEarly() {
+    stopTimer()
+    setTimerEnded(true)
+    const elapsed = timerStartedAt ? Math.round((Date.now() - timerStartedAt) / 1000) : null
+    saveTimerResult(elapsed, null, true)
+  }
+
+  // --- Quick check answer ---
   function checkAnswer() {
     const ans = userAnswer.toLowerCase()
     const goodSignals = [
@@ -130,8 +215,56 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
     setAnswerFeedback(hasGoodReasoning && hasLength ? "correct" : "wrong")
   }
 
+  // --- AI Quiz evaluation (Phase 3) ---
+  async function evaluateQuizAnswer() {
+    if (!result.quiz_questions || !result.quiz_questions[currentQuizIndex]) return
+    setQuizLoading(true)
+    setQuizFeedback(null)
+
+    try {
+      const q = result.quiz_questions[currentQuizIndex]
+      const res = await fetch("/api/evaluate-quiz", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${userId}`,
+        },
+        body: JSON.stringify({
+          question: q.question,
+          userAnswer: quizAnswer,
+          expectedAnswer: q.expected_answer,
+          patternName: result.pattern_reveal?.name || result.pattern_name,
+        }),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        setQuizFeedback({ correct: data.correct, feedback: data.feedback })
+      } else {
+        setQuizFeedback({ correct: false, feedback: data.error || "Could not evaluate. Try again." })
+      }
+    } catch {
+      setQuizFeedback({ correct: false, feedback: "Network error. Try again." })
+    } finally {
+      setQuizLoading(false)
+    }
+  }
+
+  function nextQuizQuestion() {
+    if (!result.quiz_questions) return
+    if (currentQuizIndex < result.quiz_questions.length - 1) {
+      setCurrentQuizIndex(i => i + 1)
+      setQuizAnswer("")
+      setQuizFeedback(null)
+    } else {
+      setQuizCompleted(true)
+    }
+  }
+
   const timerColor = timeLeft < 60 ? "text-red-500" : timeLeft < 180 ? "text-amber-600" : "text-[#1a1814]"
   const timerBorder = timeLeft < 60 ? "border-red-200 bg-red-50" : timeLeft < 180 ? "border-amber-200 bg-amber-50" : "border-[#e8e2d9] bg-white"
+
+  // Whether hints should be locked (timer is active)
+  const hintsLocked = timerActive
 
   return (
     <>
@@ -150,6 +283,12 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
             </span>
           </div>
           <button
+            onClick={handleFinishedEarly}
+            className="flex-shrink-0 text-[10px] font-mono text-[#a89f96] hover:text-[#1a1814] transition-colors underline hidden sm:block"
+          >
+            Done
+          </button>
+          <button
             onClick={stopTimer}
             className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-full hover:bg-[#f0ede6] text-[#a89f96] hover:text-[#1a1814] transition-colors"
             aria-label="Stop timer"
@@ -161,7 +300,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
 
       <section className="mt-10 space-y-5">
 
-        {/* Problem Summary */}
+        {/* 1. Problem Summary */}
         <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
           <div className={headerClass}>
             <HelpCircle size={16} className="text-[#a89f96]" />
@@ -173,7 +312,58 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
           <p className="text-sm leading-relaxed text-[#1a1814]">{result.problem_summary}</p>
         </div>
 
-        {/* Think First */}
+        {/* 2. Interview Timer Prompt (Paid users — auto-shown) */}
+        {isPaid && showTimerPrompt && !timerActive && !timerEnded && !timerSkipped && (
+          <div className="rounded-xl border-2 border-[#1a1814] bg-[#1a1814] p-6 text-[#faf8f3]">
+            <div className={headerClass}>
+              <Timer size={16} className="text-amber-400" />
+              <span className="text-xs font-mono font-bold text-amber-400">{"// interview simulation"}</span>
+            </div>
+            <p className="text-sm leading-relaxed mb-1">
+              Want to practice this under <span className="font-bold text-amber-400">real interview conditions</span>?
+            </p>
+            <p className="text-xs text-[#a89f96] mb-5">
+              Timer starts, hints are locked. See how you do under pressure.
+            </p>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Button
+                className="flex-1 bg-[#faf8f3] text-[#1a1814] hover:bg-white font-mono text-sm font-bold"
+                onClick={startTimer}
+              >
+                <Clock size={14} className="mr-2" />
+                Start Timer ({timeLimit} min)
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1 border-[#a89f96]/30 text-[#a89f96] hover:text-[#faf8f3] hover:border-[#faf8f3] font-mono text-sm"
+                onClick={skipTimer}
+              >
+                <SkipForward size={14} className="mr-2" />
+                Skip — show breakdown
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Interview Mode section for free users (paywall) */}
+        {plan === "free" && (
+          <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
+            <div className={headerClass}>
+              <Timer size={16} className="text-[#a89f96]" />
+              <span className={labelClass}>{"// interview simulation"}</span>
+            </div>
+            <div className="rounded-lg bg-[#f0ede6] p-4 text-center">
+              <p className="text-sm text-[#6b6560] mb-2">
+                🔒 Practice under real interview conditions with timed challenges
+              </p>
+              <a href="/#pricing" className="text-xs font-mono text-[#1a1814] underline">
+                Upgrade to Basic to unlock →
+              </a>
+            </div>
+          </div>
+        )}
+
+        {/* 3. Think First */}
         <div className="rounded-xl border-2 border-[#1a1814] bg-[#faf8f3] p-6">
           <div className={headerClass}>
             <Brain size={16} className="text-[#1a1814]" />
@@ -186,186 +376,352 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
             {result.thinking_prompt}
           </p>
           <p className="text-xs text-[#a89f96] font-mono mt-4">
-            Try to think for 5-10 minutes. Then use hints below if stuck.
+            {timerActive
+              ? `⏱ ${formatTime(timeLeft)} remaining — try to solve it before time runs out.`
+              : "Try to think for 5-10 minutes. Then use hints below if stuck."}
           </p>
         </div>
 
-        {/* Progressive Hints */}
+        {/* 4. Progressive Hints (LOCKED during timer) */}
         <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
           <div className={headerClass}>
             <Lightbulb size={16} className="text-[#a89f96]" />
             <span className={labelClass}>{"// hints (reveal one at a time)"}</span>
+            {hintsLocked && (
+              <span className="ml-auto text-[10px] font-mono text-amber-600 flex items-center gap-1">
+                <Clock size={10} /> locked during timer
+              </span>
+            )}
           </div>
 
-          <div className="space-y-3">
-            {result.hints.map((hint, i) => {
-              const isLocked = !isPaid && i>=2
-              if (isLocked && i <= hintsUnlocked) {
-                return (
-                  <div key={i} className="rounded-lg bg-[#f0ede6] p-3 text-center">
-                    <p className="text-xs text-[#6b6560] mb-2">🔒 Hint {i + 1} locked</p>
-                    <a 
-                      href="/#pricing" 
-                      className="text-xs font-mono text-[#1a1814] underline"
-                      onClick={() => analytics.trackPaywallShown(`hint_${i + 1}`)}
-                    >
-                      Unlock next insight →
-                    </a>
-                  </div>
-                )
-              }
-              return(
-                <div key={i}>
-                  {i < hintsUnlocked ? (
-                    <div className="rounded-lg bg-[#f0ede6] p-3 border-l-2 border-[#1a1814]">
-                      <span className="text-xs font-mono text-[#a89f96] block mb-1">
-                        hint {i + 1}
-                      </span>
-                      <p className="text-sm text-[#1a1814] leading-relaxed">{hint}</p>
+          {hintsLocked ? (
+            // Hints locked during interview mode
+            <div className="rounded-lg bg-amber-50 border border-amber-200 p-4 text-center">
+              <p className="text-sm text-amber-800 font-medium mb-1">
+                ⏱ Hints are locked during interview mode
+              </p>
+              <p className="text-xs text-amber-600">
+                Try solving the problem first. Hints will unlock when the timer ends.
+              </p>
+              <button
+                onClick={handleFinishedEarly}
+                className="mt-3 text-xs font-mono text-amber-800 underline hover:text-amber-900"
+              >
+                I finished — stop the timer
+              </button>
+            </div>
+          ) : (
+            // Normal hint reveal flow
+            <>
+              <div className="space-y-3">
+                {result.hints.map((hint, i) => {
+                  const isLocked = !isPaid && i>=2
+                  if (isLocked && i <= hintsUnlocked) {
+                    return (
+                      <div key={i} className="rounded-lg bg-[#f0ede6] p-3 text-center">
+                        <p className="text-xs text-[#6b6560] mb-2">🔒 Hint {i + 1} locked</p>
+                        <a 
+                          href="/#pricing" 
+                          className="text-xs font-mono text-[#1a1814] underline"
+                          onClick={() => analytics.trackPaywallShown(`hint_${i + 1}`)}
+                        >
+                          Unlock next insight →
+                        </a>
+                      </div>
+                    )
+                  }
+                  return(
+                    <div key={i}>
+                      {i < hintsUnlocked ? (
+                        <div className="rounded-lg bg-[#f0ede6] p-3 border-l-2 border-[#1a1814]">
+                          <span className="text-xs font-mono text-[#a89f96] block mb-1">
+                            hint {i + 1}
+                          </span>
+                          <p className="text-sm text-[#1a1814] leading-relaxed">{hint}</p>
+                        </div>
+                      ) : i === hintsUnlocked ? (
+                        <Button
+                          variant="outline"
+                          className="w-full border-dashed border-[#d4cdc4] text-[#6b6560] hover:border-[#1a1814] hover:text-[#1a1814] text-sm"
+                          onClick={() => {
+                            setHintsUnlocked(i + 1)
+                            analytics.trackHintUnlocked(i + 1)
+                          }}
+                        >
+                          <Lightbulb size={14} className="mr-2" />
+                          {i === 0 ? "Show hint" : "Show next hint"}
+                        </Button>
+                      ) : null}
                     </div>
-                  ) : i === hintsUnlocked ? (
+                )})} 
+              </div>
+
+              {/* Free Paywall — after hint 2 */}
+              {!isPaid && hintsUnlocked >= 2 && (
+                <div className="mt-4 rounded-xl border-2 border-[#1a1814] bg-[#faf8f3] p-5 text-center">
+                  <p className="text-xs font-mono text-[#a89f96] mb-2">
+                    2 hints used • You&apos;re close
+                  </p>
+                  <div className="w-8 h-8 rounded-full bg-[#1a1814] flex items-center justify-center mx-auto mb-3">
+                    <Lightbulb size={16} className="text-[#faf8f3]" />
+                  </div>
+                  <p className="font-mono text-sm font-bold text-[#1a1814] mb-1">
+                      You&apos;re one insight away from solving this.
+                  </p>
+                  <p className="text-xs text-[#6b6560] mb-4 leading-relaxed">
+                    Unlock how top candidates recognize this pattern instantly.
+                  </p>
+                  <div className="text-xs text-[#6b6560] mb-4 space-y-1">
+                    <p>• Final hint to unblock you</p>
+                    <p>• Pattern breakdown + intuition</p>
+                    <p>• Memory trick for interviews</p>
+                    <p>• Similar problems to practice</p>
+                  </div>
+                  <a
+                    href="/#pricing"
+                    className="inline-block bg-[#1a1814] text-[#faf8f3] font-mono text-sm px-5 py-2 rounded-lg hover:bg-[#2d2926] transition-colors"
+                    onClick={() => analytics.trackPaywallShown('progressive_hints')}
+                  >
+                    Unlock pattern →
+                  </a>
+                </div>
+              )}
+
+              {isPaid && hintsUnlocked >= 3 && !showApproach && (
+                <div className="mt-4 space-y-3">
+                  {!showQuickCheck ? (
                     <Button
                       variant="outline"
-                      className="w-full border-dashed border-[#d4cdc4] text-[#6b6560] hover:border-[#1a1814] hover:text-[#1a1814] text-sm"
-                      onClick={() => {
-                        setHintsUnlocked(i + 1)
-                        analytics.trackHintUnlocked(i + 1)
-                      }}
+                      className="w-full border-[#1a1814] text-[#1a1814] hover:bg-[#f0ede6] text-sm font-mono"
+                      onClick={() => setShowQuickCheck(true)}
                     >
-                      <Lightbulb size={14} className="mr-2" />
-                      {i === 0 ? "Show hint" : "Show next hint"}
+                      ✦ Test your understanding before the answer
                     </Button>
-                  ) : null}
-                </div>
-            )})} 
-          </div>
-
-          {/* Free Paywall — after hint 2 */}
-          {!isPaid && hintsUnlocked >= 2 && (
-            <div className="mt-4 rounded-xl border-2 border-[#1a1814] bg-[#faf8f3] p-5 text-center">
-              <p className="text-xs font-mono text-[#a89f96] mb-2">
-                2 hints used • You&apos;re close
-              </p>
-              <div className="w-8 h-8 rounded-full bg-[#1a1814] flex items-center justify-center mx-auto mb-3">
-                <Lightbulb size={16} className="text-[#faf8f3]" />
-              </div>
-              <p className="font-mono text-sm font-bold text-[#1a1814] mb-1">
-                  You’re one insight away from solving this.
-              </p>
-              <p className="text-xs text-[#6b6560] mb-4 leading-relaxed">
-                Unlock how top candidates recognize this pattern instantly.
-              </p>
-              {/* Feature bullets (more scannable) */}
-              <div className="text-xs text-[#6b6560] mb-4 space-y-1">
-                <p>• Final hint to unblock you</p>
-                <p>• Pattern breakdown + intuition</p>
-                <p>• Memory trick for interviews</p>
-                <p>• Similar problems to practice</p>
-              </div>
-              <a
-                href="/#pricing"
-                className="inline-block bg-[#1a1814] text-[#faf8f3] font-mono text-sm px-5 py-2 rounded-lg hover:bg-[#2d2926] transition-colors"
-                onClick={() => analytics.trackPaywallShown('progressive_hints')}
-              >
-                Unlockk pattern →
-              </a>
-            </div>
-          )}
-
-          {isPaid && hintsUnlocked >= 3 && !showApproach && (
-            <div className="mt-4 space-y-3">
-              {!showQuickCheck ? (
-                <Button
-                  variant="outline"
-                  className="w-full border-[#1a1814] text-[#1a1814] hover:bg-[#f0ede6] text-sm font-mono"
-                  onClick={() => setShowQuickCheck(true)}
-                >
-                  ✦ Test your understanding before the answer
-                </Button>
-              ) : (
-                <div className="rounded-xl border-2 border-[#1a1814] bg-[#faf8f3] p-4">
-                  <p className="text-xs font-mono text-[#a89f96] mb-1">{"// quick check"}</p>
-                  <p className="text-sm font-medium text-[#1a1814] mb-3">
-                    Explain in your own words — why does this problem need an efficient lookup? What happens if you don&apos;t have one?
-                  </p>
-                  {answerFeedback === null && (
-                    <>
-                      <textarea
-                        value={userAnswer}
-                        onChange={(e) => setUserAnswer(e.target.value)}
-                        placeholder="Write your answer here... (2-3 sentences is enough)"
-                        className="w-full min-h-[80px] bg-white border border-[#e8e2d9] rounded-lg p-3 text-sm font-mono text-[#1a1814] placeholder:text-[#a89f96] outline-none focus:border-[#1a1814] resize-none mb-3"
-                      />
-                      <Button
-                        className="w-full bg-[#1a1814] text-[#faf8f3] hover:bg-[#2d2926] text-sm"
-                        disabled={userAnswer.trim().split(" ").length < 4}
-                        onClick={checkAnswer}
-                      >
-                        Check my answer
-                      </Button>
-                    </>
-                  )}
-                  {answerFeedback === "correct" && (
-                    <div className="space-y-3">
-                      <div className="rounded-lg bg-green-50 border border-green-200 p-3">
-                        <p className="text-sm font-medium text-green-800 mb-1">✓ Good thinking!</p>
-                        <p className="text-xs text-green-700 leading-relaxed">
-                          You explained your reasoning clearly. That&apos;s exactly the skill interviewers look for.
-                        </p>
-                      </div>
-                      <Button
-                        className="w-full bg-[#1a1814] text-[#faf8f3] hover:bg-[#2d2926] text-sm"
-                        onClick={() => { setShowApproach(true); setShowPattern(true) }}
-                      >
-                        <Eye size={14} className="mr-2" />
-                        See the full approach
-                      </Button>
+                  ) : (
+                    <div className="rounded-xl border-2 border-[#1a1814] bg-[#faf8f3] p-4">
+                      <p className="text-xs font-mono text-[#a89f96] mb-1">{"// quick check"}</p>
+                      <p className="text-sm font-medium text-[#1a1814] mb-3">
+                        Explain in your own words — why does this problem need an efficient lookup? What happens if you don&apos;t have one?
+                      </p>
+                      {answerFeedback === null && (
+                        <>
+                          <textarea
+                            value={userAnswer}
+                            onChange={(e) => setUserAnswer(e.target.value)}
+                            placeholder="Write your answer here... (2-3 sentences is enough)"
+                            className="w-full min-h-[80px] bg-white border border-[#e8e2d9] rounded-lg p-3 text-sm font-mono text-[#1a1814] placeholder:text-[#a89f96] outline-none focus:border-[#1a1814] resize-none mb-3"
+                          />
+                          <Button
+                            className="w-full bg-[#1a1814] text-[#faf8f3] hover:bg-[#2d2926] text-sm"
+                            disabled={userAnswer.trim().split(" ").length < 4}
+                            onClick={checkAnswer}
+                          >
+                            Check my answer
+                          </Button>
+                        </>
+                      )}
+                      {answerFeedback === "correct" && (
+                        <div className="space-y-3">
+                          <div className="rounded-lg bg-green-50 border border-green-200 p-3">
+                            <p className="text-sm font-medium text-green-800 mb-1">✓ Good thinking!</p>
+                            <p className="text-xs text-green-700 leading-relaxed">
+                              You explained your reasoning clearly. That&apos;s exactly the skill interviewers look for.
+                            </p>
+                          </div>
+                          <Button
+                            className="w-full bg-[#1a1814] text-[#faf8f3] hover:bg-[#2d2926] text-sm"
+                            onClick={() => { setShowApproach(true); setShowPattern(true) }}
+                          >
+                            <Eye size={14} className="mr-2" />
+                            See the full approach
+                          </Button>
+                        </div>
+                      )}
+                      {answerFeedback === "wrong" && (
+                        <div className="space-y-3">
+                          <div className="rounded-lg bg-amber-50 border border-amber-200 p-3">
+                            <p className="text-sm font-medium text-amber-800 mb-1">Almost — think deeper</p>
+                            <p className="text-xs text-amber-700 leading-relaxed">
+                              Think about time complexity — what happens without an efficient lookup?
+                            </p>
+                          </div>
+                          <Button
+                            variant="outline"
+                            className="w-full border-[#e8e2d9] text-[#6b6560] text-sm"
+                            onClick={() => { setUserAnswer(""); setAnswerFeedback(null) }}
+                          >
+                            Try again
+                          </Button>
+                          <Button
+                            className="w-full bg-[#1a1814] text-[#faf8f3] hover:bg-[#2d2926] text-sm"
+                            onClick={() => { setShowApproach(true); setShowPattern(true) }}
+                          >
+                            <Eye size={14} className="mr-2" />
+                            Show me anyway
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   )}
-                  {answerFeedback === "wrong" && (
-                    <div className="space-y-3">
-                      <div className="rounded-lg bg-amber-50 border border-amber-200 p-3">
-                        <p className="text-sm font-medium text-amber-800 mb-1">Almost — think deeper</p>
-                        <p className="text-xs text-amber-700 leading-relaxed">
-                          Think about time complexity — what happens without an efficient lookup?
-                        </p>
-                      </div>
-                      <Button
-                        variant="outline"
-                        className="w-full border-[#e8e2d9] text-[#6b6560] text-sm"
-                        onClick={() => { setUserAnswer(""); setAnswerFeedback(null) }}
-                      >
-                        Try again
-                      </Button>
-                      <Button
-                        className="w-full bg-[#1a1814] text-[#faf8f3] hover:bg-[#2d2926] text-sm"
-                        onClick={() => { setShowApproach(true); setShowPattern(true) }}
-                      >
-                        <Eye size={14} className="mr-2" />
-                        Show me anyway
-                      </Button>
-                    </div>
+                  {!showQuickCheck && (
+                    <Button
+                      variant="outline"
+                      className="w-full border-dashed border-[#d4cdc4] text-[#a89f96] hover:border-[#1a1814] hover:text-[#6b6560] text-sm"
+                      onClick={() => { setShowApproach(true); setShowPattern(true) }}
+                    >
+                      I give up — just show me
+                    </Button>
                   )}
                 </div>
               )}
-              {!showQuickCheck && (
-                <Button
-                  variant="outline"
-                  className="w-full border-dashed border-[#d4cdc4] text-[#a89f96] hover:border-[#1a1814] hover:text-[#6b6560] text-sm"
-                  onClick={() => { setShowApproach(true); setShowPattern(true) }}
-                >
-                  I give up — just show me
-                </Button>
-              )}
-            </div>
-          )}
 
-          {hintsUnlocked === 0 && (
-            <p className="text-xs text-[#a89f96] font-mono mt-3 text-center">
-              Try solving first — hints are here when you need them
-            </p>
+              {hintsUnlocked === 0 && (
+                <p className="text-xs text-[#a89f96] font-mono mt-3 text-center">
+                  Try solving first — hints are here when you need them
+                </p>
+              )}
+            </>
           )}
         </div>
+
+        {/* 5. "Did You Solve It?" — appears after timer ends */}
+        {timerEnded && selfSolved === null && (
+          <div className="rounded-xl border-2 border-[#1a1814] bg-[#faf8f3] p-6 animate-in fade-in slide-in-from-top-2 duration-300">
+            <div className={headerClass}>
+              <Target size={16} className="text-[#1a1814]" />
+              <span className="text-xs font-mono text-[#1a1814] font-bold">{"// time's up — how did you do?"}</span>
+            </div>
+            <p className="text-sm text-[#6b6560] mb-5">
+              Were you able to solve the problem during the timed challenge?
+            </p>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Button
+                className="flex-1 bg-green-600 text-white hover:bg-green-700 font-mono text-sm"
+                onClick={handleSolvedYes}
+              >
+                <CheckCircle size={14} className="mr-2" />
+                Yes, I solved it!
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1 border-[#e8e2d9] text-[#6b6560] hover:border-[#1a1814] hover:text-[#1a1814] font-mono text-sm"
+                onClick={handleSolvedNo}
+              >
+                <XCircle size={14} className="mr-2" />
+                No, I need help
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* 6. AI Quiz — appears if user solved it AND is Pro AND quiz questions exist */}
+        {selfSolved === true && plan === "pro" && result.quiz_questions && result.quiz_questions.length > 0 && !quizCompleted && (
+          <div className="rounded-xl border-2 border-amber-200 bg-amber-50/50 p-6">
+            <div className={headerClass}>
+              <GraduationCap size={16} className="text-amber-600" />
+              <span className="text-xs font-mono text-amber-600 font-bold">{"// verify your understanding"}</span>
+              <span className="ml-auto text-[10px] font-mono text-amber-500">
+                {currentQuizIndex + 1}/{result.quiz_questions.length}
+              </span>
+            </div>
+            <p className="text-sm font-medium text-[#1a1814] mb-4">
+              {result.quiz_questions[currentQuizIndex].question}
+            </p>
+
+            {quizFeedback === null ? (
+              <>
+                <textarea
+                  value={quizAnswer}
+                  onChange={(e) => setQuizAnswer(e.target.value)}
+                  placeholder="Type your answer... (be specific)"
+                  className="w-full min-h-[80px] bg-white border border-amber-200 rounded-lg p-3 text-sm font-mono text-[#1a1814] placeholder:text-[#a89f96] outline-none focus:border-amber-400 resize-none mb-3"
+                />
+                <Button
+                  className="w-full bg-amber-600 text-white hover:bg-amber-700 text-sm font-mono"
+                  disabled={quizAnswer.trim().split(" ").length < 3 || quizLoading}
+                  onClick={evaluateQuizAnswer}
+                >
+                  {quizLoading ? (
+                    <span className="flex items-center gap-2">
+                      <Loader2 size={14} className="animate-spin" />
+                      Evaluating...
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-2">
+                      <Send size={14} />
+                      Check Answer
+                    </span>
+                  )}
+                </Button>
+              </>
+            ) : (
+              <div className="space-y-3">
+                <div className={`rounded-lg border p-3 ${
+                  quizFeedback.correct
+                    ? "bg-green-50 border-green-200"
+                    : "bg-amber-50 border-amber-200"
+                }`}>
+                  <p className={`text-sm font-medium mb-1 ${
+                    quizFeedback.correct ? "text-green-800" : "text-amber-800"
+                  }`}>
+                    {quizFeedback.correct ? "✓ Correct!" : "✗ Not quite"}
+                  </p>
+                  <p className={`text-xs leading-relaxed ${
+                    quizFeedback.correct ? "text-green-700" : "text-amber-700"
+                  }`}>
+                    {quizFeedback.feedback}
+                  </p>
+                </div>
+                <Button
+                  className="w-full bg-[#1a1814] text-[#faf8f3] hover:bg-[#2d2926] text-sm font-mono"
+                  onClick={nextQuizQuestion}
+                >
+                  {currentQuizIndex < (result.quiz_questions?.length || 1) - 1
+                    ? "Next Question →"
+                    : "See Full Breakdown →"}
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Quiz completed OR solved=yes for non-Pro → reveal pattern */}
+        {selfSolved === true && (quizCompleted || plan !== "pro" || !result.quiz_questions?.length) && !showPattern && (
+          <div className="rounded-xl border border-green-200 bg-green-50 p-5 text-center">
+            <p className="text-sm font-medium text-green-800 mb-3">
+              🎉 {quizCompleted ? "Quiz complete!" : "Great job solving it!"} Here&apos;s the full pattern breakdown:
+            </p>
+            {plan !== "pro" && result.quiz_questions && (
+              <p className="text-xs text-[#6b6560] mb-3">
+                <a href="/#pricing" className="underline">Upgrade to Pro</a> for AI-evaluated quizzes after each solve.
+              </p>
+            )}
+            <Button
+              className="bg-[#1a1814] text-[#faf8f3] hover:bg-[#2d2926] text-sm font-mono"
+              onClick={() => { setShowApproach(true); setShowPattern(true) }}
+            >
+              <Eye size={14} className="mr-2" />
+              Reveal Pattern & Approach
+            </Button>
+          </div>
+        )}
+
+        {/* Solved = No → gentle message and auto-reveal hints */}
+        {selfSolved === false && !showPattern && (
+          <div className="rounded-xl border border-[#e8e2d9] bg-white p-5 text-center">
+            <p className="text-sm text-[#6b6560] mb-3">
+              No worries — that&apos;s how you learn. Use the hints above to work through it, or reveal the full approach:
+            </p>
+            <Button
+              variant="outline"
+              className="border-[#1a1814] text-[#1a1814] hover:bg-[#f0ede6] text-sm font-mono"
+              onClick={() => { setShowApproach(true); setShowPattern(true) }}
+            >
+              <Eye size={14} className="mr-2" />
+              Show me the approach
+            </Button>
+          </div>
+        )}
 
         {/* Pattern Reveal */}
         {showPattern && (
@@ -652,63 +1008,6 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                 >
                   Done
                 </Button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Interview Mode — Basic+ */}
-        <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
-          <div className={headerClass}>
-            <Eye size={16} className="text-[#a89f96]" />
-            <span className={labelClass}>{"// practice under pressure"}</span>
-          </div>
-          {plan === "free" ? (
-            <div className="rounded-lg bg-[#f0ede6] p-4 text-center">
-              <p className="text-sm text-[#6b6560] mb-2">
-                🔒 Timed practice mode with real interview conditions
-              </p>
-              <a href="/#pricing" className="text-xs font-mono text-[#1a1814] underline">
-                Upgrade to Basic to unlock →
-              </a>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              <p className="text-sm text-[#6b6560]">
-                Practice solving this problem under interview conditions — limited time, no hints.
-              </p>
-              <div className="rounded-lg border border-[#e8e2d9] p-4 bg-[#faf8f3]">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm font-mono text-[#6b6560]">
-                    Time limit: {timeLimit} minutes
-                  </span>
-                  <span className="text-xs font-mono bg-[#1a1814] text-[#faf8f3] px-2 py-1 rounded">
-                    Interview Mode
-                  </span>
-                </div>
-                {!timerActive ? (
-                  <Button
-                    className="w-full bg-[#1a1814] text-[#faf8f3] hover:bg-[#2d2926]"
-                    onClick={startTimer}
-                  >
-                    <Clock size={14} className="mr-2" />
-                    Start Timed Challenge
-                  </Button>
-                ) : (
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs text-[#a89f96] font-mono">
-                      ⏱ Timer running in top-right corner
-                    </p>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-[#e8e2d9] text-[#6b6560] text-xs"
-                      onClick={stopTimer}
-                    >
-                      Stop
-                    </Button>
-                  </div>
-                )}
               </div>
             </div>
           )}

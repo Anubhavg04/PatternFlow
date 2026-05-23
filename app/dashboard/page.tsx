@@ -17,7 +17,7 @@ async function getUserSolves(userId: string, plan: string = "free") {
     // Free: no history (return empty), Basic: 30 days, Pro: full history
     let query = sb
       .from("solves")
-      .select("id, problem_summary, pattern_name, difficulty, created_at, confidence")
+      .select("id, problem_summary, pattern_name, difficulty, created_at, confidence, solve_time_seconds, self_solved, timer_used")
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
 
@@ -515,13 +515,25 @@ export default async function Dashboard({
                       className="group flex items-start justify-between rounded-xl border border-[#e8e2d9] bg-white p-3 transition-all hover:border-[#d4cdc4] hover:shadow-sm"
                     >
                       <div className="mr-3 min-w-0 flex-1">
-                        <div className="flex items-center gap-2 mb-1">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
                           <span className="font-mono text-[9px] text-[#a89f96]">
                             {timeAgo(solve.created_at)}
                           </span>
                           <span className={`font-mono text-[9px] font-bold ${getDiffColor(solve.difficulty)}`}>
                             {solve.difficulty.toUpperCase()}
                           </span>
+                          {solve.timer_used && solve.solve_time_seconds != null && (
+                            <span className="font-mono text-[9px] text-[#6b6560] flex items-center gap-0.5">
+                              <Clock size={8} />
+                              {Math.floor(solve.solve_time_seconds / 60)}m {solve.solve_time_seconds % 60}s
+                            </span>
+                          )}
+                          {solve.self_solved === true && (
+                            <span className="rounded-full bg-green-50 px-1.5 py-0.5 text-[8px] font-bold text-green-600">✓ solved</span>
+                          )}
+                          {solve.self_solved === false && (
+                            <span className="rounded-full bg-red-50 px-1.5 py-0.5 text-[8px] font-bold text-red-500">✗ needed help</span>
+                          )}
                         </div>
                         <p className="truncate text-xs font-medium text-[#1a1814]">
                           {solve.problem_summary || "Problem solved"}
