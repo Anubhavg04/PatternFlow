@@ -206,8 +206,8 @@ export default function Home() {
             <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
   <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
   <div className="relative h-full w-full rounded-xl bg-card p-6">
-              <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
-                <Brain className="h-5 w-5 text-primary-foreground" />
+              <div className="mb-4 inline-flex rounded-lg bg-amber-100 dark:bg-amber-900/30 p-2.5 transition-colors group-hover:bg-amber-200 dark:group-hover:bg-amber-800/50">
+                <Brain className="h-5 w-5 text-amber-700 dark:text-amber-400" />
               </div>
               <h3 className="font-mono text-sm font-bold text-foreground">Think First Prompts</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -219,8 +219,8 @@ export default function Home() {
             <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
   <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
   <div className="relative h-full w-full rounded-xl bg-card p-6">
-              <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
-                <Fingerprint className="h-5 w-5 text-primary-foreground" />
+              <div className="mb-4 inline-flex rounded-lg bg-amber-100 dark:bg-amber-900/30 p-2.5 transition-colors group-hover:bg-amber-200 dark:group-hover:bg-amber-800/50">
+                <Fingerprint className="h-5 w-5 text-amber-700 dark:text-amber-400" />
               </div>
               <h3 className="font-mono text-sm font-bold text-foreground">Pattern Detection</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -232,8 +232,8 @@ export default function Home() {
             <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
   <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
   <div className="relative h-full w-full rounded-xl bg-card p-6">
-              <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
-                <Lightbulb className="h-5 w-5 text-primary-foreground" />
+              <div className="mb-4 inline-flex rounded-lg bg-amber-100 dark:bg-amber-900/30 p-2.5 transition-colors group-hover:bg-amber-200 dark:group-hover:bg-amber-800/50">
+                <Lightbulb className="h-5 w-5 text-amber-700 dark:text-amber-400" />
               </div>
               <h3 className="font-mono text-sm font-bold text-foreground">Progressive Hints</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -245,8 +245,8 @@ export default function Home() {
             <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
   <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
   <div className="relative h-full w-full rounded-xl bg-card p-6">
-              <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
-                <Target className="h-5 w-5 text-primary-foreground" />
+              <div className="mb-4 inline-flex rounded-lg bg-amber-100 dark:bg-amber-900/30 p-2.5 transition-colors group-hover:bg-amber-200 dark:group-hover:bg-amber-800/50">
+                <Target className="h-5 w-5 text-amber-700 dark:text-amber-400" />
               </div>
               <h3 className="font-mono text-sm font-bold text-foreground">Memory Hooks</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -258,8 +258,8 @@ export default function Home() {
             <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
   <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
   <div className="relative h-full w-full rounded-xl bg-card p-6">
-              <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
-                <Layers className="h-5 w-5 text-primary-foreground" />
+              <div className="mb-4 inline-flex rounded-lg bg-amber-100 dark:bg-amber-900/30 p-2.5 transition-colors group-hover:bg-amber-200 dark:group-hover:bg-amber-800/50">
+                <Layers className="h-5 w-5 text-amber-700 dark:text-amber-400" />
               </div>
               <h3 className="font-mono text-sm font-bold text-foreground">Similar Problems</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -271,8 +271,8 @@ export default function Home() {
             <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
   <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
   <div className="relative h-full w-full rounded-xl bg-card p-6">
-              <div className="mb-4 inline-flex rounded-lg bg-primary p-2.5">
-                <HelpCircle className="h-5 w-5 text-primary-foreground" />
+              <div className="mb-4 inline-flex rounded-lg bg-amber-100 dark:bg-amber-900/30 p-2.5 transition-colors group-hover:bg-amber-200 dark:group-hover:bg-amber-800/50">
+                <HelpCircle className="h-5 w-5 text-amber-700 dark:text-amber-400" />
               </div>
               <h3 className="font-mono text-sm font-bold text-foreground">Quick Check Quiz</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -312,7 +312,7 @@ export default function Home() {
               <div className="relative w-full max-w-[220px] rounded-2xl border-2 border-primary bg-primary p-6 shadow-lg">
                 <p className="font-mono text-[10px] text-muted-foreground/70 mb-1">interview mode</p>
                 <div className="flex items-center gap-3 mb-4">
-                  <Clock className="h-5 w-5 text-primary-foreground" />
+                  <Clock className="h-5 w-5 text-amber-700 dark:text-amber-400" />
                   <span className="font-mono text-[32px] font-bold leading-none text-primary-foreground">18:42</span>
                 </div>
                 <div className="h-1.5 w-full rounded-full bg-background/10 overflow-hidden">
