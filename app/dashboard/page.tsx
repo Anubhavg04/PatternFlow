@@ -296,7 +296,7 @@ export default async function Dashboard({
 
         {/* Plan expiry warning banner */}
         {daysUntilExpiry !== null && daysUntilExpiry <= 7 && daysUntilExpiry > 0 && (
-          <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 flex items-center justify-between">
+          <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-900/20 p-4 flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-amber-800">
                 ⏳ Your {plan} plan expires in {daysUntilExpiry} day{daysUntilExpiry !== 1 ? "s" : ""}
@@ -315,16 +315,16 @@ export default async function Dashboard({
         )}
 
         {/* ── Hero Section ── */}
-        <div className="relative mb-6 overflow-hidden rounded-2xl bg-primary p-5 text-primary-foreground shadow-md sm:p-6">
+        <div className="relative mb-6 overflow-hidden rounded-2xl bg-card p-5 text-card-foreground shadow-md sm:p-6">
           {/* Subtle yellow gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-transparent to-transparent" />
           
           {/* Background glows */}
-          <div className="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-amber-500/5 blur-[100px]" />
+          <div className="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-amber-50 dark:bg-amber-900/200/5 blur-[100px]" />
 
           <div className="relative flex flex-col items-start justify-between gap-5 md:flex-row md:items-center">
             <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-2 rounded-full bg-card/10 px-2.5 py-0.5 backdrop-blur-md border border-white/5">
+              <div className="inline-flex items-center gap-2 rounded-full bg-black/10 dark:bg-white/10 px-2.5 py-0.5 backdrop-blur-md border border-black/5 dark:border-white/5">
                 <TrendingUp size={12} className="text-amber-400" />
                 <span className="font-mono text-[8px] font-black uppercase tracking-widest text-amber-400">{streak} Day Streak</span>
               </div>
@@ -376,7 +376,7 @@ export default async function Dashboard({
                 <p className="font-mono text-2xl font-black text-foreground">{uniquePatterns}</p>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">Patterns</p>
               </div>
-              <div className={`group rounded-2xl border-2 p-5 shadow-sm transition-all hover:shadow-[0_0_20px_rgba(245,158,11,0.1)] hover:-translate-y-0.5 ${streak > 0 ? "border-amber-200 bg-amber-50/20" : "border-border bg-card hover:border-amber-200"}`}>
+              <div className={`group rounded-2xl border-2 p-5 shadow-sm transition-all hover:shadow-[0_0_20px_rgba(245,158,11,0.1)] hover:-translate-y-0.5 ${streak > 0 ? "border-amber-200 bg-amber-50 dark:bg-amber-900/20/20" : "border-border bg-card hover:border-amber-200"}`}>
                 <TrendingUp size={16} className={`mb-3 ${streak > 0 ? "text-amber-500" : "text-muted-foreground/70 group-hover:text-amber-500 transition-colors"}`} />
                 <p className="font-mono text-2xl font-black text-foreground">{streak}d</p>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">Streak</p>
@@ -410,7 +410,7 @@ export default async function Dashboard({
                         <div className="absolute left-0 top-0 h-full w-1 bg-amber-400 opacity-0 transition-opacity group-hover:opacity-100" />
                         <div className="flex-1 min-w-0 pr-4">
                           <div className="flex items-center gap-2 mb-1">
-                             <span className={`rounded px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider ${p.mastery === "Not started" ? "bg-gray-100 text-gray-500" : "bg-amber-100 text-amber-700"}`}>
+                             <span className={`rounded px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider ${p.mastery === "Not started" ? "bg-gray-100 text-gray-500" : "bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400"}`}>
                                {p.mastery === "Not started" ? "New" : p.mastery}
                              </span>
                           </div>
@@ -434,7 +434,7 @@ export default async function Dashboard({
               </div>
 
               {dailyChallenge ? (
-                <div className="group relative flex flex-col rounded-[2rem] border-2 border-primary bg-primary p-8 text-primary-foreground shadow-xl transition-transform hover:scale-[1.01]">
+                <div className="group relative flex flex-col rounded-[2rem] border-2 border-border bg-card p-8 text-card-foreground shadow-xl transition-transform hover:scale-[1.01]">
                   <div className="absolute -right-4 -top-4 h-32 w-32 rounded-full bg-amber-400/10 blur-3xl transition-opacity group-hover:opacity-100" />
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-2">
@@ -481,7 +481,7 @@ export default async function Dashboard({
                 <div className="rounded-2xl border-2 border-dashed border-border bg-card p-10 text-center shadow-sm">
                   {plan === "free" ? (
                     <div className="space-y-4">
-                      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-50 transition-transform group-hover:scale-110">
+                      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-50 dark:bg-amber-900/20 transition-transform group-hover:scale-110">
                         <History size={24} className="text-amber-600" />
                       </div>
                       <h3 className="text-lg font-extrabold text-foreground">Unlock Your Solve History</h3>
@@ -605,12 +605,12 @@ export default async function Dashboard({
             </div>
 
               {plan === "free" && (
-              <div className="group relative overflow-hidden rounded-2xl bg-card border-2 border-amber-100 p-6 shadow-md transition-all hover:shadow-[0_10px_40px_rgba(245,158,11,0.15)] hover:border-amber-300">
-                <div className="absolute -left-6 -top-6 h-20 w-20 rounded-full bg-amber-50 transition-transform group-hover:scale-150" />
+              <div className="group relative overflow-hidden rounded-2xl bg-card border-2 border-amber-100 dark:border-amber-900/50 p-6 shadow-md transition-all hover:shadow-[0_10px_40px_rgba(245,158,11,0.15)] hover:border-amber-300">
+                <div className="absolute -left-6 -top-6 h-20 w-20 rounded-full bg-amber-50 dark:bg-amber-900/20 transition-transform group-hover:scale-150" />
                 <div className="relative">
                   <div className="flex items-center justify-between mb-4">
                     <Sparkles size={24} className="text-amber-500 fill-amber-50" />
-                    <span className="rounded-full bg-amber-100 px-2.5 py-1 text-[9px] font-black uppercase text-amber-700 tracking-wider animate-pulse">Limited Offer</span>
+                    <span className="rounded-full bg-amber-100 dark:bg-amber-900/40 px-2.5 py-1 text-[9px] font-black uppercase text-amber-700 dark:text-amber-400 tracking-wider animate-pulse">Limited Offer</span>
                   </div>
                   <h3 className="text-base font-black text-foreground">Upgrade to Pro</h3>
                   <p className="text-xs text-muted-foreground mt-1.5 mb-6 leading-relaxed">
