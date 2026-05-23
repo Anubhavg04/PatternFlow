@@ -436,11 +436,11 @@ export default async function Dashboard({
               {dailyChallenge ? (
                 <div className="group relative flex flex-col overflow-hidden rounded-[2rem] border-2 border-amber-100/50 bg-gradient-to-b from-amber-50/50 to-white p-8 text-foreground shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all hover:scale-[1.01] hover:shadow-[0_8px_30px_rgb(245,158,11,0.08)] dark:border-border dark:bg-card dark:bg-none dark:shadow-xl dark:hover:shadow-[0_0_30px_rgba(245,158,11,0.05)]">
                   {/* Frosted Chocolate Geometric Corner Accents */}
-                  <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-amber-900/10 backdrop-blur-3xl transition-transform duration-500 group-hover:scale-110 dark:bg-amber-900/20" />
-                  <div className="pointer-events-none absolute -right-4 -top-4 h-16 w-16 rounded-full bg-amber-900/20 backdrop-blur-2xl transition-transform delay-75 duration-500 group-hover:scale-125 dark:bg-amber-900/40" />
+                  <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-amber-900/10 backdrop-blur-3xl transition-transform duration-1000 ease-in-out group-hover:scale-[20] dark:bg-amber-900/20" />
+                  <div className="pointer-events-none absolute -right-4 -top-4 h-16 w-16 rounded-full bg-amber-900/20 backdrop-blur-2xl transition-transform delay-75 duration-1000 ease-in-out group-hover:scale-[25] dark:bg-amber-900/40" />
                   
-                  <div className="pointer-events-none absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-amber-900/10 backdrop-blur-3xl transition-transform duration-500 group-hover:scale-110 dark:bg-amber-900/20" />
-                  <div className="pointer-events-none absolute -bottom-4 -left-4 h-16 w-16 rounded-full bg-amber-900/20 backdrop-blur-2xl transition-transform delay-75 duration-500 group-hover:scale-125 dark:bg-amber-900/40" />
+                  <div className="pointer-events-none absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-amber-900/10 backdrop-blur-3xl transition-transform duration-1000 ease-in-out group-hover:scale-[20] dark:bg-amber-900/20" />
+                  <div className="pointer-events-none absolute -bottom-4 -left-4 h-16 w-16 rounded-full bg-amber-900/20 backdrop-blur-2xl transition-transform delay-75 duration-1000 ease-in-out group-hover:scale-[25] dark:bg-amber-900/40" />
                   
                   <div className="relative flex items-center justify-between mb-6 z-10">
                     <div className="flex items-center gap-2">
