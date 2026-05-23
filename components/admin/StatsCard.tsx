@@ -17,7 +17,7 @@ export function StatsCard({ icon: Icon, value, label, trend }: StatsCardProps) {
   const trendColor = {
     up: "text-green-600",
     down: "text-amber-500",
-    neutral: "text-[#a89f96]",
+    neutral: "text-muted-foreground/70",
   }
 
   const TrendIcon =
@@ -28,17 +28,17 @@ export function StatsCard({ icon: Icon, value, label, trend }: StatsCardProps) {
       : Minus
 
   return (
-    <div className="rounded-xl border border-[#e8e2d9] bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
+    <div className="rounded-xl border border-border bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
       {/* Icon chip */}
-      <div className="mb-4 inline-flex rounded-lg bg-[#f5f2eb] p-2">
-        <Icon size={15} className="text-[#6b6560]" />
+      <div className="mb-4 inline-flex rounded-lg bg-secondary p-2">
+        <Icon size={15} className="text-muted-foreground" />
       </div>
 
       {/* Label */}
-      <p className="text-xs text-[#a89f96]">{label}</p>
+      <p className="text-xs text-muted-foreground/70">{label}</p>
 
       {/* Value */}
-      <p className="mt-1 font-mono text-3xl font-bold tracking-tight text-[#1a1814]">
+      <p className="mt-1 font-mono text-3xl font-bold tracking-tight text-foreground">
         {value}
       </p>
 

@@ -41,7 +41,7 @@ export default async function AdminPage() {
   const initial = email.charAt(0).toUpperCase()
 
   return (
-    <div className="flex min-h-screen bg-[#faf8f3]">
+    <div className="flex min-h-screen bg-background">
       {/* Fixed left sidebar */}
       <AdminSidebar />
 
@@ -49,26 +49,26 @@ export default async function AdminPage() {
       <div className="flex flex-1 flex-col lg:pl-56">
 
         {/* Sticky top header */}
-        <header className="sticky top-0 z-40 flex h-14 flex-shrink-0 items-center justify-between border-b border-[#e8e2d9] bg-[#faf8f3]/90 px-6 backdrop-blur-sm">
+        <header className="sticky top-0 z-40 flex h-14 flex-shrink-0 items-center justify-between border-b border-border bg-background/90 px-6 backdrop-blur-sm">
           <div className="flex items-center gap-3">
             {/* Mobile: show logo since sidebar is hidden */}
             <div className="flex items-center gap-2 lg:hidden">
-              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#1a1814]">
-                <span className="font-mono text-[10px] font-bold text-[#faf8f3]">PF</span>
+              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary">
+                <span className="font-mono text-[10px] font-bold text-primary-foreground">PF</span>
               </div>
-              <span className="text-sm font-bold text-[#1a1814]">Admin</span>
+              <span className="text-sm font-bold text-foreground">Admin</span>
             </div>
             <div className="hidden lg:block">
-              <p className="text-sm font-semibold text-[#1a1814]">Founder Dashboard</p>
-              <p className="font-mono text-[10px] text-[#a89f96]">PatternFlow · Private</p>
+              <p className="text-sm font-semibold text-foreground">Founder Dashboard</p>
+              <p className="font-mono text-[10px] text-muted-foreground/70">PatternFlow · Private</p>
             </div>
           </div>
 
           {/* Right: user avatar */}
           <div className="flex items-center gap-3">
-            <span className="hidden font-mono text-xs text-[#a89f96] md:block">{email}</span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1a1814]">
-              <span className="font-mono text-xs font-bold text-[#faf8f3]">{initial}</span>
+            <span className="hidden font-mono text-xs text-muted-foreground/70 md:block">{email}</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary">
+              <span className="font-mono text-xs font-bold text-primary-foreground">{initial}</span>
             </div>
           </div>
         </header>

@@ -87,7 +87,7 @@ export function AdminDashboardClient({ initialStats, initialRange, fetchStats }:
     >
       {/* ── Range Selector Row ── */}
       <div className="mb-8 flex items-center justify-between">
-        <p className="font-mono text-xs text-[#a89f96]">
+        <p className="font-mono text-xs text-muted-foreground/70">
           Showing last {days} days
         </p>
         <RangeSelector selected={range} onChange={handleRangeChange} />
@@ -122,13 +122,13 @@ export function AdminDashboardClient({ initialStats, initialRange, fetchStats }:
       </div>
 
       {/* ── Section 2: Revenue Banner + Chart ── */}
-      <div id="growth" className="mb-8 rounded-xl border border-[#e8e2d9] bg-white shadow-sm overflow-hidden">
+      <div id="growth" className="mb-8 rounded-xl border border-border bg-white shadow-sm overflow-hidden">
         {/* Revenue header — Stripe-style */}
         <div className="flex flex-col gap-4 border-b border-[#f0ede6] px-4 py-5 sm:flex-row sm:items-start sm:justify-between sm:px-6">
           <div>
-            <p className="font-mono text-[10px] text-[#a89f96] sm:text-xs">{"// revenue"}</p>
-            <p className="mt-0.5 text-xs text-[#6b6560] sm:text-sm">Total Revenue</p>
-            <p className="mt-1 font-mono text-3xl font-bold tracking-tight text-[#1a1814] sm:text-4xl">
+            <p className="font-mono text-[10px] text-muted-foreground/70 sm:text-xs">{"// revenue"}</p>
+            <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">Total Revenue</p>
+            <p className="mt-1 font-mono text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               {revenue}
             </p>
           </div>
@@ -146,12 +146,12 @@ export function AdminDashboardClient({ initialStats, initialRange, fetchStats }:
         <div className="px-4 pb-6 pt-5 sm:px-6">
           <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-sm font-medium text-[#1a1814]">Solves over time</p>
-              <p className="mt-0.5 font-mono text-[10px] text-[#a89f96] sm:text-xs">
+              <p className="text-sm font-medium text-foreground">Solves over time</p>
+              <p className="mt-0.5 font-mono text-[10px] text-muted-foreground/70 sm:text-xs">
                 Problems solved · last {days} days
               </p>
             </div>
-            <span className="w-fit rounded-full border border-[#e8e2d9] px-2 py-0.5 font-mono text-[9px] text-[#a89f96] sm:px-2.5 sm:py-1 sm:text-[10px]">
+            <span className="w-fit rounded-full border border-border px-2 py-0.5 font-mono text-[9px] text-muted-foreground/70 sm:px-2.5 sm:py-1 sm:text-[10px]">
               {range}
             </span>
           </div>
@@ -161,9 +161,9 @@ export function AdminDashboardClient({ initialStats, initialRange, fetchStats }:
 
       {/* ── Section 3: Funnel + Insights ── */}
       <div id="funnel" className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="rounded-xl border border-[#e8e2d9] bg-white p-6 shadow-sm">
-          <p className="mb-1 font-mono text-xs text-[#a89f96]">{"// funnel"}</p>
-          <p className="mb-5 text-sm font-medium text-[#1a1814]">Conversion steps</p>
+        <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+          <p className="mb-1 font-mono text-xs text-muted-foreground/70">{"// funnel"}</p>
+          <p className="mb-5 text-sm font-medium text-foreground">Conversion steps</p>
           <Funnel
             totalUsers={stats.funnelData.totalUsers}
             solveClicked={stats.funnelData.solveClicked}
@@ -171,17 +171,17 @@ export function AdminDashboardClient({ initialStats, initialRange, fetchStats }:
           />
         </div>
 
-        <div className="rounded-xl border border-[#e8e2d9] bg-white p-6 shadow-sm">
-          <p className="mb-1 font-mono text-xs text-[#a89f96]">{"// insights"}</p>
-          <p className="mb-5 text-sm font-medium text-[#1a1814]">Smart observations</p>
+        <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+          <p className="mb-1 font-mono text-xs text-muted-foreground/70">{"// insights"}</p>
+          <p className="mb-5 text-sm font-medium text-foreground">Smart observations</p>
           <InsightsPanel stats={stats} days={days} />
         </div>
       </div>
 
       {/* ── Section 4: Feature Usage ── */}
-      <div id="features" className="rounded-xl border border-[#e8e2d9] bg-white p-6 shadow-sm">
-        <p className="mb-1 font-mono text-xs text-[#a89f96]">{"// features"}</p>
-        <p className="mb-6 text-sm font-medium text-[#1a1814]">What users rely on most</p>
+      <div id="features" className="rounded-xl border border-border bg-white p-6 shadow-sm">
+        <p className="mb-1 font-mono text-xs text-muted-foreground/70">{"// features"}</p>
+        <p className="mb-6 text-sm font-medium text-foreground">What users rely on most</p>
         <div className="space-y-5">
           {features.map(({ icon: Icon, label, value }) => {
             const pct = Math.round((value / maxFeature) * 100)
@@ -189,18 +189,18 @@ export function AdminDashboardClient({ initialStats, initialRange, fetchStats }:
               <div key={label}>
                 <div className="mb-2 flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="rounded-md bg-[#f5f2eb] p-1.5">
-                      <Icon size={11} className="text-[#6b6560]" />
+                    <div className="rounded-md bg-secondary p-1.5">
+                      <Icon size={11} className="text-muted-foreground" />
                     </div>
-                    <span className="text-xs text-[#6b6560]">{label}</span>
+                    <span className="text-xs text-muted-foreground">{label}</span>
                   </div>
-                  <span className="font-mono text-xs font-bold text-[#1a1814]">
+                  <span className="font-mono text-xs font-bold text-foreground">
                     {value.toLocaleString()}
                   </span>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#f0ede6]">
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
                   <div
-                    className="h-full rounded-full bg-[#1a1814] transition-all duration-700"
+                    className="h-full rounded-full bg-primary transition-all duration-700"
                     style={{ width: `${pct}%` }}
                   />
                 </div>

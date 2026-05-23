@@ -179,20 +179,20 @@ export default function SolvePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf8f3] text-[#1a1814]">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       <main className="mx-auto max-w-3xl px-4 py-8 pt-24 sm:px-6 sm:py-12 sm:pt-24">
         <div className="mb-8">
-          <p className="mb-1 font-mono text-sm text-[#a89f96]">{"// ai pattern solver"}</p>
-          <h1 className="mb-1 text-2xl font-bold text-[#1a1814] sm:text-3xl">Paste your problem</h1>
-          <p className="mb-8 text-sm text-[#6b6560]">
+          <p className="mb-1 font-mono text-sm text-muted-foreground/70">{"// ai pattern solver"}</p>
+          <h1 className="mb-1 text-2xl font-bold text-foreground sm:text-3xl">Paste your problem</h1>
+          <p className="mb-8 text-sm text-muted-foreground">
             Works with LeetCode, GFG, Codeforces — paste the full thing, noise included.
           </p>
           <Badge
             variant="outline"
-            className="border-[#e8e2d9] bg-white font-mono text-xs text-[#6b6560] hover:bg-white"
+            className="border-border bg-white font-mono text-xs text-muted-foreground hover:bg-white"
           >
-            <Brain size={14} className="mr-2 text-[#a89f96]" />
+            <Brain size={14} className="mr-2 text-muted-foreground/70" />
             Pattern detection + memory hooks
           </Badge>
         </div>
@@ -203,7 +203,7 @@ export default function SolvePage() {
               {[1, 2, 3, 4, 5].map((n) => (
                 <div
                   key={n}
-                  className={`h-1.5 w-6 rounded-full ${n <= solvesUsed ? "bg-[#1a1814]" : "bg-[#e8e2d9]"}`}
+                  className={`h-1.5 w-6 rounded-full ${n <= solvesUsed ? "bg-primary" : "bg-[#e8e2d9]"}`}
                 />
               ))}
             </div>
@@ -215,13 +215,13 @@ export default function SolvePage() {
                 style={{ width: "120px" }}
               >
                 <div
-                  className="h-full rounded-full bg-[#1a1814] transition-all"
+                  className="h-full rounded-full bg-primary transition-all"
                   style={{ width: `${Math.min(100, (solvesUsed / 100) * 100)}%` }}
                 />
               </div>
             </div>
           )}
-          <span className="font-mono text-xs text-[#a89f96]">
+          <span className="font-mono text-xs text-muted-foreground/70">
             {userPlan === "pro"
               ? "Pro plan · unlimited solves"
               : userPlan === "basic"
@@ -234,7 +234,7 @@ export default function SolvePage() {
           ref={textAreaRef}
           value={problem}
           onChange={(event) => setProblem(event.target.value)}
-          className="min-h-[200px] w-full resize-none rounded-xl border border-[#e8e2d9] bg-white p-4 font-mono text-sm leading-relaxed text-[#1a1814] outline-none transition-all placeholder:text-[#a89f96] focus:border-[#1a1814] focus:ring-1 focus:ring-[#1a1814]"
+          className="min-h-[200px] w-full resize-none rounded-xl border border-border bg-white p-4 font-mono text-sm leading-relaxed text-foreground outline-none transition-all placeholder:text-muted-foreground/70 focus:border-primary focus:ring-1 focus:ring-[#1a1814]"
           placeholder="Paste any DSA problem here..."
         />
 
@@ -243,7 +243,7 @@ export default function SolvePage() {
             <button
               key={label}
               onClick={() => setProblem(EXAMPLE_PROBLEMS[label as keyof typeof EXAMPLE_PROBLEMS].content)}
-              className="rounded-full border border-[#e8e2d9] bg-white px-3 py-1.5 font-mono text-xs text-[#6b6560] transition-all hover:border-[#1a1814] hover:text-[#1a1814]"
+              className="rounded-full border border-border bg-white px-3 py-1.5 font-mono text-xs text-muted-foreground transition-all hover:border-primary hover:text-foreground"
             >
               {label}
             </button>
@@ -269,7 +269,7 @@ export default function SolvePage() {
               variant="outline"
               onClick={handleCopy}
               disabled={!problem.trim() || loading}
-              className="border-[#e8e2d9] bg-white px-3 font-mono text-[#6b6560] hover:border-[#1a1814] hover:text-[#1a1814]"
+              className="border-border bg-white px-3 font-mono text-muted-foreground hover:border-primary hover:text-foreground"
             >
               {copied ? <CheckCircle2 size={14} /> : <Copy size={14} />}
             </Button>
@@ -278,14 +278,14 @@ export default function SolvePage() {
               variant="outline"
               onClick={handleReset}
               disabled={loading}
-              className="border-[#e8e2d9] bg-white px-3 font-mono text-[#6b6560] hover:border-[#1a1814] hover:text-[#1a1814]"
+              className="border-border bg-white px-3 font-mono text-muted-foreground hover:border-primary hover:text-foreground"
             >
               <RotateCcw size={14} />
             </Button>
             <Button
               onClick={handleSolve}
               disabled={loading || !problem.trim()}
-              className="w-full bg-[#1a1814] px-6 font-mono text-[#faf8f3] hover:bg-[#2d2926] disabled:opacity-70 sm:w-auto sm:min-w-[140px]"
+              className="w-full bg-primary px-6 font-mono text-primary-foreground hover:bg-primary/90 disabled:opacity-70 sm:w-auto sm:min-w-[140px]"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
@@ -308,7 +308,7 @@ export default function SolvePage() {
         <div className="mt-8 min-h-[400px]">
           {loading ? (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="rounded-xl bg-[#1a1814] p-6 font-mono text-sm shadow-2xl ring-1 ring-white/10">
+              <div className="rounded-xl bg-primary p-6 font-mono text-sm shadow-2xl ring-1 ring-white/10">
                 <div className="mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
                   <div className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
                   <div className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
@@ -336,7 +336,7 @@ export default function SolvePage() {
           ) : null}
         </div>
 
-        <div className="mt-10 flex items-center justify-center gap-5 text-[#a89f96]">
+        <div className="mt-10 flex items-center justify-center gap-5 text-muted-foreground/70">
           <ChevronRight size={16} />
           <Eye size={16} />
           <Target size={16} />

@@ -95,15 +95,15 @@ export function InsightsPanel({ stats, days }: InsightsPanelProps) {
               ? "bg-[#f0fdf4] border border-[#d1fae5]"
               : ins.type === "warn"
               ? "bg-[#fffbeb] border border-[#fde68a]"
-              : "bg-[#faf8f3] border border-[#e8e2d9]"
+              : "bg-background border border-border"
           }`}
         >
           <div className="mt-0.5 flex-shrink-0">
             {ins.type === "good" && <TrendingUp size={14} className="text-green-600" />}
             {ins.type === "warn" && <AlertCircle size={14} className="text-amber-500" />}
-            {ins.type === "info" && <Zap size={14} className="text-[#a89f96]" />}
+            {ins.type === "info" && <Zap size={14} className="text-muted-foreground/70" />}
           </div>
-          <p className="text-xs leading-relaxed text-[#1a1814]">{ins.text}</p>
+          <p className="text-xs leading-relaxed text-foreground">{ins.text}</p>
         </div>
       ))}
     </div>

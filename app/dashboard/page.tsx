@@ -234,7 +234,7 @@ export default async function Dashboard({
     readinessScore >= 80 ? "text-green-600" :
       readinessScore >= 60 ? "text-green-500" :
         readinessScore >= 40 ? "text-amber-500" :
-          readinessScore >= 20 ? "text-amber-400" : "text-[#a89f96]"
+          readinessScore >= 20 ? "text-amber-400" : "text-muted-foreground/70"
 
   // ── Daily Challenge ──
   // Pick a problem from the weakest pattern, deterministic per day+user
@@ -274,7 +274,7 @@ export default async function Dashboard({
   const userPercentile = Math.min(99, Math.max(10, (totalSolves * 2) + (streak * 5)))
 
   return (
-    <div className="min-h-screen bg-[#faf8f3]">
+    <div className="min-h-screen bg-background">
       <Navbar />
       <main className="mx-auto max-w-6xl px-4 py-8 pt-28 sm:px-6 sm:py-12 sm:pt-32">
 
@@ -315,7 +315,7 @@ export default async function Dashboard({
         )}
 
         {/* ── Hero Section ── */}
-        <div className="relative mb-6 overflow-hidden rounded-2xl bg-[#1a1814] p-5 text-[#faf8f3] shadow-md sm:p-6">
+        <div className="relative mb-6 overflow-hidden rounded-2xl bg-primary p-5 text-primary-foreground shadow-md sm:p-6">
           {/* Subtle yellow gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-transparent to-transparent" />
           
@@ -332,7 +332,7 @@ export default async function Dashboard({
                 {streak > 0 ? `Keep it up, ${name}! 🔥` : `Ready, ${name}?`}
               </h1>
               <div className="flex flex-col gap-0.5">
-                <p className="text-sm font-medium text-[#a89f96]">
+                <p className="text-sm font-medium text-muted-foreground/70">
                   {smartInsight}
                 </p>
                 <div className="flex items-center gap-1.5 text-[10px] text-green-400/70">
@@ -345,7 +345,7 @@ export default async function Dashboard({
             <div className="shrink-0">
               <Link
                 href="/solve"
-                className="group relative flex items-center gap-2 rounded-lg bg-[#faf8f3] px-5 py-2.5 font-mono text-xs font-black text-[#1a1814] transition-all hover:scale-105 active:scale-95 shadow-lg"
+                className="group relative flex items-center gap-2 rounded-lg bg-background px-5 py-2.5 font-mono text-xs font-black text-foreground transition-all hover:scale-105 active:scale-95 shadow-lg"
               >
                 <Zap size={14} fill="currentColor" className="transition-transform group-hover:rotate-12" />
                 Continue Solving
@@ -361,32 +361,32 @@ export default async function Dashboard({
 
             {/* Stats Grid */}
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <div className="group rounded-2xl border border-[#e8e2d9] bg-white p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5">
+              <div className="group rounded-2xl border border-border bg-white p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5">
                 <div className="flex items-center justify-between mb-3">
-                  <BookOpen size={16} className="text-[#a89f96] group-hover:text-amber-500 transition-colors" />
+                  <BookOpen size={16} className="text-muted-foreground/70 group-hover:text-amber-500 transition-colors" />
                   {solvedToday > 0 && (
                     <span className="rounded-full bg-green-50 px-2 py-0.5 text-[9px] font-bold text-green-600">+{solvedToday} today</span>
                   )}
                 </div>
-                <p className="font-mono text-2xl font-black text-[#1a1814]">{totalSolves}</p>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-[#a89f96]">Solved</p>
+                <p className="font-mono text-2xl font-black text-foreground">{totalSolves}</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">Solved</p>
               </div>
-              <div className="group rounded-2xl border border-[#e8e2d9] bg-white p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5">
-                <Brain size={16} className="mb-3 text-[#a89f96] group-hover:text-amber-500 transition-colors" />
-                <p className="font-mono text-2xl font-black text-[#1a1814]">{uniquePatterns}</p>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-[#a89f96]">Patterns</p>
+              <div className="group rounded-2xl border border-border bg-white p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5">
+                <Brain size={16} className="mb-3 text-muted-foreground/70 group-hover:text-amber-500 transition-colors" />
+                <p className="font-mono text-2xl font-black text-foreground">{uniquePatterns}</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">Patterns</p>
               </div>
-              <div className={`group rounded-2xl border-2 p-5 shadow-sm transition-all hover:shadow-[0_0_20px_rgba(245,158,11,0.1)] hover:-translate-y-0.5 ${streak > 0 ? "border-amber-200 bg-amber-50/20" : "border-[#e8e2d9] bg-white hover:border-amber-200"}`}>
-                <TrendingUp size={16} className={`mb-3 ${streak > 0 ? "text-amber-500" : "text-[#a89f96] group-hover:text-amber-500 transition-colors"}`} />
-                <p className="font-mono text-2xl font-black text-[#1a1814]">{streak}d</p>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-[#a89f96]">Streak</p>
+              <div className={`group rounded-2xl border-2 p-5 shadow-sm transition-all hover:shadow-[0_0_20px_rgba(245,158,11,0.1)] hover:-translate-y-0.5 ${streak > 0 ? "border-amber-200 bg-amber-50/20" : "border-border bg-white hover:border-amber-200"}`}>
+                <TrendingUp size={16} className={`mb-3 ${streak > 0 ? "text-amber-500" : "text-muted-foreground/70 group-hover:text-amber-500 transition-colors"}`} />
+                <p className="font-mono text-2xl font-black text-foreground">{streak}d</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">Streak</p>
               </div>
-              <div className="group rounded-2xl border border-[#e8e2d9] bg-white p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5">
-                <Target size={16} className="mb-3 text-[#a89f96] group-hover:text-amber-500 transition-colors" />
-                <p className="font-mono text-2xl font-black text-[#1a1814]">
+              <div className="group rounded-2xl border border-border bg-white p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5">
+                <Target size={16} className="mb-3 text-muted-foreground/70 group-hover:text-amber-500 transition-colors" />
+                <p className="font-mono text-2xl font-black text-foreground">
                   {patternAnalysis.filter(p => p.mastery === "Mastered" || p.mastery === "Confident").length}
                 </p>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-[#a89f96]">Mastered</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">Mastered</p>
               </div>
             </div>
 
@@ -394,8 +394,8 @@ export default async function Dashboard({
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xs font-bold uppercase tracking-widest text-[#a89f96]">Personalized Path</h2>
-                  <Link href="/patterns" className="text-[10px] font-bold text-[#1a1814] hover:underline">
+                  <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground/70">Personalized Path</h2>
+                  <Link href="/patterns" className="text-[10px] font-bold text-foreground hover:underline">
                     View Library →
                   </Link>
                 </div>
@@ -405,7 +405,7 @@ export default async function Dashboard({
                       <Link
                         key={p.name}
                         href={`/patterns`}
-                        className="group relative flex items-center justify-between overflow-hidden rounded-2xl border border-[#e8e2d9] bg-white p-5 transition-all hover:border-[#1a1814] hover:shadow-md"
+                        className="group relative flex items-center justify-between overflow-hidden rounded-2xl border border-border bg-white p-5 transition-all hover:border-primary hover:shadow-md"
                       >
                         <div className="absolute left-0 top-0 h-full w-1 bg-amber-400 opacity-0 transition-opacity group-hover:opacity-100" />
                         <div className="flex-1 min-w-0 pr-4">
@@ -414,27 +414,27 @@ export default async function Dashboard({
                                {p.mastery === "Not started" ? "New" : p.mastery}
                              </span>
                           </div>
-                          <p className="text-base font-bold text-[#1a1814]">{p.name}</p>
-                          <p className="font-mono text-[10px] text-[#a89f96] mt-1">{p.hint}</p>
+                          <p className="text-base font-bold text-foreground">{p.name}</p>
+                          <p className="font-mono text-[10px] text-muted-foreground/70 mt-1">{p.hint}</p>
                         </div>
                         <div className="shrink-0 text-right">
-                          <div className="mb-1 text-[10px] font-bold text-[#1a1814]">{p.masteryPercent}%</div>
-                          <div className="h-1.5 w-12 rounded-full bg-[#f0ede6] overflow-hidden">
-                             <div className="h-full bg-[#1a1814] transition-all" style={{ width: `${p.masteryPercent}%` }} />
+                          <div className="mb-1 text-[10px] font-bold text-foreground">{p.masteryPercent}%</div>
+                          <div className="h-1.5 w-12 rounded-full bg-muted overflow-hidden">
+                             <div className="h-full bg-primary transition-all" style={{ width: `${p.masteryPercent}%` }} />
                           </div>
                         </div>
                       </Link>
                     ))
                   ) : (
-                    <div className="rounded-2xl border border-dashed border-[#e8e2d9] p-8 text-center bg-white/50">
-                      <p className="text-xs font-medium text-[#a89f96]">Mastery achieved! Pick a new concept. 🎉</p>
+                    <div className="rounded-2xl border border-dashed border-border p-8 text-center bg-white/50">
+                      <p className="text-xs font-medium text-muted-foreground/70">Mastery achieved! Pick a new concept. 🎉</p>
                     </div>
                   )}
                 </div>
               </div>
 
               {dailyChallenge ? (
-                <div className="group relative flex flex-col rounded-[2rem] border-2 border-[#1a1814] bg-[#1a1814] p-8 text-[#faf8f3] shadow-xl transition-transform hover:scale-[1.01]">
+                <div className="group relative flex flex-col rounded-[2rem] border-2 border-primary bg-primary p-8 text-primary-foreground shadow-xl transition-transform hover:scale-[1.01]">
                   <div className="absolute -right-4 -top-4 h-32 w-32 rounded-full bg-amber-400/10 blur-3xl transition-opacity group-hover:opacity-100" />
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-2">
@@ -448,20 +448,20 @@ export default async function Dashboard({
                   </div>
                   <div className="mb-8">
                     <h3 className="text-2xl font-black mb-2 leading-tight">{dailyChallenge.patternName}</h3>
-                    <p className="text-sm leading-relaxed text-[#a89f96]">
-                      Paste any <span className="font-bold text-[#faf8f3]">{dailyChallenge.patternName}</span> problem from LeetCode, GFG, or any platform. This is your weakest pattern — solving one will level up your mastery.
+                    <p className="text-sm leading-relaxed text-muted-foreground/70">
+                      Paste any <span className="font-bold text-primary-foreground">{dailyChallenge.patternName}</span> problem from LeetCode, GFG, or any platform. This is your weakest pattern — solving one will level up your mastery.
                     </p>
                   </div>
                   <Link
                     href="/solve"
-                    className="mt-auto flex w-full items-center justify-center gap-3 rounded-2xl bg-[#faf8f3] py-4 font-mono text-base font-black text-[#1a1814] transition-all hover:bg-white hover:scale-[1.02] active:scale-95 shadow-[0_10px_30px_rgba(250,248,243,0.1)]"
+                    className="mt-auto flex w-full items-center justify-center gap-3 rounded-2xl bg-background py-4 font-mono text-base font-black text-foreground transition-all hover:bg-white hover:scale-[1.02] active:scale-95 shadow-[0_10px_30px_rgba(250,248,243,0.1)]"
                   >
                     Start Challenge <ArrowRight size={18} />
                   </Link>
                 </div>
               ) : (
-                <div className="rounded-2xl border border-[#e8e2d9] bg-white p-6 flex items-center justify-center">
-                  <p className="text-xs font-medium text-[#a89f96]">Check back tomorrow for your next goal!</p>
+                <div className="rounded-2xl border border-border bg-white p-6 flex items-center justify-center">
+                  <p className="text-xs font-medium text-muted-foreground/70">Check back tomorrow for your next goal!</p>
                 </div>
               )}
             </div>
@@ -469,42 +469,42 @@ export default async function Dashboard({
             {/* History */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-sm font-bold uppercase tracking-wider text-[#a89f96]">Learning History</h2>
+                <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground/70">Learning History</h2>
                 {isPaid && solves.length > 0 && (
-                  <Link href="/solve" className="text-[10px] text-[#6b6560] underline">
+                  <Link href="/solve" className="text-[10px] text-muted-foreground underline">
                     New solve
                   </Link>
                 )}
               </div>
 
               {solves.length === 0 ? (
-                <div className="rounded-2xl border-2 border-dashed border-[#e8e2d9] bg-white p-10 text-center shadow-sm">
+                <div className="rounded-2xl border-2 border-dashed border-border bg-white p-10 text-center shadow-sm">
                   {plan === "free" ? (
                     <div className="space-y-4">
                       <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-50 transition-transform group-hover:scale-110">
                         <History size={24} className="text-amber-600" />
                       </div>
-                      <h3 className="text-lg font-extrabold text-[#1a1814]">Unlock Your Solve History</h3>
+                      <h3 className="text-lg font-extrabold text-foreground">Unlock Your Solve History</h3>
                       <div className="space-y-2 py-2">
-                         <div className="flex items-center gap-2 text-[11px] text-[#6b6560] justify-center">
+                         <div className="flex items-center gap-2 text-[11px] text-muted-foreground justify-center">
                            <CheckCircle2 size={12} className="text-green-600" /> Review past solutions anytime
                          </div>
-                         <div className="flex items-center gap-2 text-[11px] text-[#6b6560] justify-center">
+                         <div className="flex items-center gap-2 text-[11px] text-muted-foreground justify-center">
                            <CheckCircle2 size={12} className="text-green-600" /> Track pattern mastery over months
                          </div>
-                         <div className="flex items-center gap-2 text-[11px] text-[#6b6560] justify-center">
+                         <div className="flex items-center gap-2 text-[11px] text-muted-foreground justify-center">
                            <CheckCircle2 size={12} className="text-green-600" /> Unlimited pattern analysis
                          </div>
                       </div>
                       <Link
                         href="/#pricing"
-                        className="inline-flex items-center gap-2 rounded-xl bg-[#1a1814] px-8 py-3 font-mono text-xs font-black text-[#faf8f3] transition-all hover:scale-105 hover:shadow-lg active:scale-95"
+                        className="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3 font-mono text-xs font-black text-primary-foreground transition-all hover:scale-105 hover:shadow-lg active:scale-95"
                       >
                         Upgrade to Premium <ArrowRight size={14} />
                       </Link>
                     </div>
                   ) : (
-                    <p className="text-xs font-medium text-[#a89f96]">No solves recorded yet. Your history will appear here.</p>
+                    <p className="text-xs font-medium text-muted-foreground/70">No solves recorded yet. Your history will appear here.</p>
                   )}
                 </div>
               ) : (
@@ -512,21 +512,21 @@ export default async function Dashboard({
                   {solves.slice(0, 6).map((solve) => (
                     <div
                       key={solve.id}
-                      className="group flex items-start justify-between rounded-xl border border-[#e8e2d9] bg-white p-3 transition-all hover:border-[#d4cdc4] hover:shadow-sm"
+                      className="group flex items-start justify-between rounded-xl border border-border bg-white p-3 transition-all hover:border-border/80 hover:shadow-sm"
                     >
                       <div className="mr-3 min-w-0 flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="font-mono text-[9px] text-[#a89f96]">
+                          <span className="font-mono text-[9px] text-muted-foreground/70">
                             {timeAgo(solve.created_at)}
                           </span>
                           <span className={`font-mono text-[9px] font-bold ${getDiffColor(solve.difficulty)}`}>
                             {solve.difficulty.toUpperCase()}
                           </span>
                         </div>
-                        <p className="truncate text-xs font-medium text-[#1a1814]">
+                        <p className="truncate text-xs font-medium text-foreground">
                           {solve.problem_summary || "Problem solved"}
                         </p>
-                        <p className="mt-1 font-mono text-[9px] text-[#6b6560]">{solve.pattern_name}</p>
+                        <p className="mt-1 font-mono text-[9px] text-muted-foreground">{solve.pattern_name}</p>
                       </div>
                     </div>
                   ))}
@@ -539,12 +539,12 @@ export default async function Dashboard({
           <div className="space-y-8">
 
             {/* Readiness Score */}
-            <div className="group rounded-3xl border-2 border-[#e8e2d9] bg-white p-6 shadow-sm transition-all hover:border-[#1a1814]">
+            <div className="group rounded-3xl border-2 border-border bg-white p-6 shadow-sm transition-all hover:border-primary">
               <div className="mb-6 flex items-center justify-between">
-                <h2 className="text-xs font-bold uppercase tracking-widest text-[#a89f96]">Readiness Score</h2>
+                <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground/70">Readiness Score</h2>
                 <div className="group/info relative">
-                  <AlertCircle size={14} className="text-[#e8e2d9] cursor-help transition-colors group-hover/info:text-[#a89f96]" />
-                  <div className="absolute bottom-full right-0 mb-2 w-48 rounded-lg bg-[#1a1814] p-3 text-[10px] text-[#faf8f3] opacity-0 transition-opacity group-hover/info:opacity-100 shadow-xl pointer-events-none">
+                  <AlertCircle size={14} className="text-[#e8e2d9] cursor-help transition-colors group-hover/info:text-muted-foreground/70" />
+                  <div className="absolute bottom-full right-0 mb-2 w-48 rounded-lg bg-primary p-3 text-[10px] text-primary-foreground opacity-0 transition-opacity group-hover/info:opacity-100 shadow-xl pointer-events-none">
                     A composite score based on pattern coverage, mastery depth, and consistency.
                   </div>
                 </div>
@@ -569,36 +569,36 @@ export default async function Dashboard({
                 <div className="w-full space-y-4">
                   <div className="flex flex-col items-center gap-1">
                     <span className={`text-xs font-black uppercase tracking-widest ${readinessColor}`}>{readinessLabel}</span>
-                    <p className="text-center text-[10px] text-[#6b6560]">How ready you are for technical interviews.</p>
+                    <p className="text-center text-[10px] text-muted-foreground">How ready you are for technical interviews.</p>
                   </div>
                   <div className="h-px bg-[#e8e2d9]" />
                   <div className="flex items-center justify-between px-2">
-                    <span className="text-[10px] font-bold text-[#a89f96] uppercase tracking-wider">Coverage</span>
-                    <span className="font-mono text-xs font-black text-[#1a1814]">{patternsAttempted}/{totalPatterns}</span>
+                    <span className="text-[10px] font-bold text-muted-foreground/70 uppercase tracking-wider">Coverage</span>
+                    <span className="font-mono text-xs font-black text-foreground">{patternsAttempted}/{totalPatterns}</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Pattern Mastery (Simplified) */}
-            <div className="rounded-2xl border border-[#e8e2d9] bg-white p-5 shadow-sm">
-              <h2 className="text-sm font-bold uppercase tracking-wider text-[#a89f96] mb-4">Pattern Mastery</h2>
+            <div className="rounded-2xl border border-border bg-white p-5 shadow-sm">
+              <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground/70 mb-4">Pattern Mastery</h2>
               <div className="space-y-3">
                 {sortedPatterns.filter(p => p.count > 0).slice(0, 5).map((p) => {
                   const barWidth = Math.min(100, (p.count / 10) * 100)
                   return (
                     <div key={p.name} className="space-y-1">
                       <div className="flex justify-between items-center">
-                        <span className="font-mono text-[10px] text-[#1a1814] truncate">{p.name}</span>
-                        <span className="text-[9px] text-[#a89f96]">{p.mastery}</span>
+                        <span className="font-mono text-[10px] text-foreground truncate">{p.name}</span>
+                        <span className="text-[9px] text-muted-foreground/70">{p.mastery}</span>
                       </div>
-                      <div className="h-1 w-full rounded-full bg-[#f0ede6] overflow-hidden">
-                        <div className="h-full bg-[#1a1814] transition-all" style={{ width: `${barWidth}%` }} />
+                      <div className="h-1 w-full rounded-full bg-muted overflow-hidden">
+                        <div className="h-full bg-primary transition-all" style={{ width: `${barWidth}%` }} />
                       </div>
                     </div>
                   )
                 })}
-                <Link href="/patterns" className="block pt-2 text-center font-mono text-[9px] text-[#a89f96] hover:text-[#1a1814]">
+                <Link href="/patterns" className="block pt-2 text-center font-mono text-[9px] text-muted-foreground/70 hover:text-foreground">
                   View all mastery details →
                 </Link>
               </div>
@@ -612,13 +612,13 @@ export default async function Dashboard({
                     <Sparkles size={24} className="text-amber-500 fill-amber-50" />
                     <span className="rounded-full bg-amber-100 px-2.5 py-1 text-[9px] font-black uppercase text-amber-700 tracking-wider animate-pulse">Limited Offer</span>
                   </div>
-                  <h3 className="text-base font-black text-[#1a1814]">Upgrade to Pro</h3>
-                  <p className="text-xs text-[#6b6560] mt-1.5 mb-6 leading-relaxed">
-                    You&apos;re missing <span className="font-bold text-[#1a1814]">Missing Concept Detection</span> and full solve analysis. Master patterns 2x faster.
+                  <h3 className="text-base font-black text-foreground">Upgrade to Pro</h3>
+                  <p className="text-xs text-muted-foreground mt-1.5 mb-6 leading-relaxed">
+                    You&apos;re missing <span className="font-bold text-foreground">Missing Concept Detection</span> and full solve analysis. Master patterns 2x faster.
                   </p>
                   <Link
                     href="/#pricing"
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1a1814] py-3.5 font-mono text-xs font-black text-[#faf8f3] hover:bg-[#2d2926] transition-all hover:scale-[1.02] active:scale-95 shadow-xl"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3.5 font-mono text-xs font-black text-primary-foreground hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-95 shadow-xl"
                   >
                     Go Pro Now <ArrowRight size={14} />
                   </Link>
@@ -628,11 +628,11 @@ export default async function Dashboard({
 
             {/* Priority Support */}
             {plan === "pro" && (
-              <div className="rounded-2xl border-2 border-[#1a1814] bg-[#1a1814] p-5 text-[#faf8f3]">
+              <div className="rounded-2xl border-2 border-primary bg-primary p-5 text-primary-foreground">
                 <Shield size={16} className="text-amber-400 mb-3" />
                 <h3 className="text-sm font-bold">Priority Support</h3>
-                <p className="text-[10px] text-[#a89f96] mt-1 mb-4">Get faster responses as a Pro member.</p>
-                <a href="mailto:support@patternflow.in" className="flex items-center justify-center gap-2 rounded-lg bg-[#faf8f3] py-2 font-mono text-[10px] font-bold text-[#1a1814]">
+                <p className="text-[10px] text-muted-foreground/70 mt-1 mb-4">Get faster responses as a Pro member.</p>
+                <a href="mailto:support@patternflow.in" className="flex items-center justify-center gap-2 rounded-lg bg-background py-2 font-mono text-[10px] font-bold text-foreground">
                   Email Support
                 </a>
               </div>

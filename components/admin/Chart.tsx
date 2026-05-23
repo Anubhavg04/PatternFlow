@@ -18,9 +18,9 @@ type ChartProps = {
 function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null
   return (
-    <div className="rounded-lg border border-[#e8e2d9] bg-white px-3 py-2 shadow-md">
-      <p className="font-mono text-[10px] text-[#a89f96]">{label}</p>
-      <p className="font-mono text-sm font-bold text-[#1a1814]">
+    <div className="rounded-lg border border-border bg-white px-3 py-2 shadow-md">
+      <p className="font-mono text-[10px] text-muted-foreground/70">{label}</p>
+      <p className="font-mono text-sm font-bold text-foreground">
         {payload[0].value} solve{payload[0].value !== 1 ? "s" : ""}
       </p>
     </div>
@@ -30,8 +30,8 @@ function CustomTooltip({ active, payload, label }: any) {
 export function Chart({ data }: ChartProps) {
   if (data.length === 0) {
     return (
-      <div className="flex h-[200px] items-center justify-center rounded-lg bg-[#faf8f3]">
-        <p className="font-mono text-xs text-[#a89f96]">No data for this period</p>
+      <div className="flex h-[200px] items-center justify-center rounded-lg bg-background">
+        <p className="font-mono text-xs text-muted-foreground/70">No data for this period</p>
       </div>
     )
   }

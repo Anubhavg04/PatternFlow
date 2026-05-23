@@ -48,13 +48,13 @@ export default function PatternsPage() {
   }, [filter, search])
 
   return (
-    <div className="min-h-screen bg-[#faf8f3] text-[#1a1814]">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       <main className="mx-auto max-w-4xl px-4 py-8 pt-24 sm:px-6 sm:py-12">
         <div className="mb-8">
-          <p className="mb-1 font-mono text-sm text-[#a89f96]">{"// pattern library"}</p>
-          <h1 className="text-2xl font-bold text-[#1a1814] sm:text-3xl">Learn the Patterns</h1>
-          <p className="mt-2 text-sm text-[#6b6560] leading-relaxed max-w-lg">
+          <p className="mb-1 font-mono text-sm text-muted-foreground/70">{"// pattern library"}</p>
+          <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Learn the Patterns</h1>
+          <p className="mt-2 text-sm text-muted-foreground leading-relaxed max-w-lg">
             Master these core algorithm patterns. Each one has signals to recognize it,
             step-by-step thinking, common mistakes, and practice problems.
           </p>
@@ -63,13 +63,13 @@ export default function PatternsPage() {
         {/* Search + Filter */}
         <div className="mb-8 space-y-4">
           <div className="relative">
-            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a89f96]" />
+            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/70" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search patterns or keywords..."
-              className="w-full rounded-xl border border-[#e8e2d9] bg-white px-4 py-3 pl-11 font-mono text-sm text-[#1a1814] outline-none placeholder:text-[#a89f96] focus:border-[#1a1814] focus:ring-1 focus:ring-[#1a1814]"
+              className="w-full rounded-xl border border-border bg-white px-4 py-3 pl-11 font-mono text-sm text-foreground outline-none placeholder:text-muted-foreground/70 focus:border-primary focus:ring-1 focus:ring-[#1a1814]"
             />
           </div>
           <div className="flex flex-wrap gap-2">
@@ -79,8 +79,8 @@ export default function PatternsPage() {
                 onClick={() => setFilter(cat)}
                 className={`rounded-full border px-3 py-1.5 font-mono text-xs transition-all ${
                   filter === cat
-                    ? "border-[#1a1814] bg-[#1a1814] text-[#faf8f3]"
-                    : "border-[#e8e2d9] bg-white text-[#6b6560] hover:border-[#1a1814]"
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border bg-white text-muted-foreground hover:border-primary"
                 }`}
               >
                 {cat}
@@ -90,7 +90,7 @@ export default function PatternsPage() {
         </div>
 
         {/* Pattern count */}
-        <p className="mb-4 font-mono text-xs text-[#a89f96]">
+        <p className="mb-4 font-mono text-xs text-muted-foreground/70">
           {filtered.length} pattern{filtered.length !== 1 ? "s" : ""}
         </p>
 
@@ -111,7 +111,7 @@ export default function PatternsPage() {
         {filtered.length === 0 && (
           <div className="py-16 text-center">
             <Search size={32} className="mx-auto mb-3 text-[#e8e2d9]" />
-            <p className="text-sm text-[#a89f96]">No patterns found. Try a different search.</p>
+            <p className="text-sm text-muted-foreground/70">No patterns found. Try a different search.</p>
           </div>
         )}
       </main>
@@ -144,19 +144,19 @@ const PatternCard = memo(({
   const Icon = CATEGORY_ICONS[pattern.category] || Box
 
   return (
-    <div className="rounded-xl border border-[#e8e2d9] bg-white transition-all hover:border-[#d4cdc4]">
+    <div className="rounded-xl border border-border bg-white transition-all hover:border-border/80">
       {/* Header — always visible */}
       <button
         onClick={onToggle}
         className="flex w-full items-center justify-between p-5 text-left"
       >
         <div className="flex items-center gap-4 min-w-0 flex-1">
-          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-[#1a1814] sm:h-12 sm:w-12">
-            <Icon size={20} className="text-[#faf8f3]" />
+          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary sm:h-12 sm:w-12">
+            <Icon size={20} className="text-primary-foreground" />
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-              <h3 className="font-mono text-xs font-bold text-[#1a1814] truncate sm:text-sm">{pattern.name}</h3>
+              <h3 className="font-mono text-xs font-bold text-foreground truncate sm:text-sm">{pattern.name}</h3>
               <Badge
                 className={`text-[9px] font-mono px-1.5 py-0 sm:text-[10px] sm:px-2 ${
                   DIFF_COLOR[pattern.difficulty]
@@ -164,14 +164,14 @@ const PatternCard = memo(({
               >
                 {pattern.difficulty}
               </Badge>
-              <span className="font-mono text-[9px] text-[#a89f96] sm:text-[10px]">{pattern.category}</span>
+              <span className="font-mono text-[9px] text-muted-foreground/70 sm:text-[10px]">{pattern.category}</span>
             </div>
-            <p className="mt-0.5 text-[10px] text-[#6b6560] line-clamp-1 sm:mt-1 sm:text-xs">{pattern.description}</p>
+            <p className="mt-0.5 text-[10px] text-muted-foreground line-clamp-1 sm:mt-1 sm:text-xs">{pattern.description}</p>
           </div>
         </div>
         <ChevronDown
           size={16}
-          className={`flex-shrink-0 text-[#a89f96] transition-transform duration-200 ml-4 ${
+          className={`flex-shrink-0 text-muted-foreground/70 transition-transform duration-200 ml-4 ${
             isExpanded ? "rotate-180" : ""
           }`}
         />
@@ -185,21 +185,21 @@ const PatternCard = memo(({
       >
         <div className="overflow-hidden">
           {isExpanded && (
-            <div className="border-t border-[#e8e2d9] px-5 pb-5 pt-4 space-y-5">
+            <div className="border-t border-border px-5 pb-5 pt-4 space-y-5">
               {/* When to use */}
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <Target size={14} className="text-[#1a1814]" />
-                  <span className="font-mono text-xs font-bold text-[#1a1814]">When to use</span>
+                  <Target size={14} className="text-foreground" />
+                  <span className="font-mono text-xs font-bold text-foreground">When to use</span>
                 </div>
-                <p className="text-sm text-[#6b6560] leading-relaxed">{pattern.whenToUse}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{pattern.whenToUse}</p>
               </div>
 
               {/* Key Signals */}
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <Sparkles size={14} className="text-[#1a1814]" />
-                  <span className="font-mono text-xs font-bold text-[#1a1814]">
+                  <Sparkles size={14} className="text-foreground" />
+                  <span className="font-mono text-xs font-bold text-foreground">
                     Spot it in problems
                   </span>
                 </div>
@@ -207,7 +207,7 @@ const PatternCard = memo(({
                   {pattern.keySignals.map((signal) => (
                     <span
                       key={signal}
-                      className="rounded-full bg-[#f0ede6] px-3 py-1 font-mono text-xs text-[#1a1814]"
+                      className="rounded-full bg-muted px-3 py-1 font-mono text-xs text-foreground"
                     >
                       {signal}
                     </span>
@@ -218,16 +218,16 @@ const PatternCard = memo(({
               {/* How to Think */}
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <Lightbulb size={14} className="text-[#1a1814]" />
-                  <span className="font-mono text-xs font-bold text-[#1a1814]">How to think</span>
+                  <Lightbulb size={14} className="text-foreground" />
+                  <span className="font-mono text-xs font-bold text-foreground">How to think</span>
                 </div>
                 <ol className="space-y-2">
                   {pattern.howToThink.map((step, i) => (
                     <li key={i} className="flex items-start gap-2.5">
-                      <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#1a1814] text-[10px] font-bold text-[#faf8f3]">
+                      <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                         {i + 1}
                       </span>
-                      <span className="text-sm text-[#6b6560] leading-relaxed">{step}</span>
+                      <span className="text-sm text-muted-foreground leading-relaxed">{step}</span>
                     </li>
                   ))}
                 </ol>
@@ -237,13 +237,13 @@ const PatternCard = memo(({
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <AlertTriangle size={14} className="text-amber-500" />
-                  <span className="font-mono text-xs font-bold text-[#1a1814]">
+                  <span className="font-mono text-xs font-bold text-foreground">
                     Common mistakes
                   </span>
                 </div>
                 <ul className="space-y-1.5">
                   {pattern.commonMistakes.map((mistake, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-[#6b6560]">
+                    <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                       <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-amber-400" />
                       {mistake}
                     </li>
@@ -254,18 +254,18 @@ const PatternCard = memo(({
               {/* Practice Problems */}
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <BookOpen size={14} className="text-[#1a1814]" />
-                  <span className="font-mono text-xs font-bold text-[#1a1814]">Practice these</span>
+                  <BookOpen size={14} className="text-foreground" />
+                  <span className="font-mono text-xs font-bold text-foreground">Practice these</span>
                 </div>
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {pattern.practiceProblems.map((prob) => (
                     <div
                       key={prob.name}
-                      className="flex items-center justify-between rounded-lg border border-[#e8e2d9] bg-[#faf8f3] px-3 py-2"
+                      className="flex items-center justify-between rounded-lg border border-border bg-background px-3 py-2"
                     >
                       <div>
-                        <p className="text-xs font-medium text-[#1a1814]">{prob.name}</p>
-                        <p className="font-mono text-[10px] text-[#a89f96]">{prob.platform}</p>
+                        <p className="text-xs font-medium text-foreground">{prob.name}</p>
+                        <p className="font-mono text-[10px] text-muted-foreground/70">{prob.platform}</p>
                       </div>
                       <span
                         className={`font-mono text-[10px] ${

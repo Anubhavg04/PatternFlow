@@ -34,31 +34,31 @@ export function Funnel({ totalUsers, solveClicked, paidUsers }: FunnelProps) {
             {dropPct !== null && (
               <div className="flex items-center gap-2 py-1.5 pl-3">
                 <div className="h-4 w-px bg-[#e8e2d9]" />
-                <span className="font-mono text-[10px] text-[#a89f96]">
+                <span className="font-mono text-[10px] text-muted-foreground/70">
                   {dropPct}% dropped off
                 </span>
               </div>
             )}
 
             {/* Step block */}
-            <div className="overflow-hidden rounded-lg border border-[#e8e2d9] bg-[#faf8f3]">
+            <div className="overflow-hidden rounded-lg border border-border bg-background">
               {/* Progress bar at top */}
-              <div className="h-1 w-full bg-[#f0ede6]">
+              <div className="h-1 w-full bg-muted">
                 <div
-                  className="h-full bg-[#1a1814] transition-all duration-500"
+                  className="h-full bg-primary transition-all duration-500"
                   style={{ width: `${pct}%` }}
                 />
               </div>
               <div className="flex items-center justify-between px-4 py-3">
                 <div>
-                  <p className="text-sm font-medium text-[#1a1814]">{step.label}</p>
-                  <p className="font-mono text-[10px] text-[#a89f96]">{step.sublabel}</p>
+                  <p className="text-sm font-medium text-foreground">{step.label}</p>
+                  <p className="font-mono text-[10px] text-muted-foreground/70">{step.sublabel}</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-mono text-lg font-bold text-[#1a1814]">
+                  <p className="font-mono text-lg font-bold text-foreground">
                     {step.count.toLocaleString()}
                   </p>
-                  <p className="font-mono text-[10px] text-[#a89f96]">{pct}%</p>
+                  <p className="font-mono text-[10px] text-muted-foreground/70">{pct}%</p>
                 </div>
               </div>
             </div>

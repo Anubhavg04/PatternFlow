@@ -22,17 +22,17 @@ export function LoadingTerminal() {
   const complete = visibleCount >= lines.length;
 
   return (
-    <section className="rounded-lg border border-[#e8e2d9] bg-[#f0ede6] p-6 font-mono">
+    <section className="rounded-lg border border-border bg-muted p-6 font-mono">
       <div className="space-y-2">
         {shownLines.map((line, index) => (
-          <p key={line} className="text-[13px] text-[#1a1814]">
+          <p key={line} className="text-[13px] text-foreground">
             {line}
             {index === shownLines.length - 1 && !complete && (
               <span className="ml-1 inline-block animate-pulse">▊</span>
             )}
           </p>
         ))}
-        {complete && <p className="pt-1 text-[13px] text-[#6b6560]">✓ analysis complete</p>}
+        {complete && <p className="pt-1 text-[13px] text-muted-foreground">✓ analysis complete</p>}
       </div>
       <style jsx>{`
         .animate-pulse {

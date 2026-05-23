@@ -23,7 +23,7 @@ export function PatternBadge({ pattern, className }: PatternBadgeProps) {
 
   return (
     <Badge
-      className={`inline-flex items-center gap-2 border border-[#e8e2d9] bg-[#f0ede6] px-3 py-1 font-mono text-xs text-[#1a1814] hover:bg-[#f0ede6] ${className ?? ""}`}
+      className={`inline-flex items-center gap-2 border border-border bg-muted px-3 py-1 font-mono text-xs text-foreground hover:bg-muted ${className ?? ""}`}
     >
       <Icon className="h-3.5 w-3.5" />
       {pattern}

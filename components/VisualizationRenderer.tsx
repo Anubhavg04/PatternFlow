@@ -29,7 +29,7 @@ export function VisualizationRenderer({ svgHtml }: VisualizationRendererProps) {
         className="flex justify-center items-center rounded-lg bg-gradient-to-br from-[#f5f2eb] via-[#f9f7f3] to-[#ede8df] p-8"
         style={{ minHeight: '420px' }}
       >
-        <p className="text-[#a89f96] text-center">Visualization generating...</p>
+        <p className="text-muted-foreground/70 text-center">Visualization generating...</p>
       </div>
     );
   }
@@ -37,7 +37,7 @@ export function VisualizationRenderer({ svgHtml }: VisualizationRendererProps) {
   return (
     <div
       ref={containerRef}
-      className="flex justify-center overflow-x-auto rounded-lg bg-gradient-to-br from-[#f5f2eb] via-[#f9f7f3] to-[#ede8df] p-8 shadow-sm border border-[#e8e2d9]"
+      className="flex justify-center overflow-x-auto rounded-lg bg-gradient-to-br from-[#f5f2eb] via-[#f9f7f3] to-[#ede8df] p-8 shadow-sm border border-border"
       style={{
         minHeight: '420px',
         display: 'flex',

@@ -18,15 +18,15 @@ const RANGES: Range[] = ["7D", "30D", "90D", "1Y"]
 
 export function RangeSelector({ selected, onChange }: RangeSelectorProps) {
   return (
-    <div className="flex gap-1 rounded-lg border border-[#e8e2d9] bg-[#f5f2eb] p-1">
+    <div className="flex gap-1 rounded-lg border border-border bg-secondary p-1">
       {RANGES.map((r) => (
         <button
           key={r}
           onClick={() => onChange(r)}
           className={`rounded-md px-3 py-1.5 font-mono text-xs transition-all ${
             selected === r
-              ? "bg-[#1a1814] text-[#faf8f3] shadow-sm"
-              : "text-[#6b6560] hover:text-[#1a1814]"
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground"
           }`}
         >
           {r}

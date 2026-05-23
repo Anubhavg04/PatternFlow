@@ -35,15 +35,15 @@ const navSections = [
 
 export function AdminSidebar() {
   return (
-    <aside className="fixed inset-y-0 left-0 z-50 hidden w-56 flex-col border-r border-[#e8e2d9] bg-white lg:flex">
+    <aside className="fixed inset-y-0 left-0 z-50 hidden w-56 flex-col border-r border-border bg-white lg:flex">
       {/* Brand */}
-      <div className="flex h-16 flex-shrink-0 items-center gap-2.5 border-b border-[#e8e2d9] px-5">
-        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#1a1814]">
-          <Code2 size={14} className="text-[#faf8f3]" />
+      <div className="flex h-16 flex-shrink-0 items-center gap-2.5 border-b border-border px-5">
+        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
+          <Code2 size={14} className="text-primary-foreground" />
         </div>
         <div>
-          <p className="text-sm font-bold text-[#1a1814]">PatternFlow</p>
-          <p className="font-mono text-[9px] text-[#a89f96]">Admin Console</p>
+          <p className="text-sm font-bold text-foreground">PatternFlow</p>
+          <p className="font-mono text-[9px] text-muted-foreground/70">Admin Console</p>
         </div>
       </div>
 
@@ -64,8 +64,8 @@ export function AdminSidebar() {
                     href={item.href}
                     className={`flex items-center gap-2.5 rounded-lg px-3 py-2 transition-all ${
                       isActive
-                        ? "bg-[#1a1814] text-[#faf8f3]"
-                        : "text-[#6b6560] hover:bg-[#f5f2eb] hover:text-[#1a1814]"
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                     }`}
                   >
                     <Icon size={13} />
@@ -79,10 +79,10 @@ export function AdminSidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="flex-shrink-0 border-t border-[#e8e2d9] px-5 py-4">
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e8e2d9] px-2 py-1">
+      <div className="flex-shrink-0 border-t border-border px-5 py-4">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-2 py-1">
           <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-          <span className="font-mono text-[9px] text-[#a89f96]">Live</span>
+          <span className="font-mono text-[9px] text-muted-foreground/70">Live</span>
         </span>
       </div>
     </aside>

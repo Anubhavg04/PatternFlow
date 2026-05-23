@@ -8,7 +8,7 @@ const levels: { value: ConfidenceLevel; emoji: string; label: string; color: str
   { value: 1, emoji: "😰", label: "Not at all", color: "border-red-200 bg-red-50 hover:border-red-400" },
   { value: 2, emoji: "😐", label: "Somewhat", color: "border-amber-200 bg-amber-50 hover:border-amber-400" },
   { value: 3, emoji: "😊", label: "Good", color: "border-green-200 bg-green-50 hover:border-green-400" },
-  { value: 4, emoji: "💪", label: "Nailed it", color: "border-[#1a1814] bg-[#f0ede6] hover:bg-[#e8e2d9]" },
+  { value: 4, emoji: "💪", label: "Nailed it", color: "border-primary bg-muted hover:bg-[#e8e2d9]" },
 ]
 
 type Props = {
@@ -63,12 +63,12 @@ export function ConfidenceRating({ patternName, onRate }: Props) {
   }
 
   return (
-    <div className="rounded-xl border-2 border-[#e8e2d9] bg-[#faf8f3] p-5">
-      <p className="font-mono text-xs text-[#a89f96] mb-1">{"// self-check"}</p>
-      <p className="text-sm font-medium text-[#1a1814] mb-1">
+    <div className="rounded-xl border-2 border-border bg-background p-5">
+      <p className="font-mono text-xs text-muted-foreground/70 mb-1">{"// self-check"}</p>
+      <p className="text-sm font-medium text-foreground mb-1">
         How confident are you with <span className="font-bold">{patternName}</span>?
       </p>
-      <p className="text-xs text-[#a89f96] mb-4">
+      <p className="text-xs text-muted-foreground/70 mb-4">
         Be honest — this helps identify your weak patterns.
       </p>
       {error && (
@@ -89,12 +89,12 @@ export function ConfidenceRating({ patternName, onRate }: Props) {
             } ${saving ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             <span className="text-2xl">{level.emoji}</span>
-            <span className="font-mono text-[11px] text-[#1a1814]">{level.label}</span>
+            <span className="font-mono text-[11px] text-foreground">{level.label}</span>
           </button>
         ))}
       </div>
       {saving && (
-        <p className="text-xs font-mono text-[#a89f96] mt-3 text-center animate-pulse">
+        <p className="text-xs font-mono text-muted-foreground/70 mt-3 text-center animate-pulse">
           Saving...
         </p>
       )}
