@@ -1,5 +1,7 @@
 "use client"
 import Link from "next/link"
+import Image from "next/image"
+import iconPng from "@/app/icon.png"
 import { SignInButton, SignUpButton, UserButton, useAuth } from "@clerk/nextjs"
 import { Code2, LayoutDashboard, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -18,7 +20,7 @@ export function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 pt-4 px-4 pointer-events-none">
       <nav className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between pointer-events-auto">
         <Link href="/" className="flex items-center gap-2 rounded-full bg-background/50 px-3 py-2 backdrop-blur-sm transition-colors hover:bg-background/80">
-          <Code2 className="h-5 w-5 text-foreground" />
+          <Image src={iconPng} alt="PatternFlow Icon" width={24} height={24} className="rounded-sm object-contain" />
           <span className="text-[17px] font-bold text-foreground tracking-tight">PatternFlow</span>
         </Link>
 
