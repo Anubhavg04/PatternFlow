@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
+import iconPng from "@/app/icon.png";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -466,7 +468,7 @@ export default function Home() {
             {/* Brand */}
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-2 mb-4">
-                <Code2 className="h-5 w-5 text-foreground" />
+                <Image src={iconPng} alt="PatternFlow Icon" width={24} height={24} className="rounded-sm object-contain" />
                 <span className="font-mono text-lg font-bold text-foreground">PatternFlow</span>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
