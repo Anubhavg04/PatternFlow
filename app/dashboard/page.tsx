@@ -434,7 +434,7 @@ export default async function Dashboard({
               </div>
 
               {dailyChallenge ? (
-                <div className="group relative flex flex-col rounded-[2rem] border-2 border-border bg-card p-8 text-card-foreground shadow-xl transition-transform hover:scale-[1.01]">
+                <div className="group relative flex flex-col rounded-[2rem] border-2 border-amber-100/50 bg-gradient-to-b from-amber-50/50 to-white p-8 text-foreground shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all hover:scale-[1.01] hover:shadow-[0_8px_30px_rgb(245,158,11,0.08)] dark:border-border dark:bg-card dark:bg-none dark:shadow-xl dark:hover:shadow-[0_0_30px_rgba(245,158,11,0.05)]">
                   <div className="absolute -right-4 -top-4 h-32 w-32 rounded-full bg-amber-400/10 blur-3xl transition-opacity group-hover:opacity-100" />
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-2">
@@ -449,12 +449,12 @@ export default async function Dashboard({
                   <div className="mb-8">
                     <h3 className="text-2xl font-black mb-2 leading-tight">{dailyChallenge.patternName}</h3>
                     <p className="text-sm leading-relaxed text-muted-foreground">
-                      Paste any <span className="font-bold text-primary-foreground">{dailyChallenge.patternName}</span> problem from LeetCode, GFG, or any platform. This is your weakest pattern — solving one will level up your mastery.
+                      Paste any <span className="font-bold text-foreground">{dailyChallenge.patternName}</span> problem from LeetCode, GFG, or any platform. This is your weakest pattern — solving one will level up your mastery.
                     </p>
                   </div>
                   <Link
                     href="/solve"
-                    className="mt-auto flex w-full items-center justify-center gap-3 rounded-2xl bg-background py-4 font-mono text-base font-black text-foreground transition-all hover:bg-card hover:scale-[1.02] active:scale-95 shadow-[0_10px_30px_rgba(250,248,243,0.1)]"
+                    className="mt-auto flex w-full items-center justify-center gap-3 rounded-2xl bg-[#f8f6f0] py-4 font-mono text-base font-black text-foreground shadow-sm transition-all hover:scale-[1.02] hover:bg-amber-100/50 active:scale-95 dark:bg-background dark:shadow-[0_10px_30px_rgba(250,248,243,0.1)] dark:hover:bg-card"
                   >
                     Start Challenge <ArrowRight size={18} />
                   </Link>
