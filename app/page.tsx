@@ -26,9 +26,7 @@ import {
   Target,
   Timer,
   X,
-  Zap,
   Link2,
-  PlayCircle,
   Users
 } from "lucide-react";
 

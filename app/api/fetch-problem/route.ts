@@ -65,7 +65,7 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ error: 'Unsupported URL platform' }, { status: 400 });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to fetch problem' }, { status: 500 });
   }
 }
