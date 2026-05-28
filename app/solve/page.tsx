@@ -49,14 +49,44 @@ export default function SolvePage() {
 
   // Load persisted data on mount
   useEffect(() => {
-    const savedProblem = localStorage.getItem("patternflow_last_problem");
-    const savedResult = localStorage.getItem("patternflow_last_result");
-    if (savedProblem) setProblem(savedProblem);
-    if (savedResult) {
-      try {
-        setResult(JSON.parse(savedResult));
-      } catch (e) {
-        console.error("Failed to parse saved result", e);
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get("q");
+
+    if (query) {
+      if (query.includes("leetcode.com/problems/") || query.includes("geeksforgeeks.org/problems/")) {
+        const platform = query.includes("leetcode.com") ? "LeetCode" : "GeeksForGeeks";
+        setProblem(`Fetching problem from ${platform}...`);
+        
+        fetch("/api/fetch-problem", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: query }),
+        })
+          .then((r) => r.json())
+          .then((data) => {
+            if (data.problem) {
+              setProblem(data.problem);
+            } else {
+              setProblem(query);
+            }
+          })
+          .catch(() => setProblem(query));
+      } else {
+        setProblem(query);
+      }
+      
+      // Clean up the URL so the query string doesn't stay there forever
+      window.history.replaceState({}, '', '/solve');
+    } else {
+      const savedProblem = localStorage.getItem("patternflow_last_problem");
+      const savedResult = localStorage.getItem("patternflow_last_result");
+      if (savedProblem) setProblem(savedProblem);
+      if (savedResult) {
+        try {
+          setResult(JSON.parse(savedResult));
+        } catch (e) {
+          console.error("Failed to parse saved result", e);
+        }
       }
     }
   }, []);

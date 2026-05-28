@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import iconPng from "@/app/icon.png";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import { Navbar } from "@/components/Navbar";
 import StickyQuotes from "@/components/StickyQuotes";
 import { PaymentButton } from "@/components/PaymentButton";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Brain,
   CheckCircle2,
@@ -26,62 +27,203 @@ import {
   Timer,
   X,
   Zap,
+  Link2,
+  PlayCircle,
+  Users
 } from "lucide-react";
 
-export default function Home() {
+// Dynamic Timer Component
+function DynamicTimer() {
+  const [timeLeft, setTimeLeft] = useState(18 * 60 + 42); // 18:42
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+  const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+  return <span className="font-mono text-[32px] font-bold leading-none text-primary-foreground">{display}</span>;
+}
+
+export default function LandingPage() {
   const router = useRouter();
+  const [urlInput, setUrlInput] = useState("");
+
+  const handleAnalyze = () => {
+    if (urlInput.trim()) {
+      router.push(`/solve?q=${encodeURIComponent(urlInput.trim())}`);
+    } else {
+      router.push("/solve");
+    }
+  };
 
   return (
-    <div className="bg-background text-foreground">
+    <div className="bg-background text-foreground transition-colors duration-300">
       <Navbar />
 
       {/* Hero */}
       <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 pt-24 sm:px-6">
-        <div className="relative z-10 mx-auto max-w-[680px] text-center">
-          <Badge
-            variant="outline"
-            className="gap-1.5 border-border bg-muted px-3 py-1 font-mono text-[11px] text-muted-foreground"
+        
+        {/* Animated Background Glows */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <motion.div
+            animate={{ 
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-[10%] left-[20%] h-[500px] w-[500px] rounded-full bg-amber-400/20 dark:bg-amber-500/10 blur-[100px]"
+          />
+          <motion.div
+            animate={{ 
+              scale: [1, 1.3, 1],
+              opacity: [0.2, 0.4, 0.2],
+            }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute top-[20%] right-[10%] h-[400px] w-[400px] rounded-full bg-orange-500/20 dark:bg-orange-600/10 blur-[100px]"
+          />
+        </div>
+
+        {/* Tech Grid Pattern */}
+        <div 
+          className="absolute inset-0 z-0 opacity-60 bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] dark:bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" 
+          style={{ 
+            WebkitMaskImage: "radial-gradient(ellipse at center, black 30%, transparent 70%)", 
+            maskImage: "radial-gradient(ellipse at center, black 30%, transparent 70%)" 
+          }}
+        />
+
+        {/* Floating DSA Symbols */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none flex items-center justify-center">
+          {[
+            { symbol: "{ }", left: "15%", top: "25%", delay: 0 },
+            { symbol: "</>", left: "80%", top: "20%", delay: 1.5 },
+            { symbol: "O(n)", left: "20%", top: "65%", delay: 3 },
+            { symbol: "[ ]", left: "75%", top: "75%", delay: 4.5 },
+            { symbol: "=>", left: "85%", top: "45%", delay: 6 },
+            { symbol: "⌘", left: "10%", top: "45%", delay: 7.5 },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ 
+                opacity: [0, 0.8, 0.8, 0],
+                y: [-10, -80],
+                rotate: [0, 10, -10, 0]
+              }}
+              transition={{ 
+                duration: 10, 
+                repeat: Infinity, 
+                delay: item.delay,
+                ease: "linear"
+              }}
+              className="absolute text-4xl font-mono font-bold text-amber-500/20 dark:text-amber-500/10"
+              style={{ left: item.left, top: item.top }}
+            >
+              {item.symbol}
+            </motion.div>
+          ))}
+        </div>
+
+        <FloatingPatternBlock />
+        <FloatingTreeBlock />
+
+        <div className="relative z-10 mx-auto max-w-[720px] text-center px-4 w-full">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
           >
-            <Sparkles size={12} className="text-foreground" />
-            AI-Powered Pattern Recognition
-          </Badge>
-          <h1 className="mt-6 font-mono text-[32px] leading-[1.1] tracking-[-1px] text-foreground md:text-[52px]">
+            <Badge
+              variant="outline"
+              className="gap-1.5 border-amber-200/50 bg-amber-50/50 dark:border-amber-900/30 dark:bg-amber-900/10 px-3 py-1 font-mono text-[11px] text-amber-700 dark:text-amber-400 shadow-sm backdrop-blur-sm"
+            >
+              <Sparkles size={12} className="text-amber-600 dark:text-amber-400 animate-pulse" />
+              AI-Powered Pattern Recognition
+            </Badge>
+          </motion.div>
+          
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="mt-8 font-mono text-[40px] leading-[1.1] tracking-[-1px] text-foreground md:text-[60px]"
+          >
             Understand DSA.
             <br />
-            <span className="font-black text-foreground">Not memorize it.</span>
-          </h1>
-          <p className="mx-auto mt-4 max-w-[480px] text-[18px] text-muted-foreground">
+            <span className="font-black bg-gradient-to-r from-amber-600 to-orange-500 dark:from-amber-400 dark:to-orange-300 bg-clip-text text-transparent">Not memorize it.</span>
+          </motion.h1>
+
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mx-auto mt-6 max-w-[500px] text-[18px] text-muted-foreground leading-relaxed"
+          >
             Paste any problem. Get pattern detection, memory hooks, and similar problems — instantly.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
+          </motion.p>
+          
+          {/* Interactive Input Box */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-10 mx-auto max-w-lg flex items-center p-1.5 bg-background dark:bg-black/80 border border-zinc-200 dark:border-zinc-800 rounded-full shadow-xl shadow-amber-500/10 backdrop-blur-sm relative z-20"
+          >
+            <div className="pl-4 pr-3 text-muted-foreground">
+              <Link2 className="h-5 w-5 opacity-50" />
+            </div>
+            <input 
+              type="text" 
+              value={urlInput}
+              onChange={(e) => setUrlInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleAnalyze()}
+              placeholder="Paste LeetCode URL or problem text..." 
+              className="flex-1 bg-transparent border-none outline-none text-sm font-mono placeholder:text-muted-foreground/50 text-foreground w-full"
+            />
             <Button
-              onClick={() => router.push("/solve")}
-              className="h-auto gap-2 bg-primary px-6 py-3 font-mono text-sm font-bold text-primary-foreground hover:bg-primary/90"
+              onClick={handleAnalyze}
+              className="rounded-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold px-6 h-11 border-none shadow-[0_0_20px_-5px_rgba(245,158,11,0.5)] transition-all hover:scale-105"
             >
-              <Zap className="h-4 w-4" />
-              Solve a Problem Free
-              <ChevronRight className="h-4 w-4" />
+              Analyze
             </Button>
-            <Button
-              variant="outline"
-              onClick={() =>
-                document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" })
-              }
-              className="h-auto border-border bg-transparent px-6 py-3 font-mono text-sm text-muted-foreground hover:border-primary hover:text-foreground"
-            >
-              See how it works
-            </Button>
-          </div>
-          <p className="mt-4 font-mono text-xs text-muted-foreground/70">
-            No signup needed · 5 free solves daily · No credit card
-          </p>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-6"
+          >
+            {/* Social Proof Avatars */}
+            <div className="flex items-center gap-3">
+              <div className="flex -space-x-2">
+                <div className="h-6 w-6 rounded-full border-2 border-background bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center overflow-hidden"><Users className="h-3 w-3 text-zinc-400" /></div>
+                <div className="h-6 w-6 rounded-full border-2 border-background bg-zinc-300 dark:bg-zinc-700 flex items-center justify-center overflow-hidden"><Users className="h-3 w-3 text-zinc-500" /></div>
+                <div className="h-6 w-6 rounded-full border-2 border-background bg-amber-500/20 flex items-center justify-center font-mono text-[8px] text-amber-600 font-bold">+500</div>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground/80">
+                Join <span className="font-bold text-foreground">500+</span> developers
+              </p>
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Sticky Quotes */}
-      <section id="quotes" className="bg-background py-24">
-        <div className="mx-auto max-w-6xl px-6">
-          <p className="mb-3 text-center font-mono text-sm text-muted-foreground/70">{"// daily dose"}</p>
+      <section id="quotes" className="bg-background py-12 md:py-16">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+          className="mx-auto max-w-6xl px-6"
+        >
           <h2 className="mb-2 text-center text-3xl font-bold text-foreground">
             A little motivation goes a long way
           </h2>
@@ -89,197 +231,112 @@ export default function Home() {
             quotes change every day · come back tomorrow
           </p>
           <StickyQuotes />
-        </div>
+        </motion.div>
       </section>
 
       {/* How it works */}
-      <section id="how-it-works" className="bg-secondary py-24">
+      <section id="how-it-works" className="bg-[#fcf8f3] dark:bg-black py-12 md:py-16 border-y border-[#f0e6d2] dark:border-zinc-900 transition-colors duration-300">
         <div className="mx-auto max-w-6xl px-6">
-          <p className="font-mono text-xs text-muted-foreground">{"// the process"}</p>
-          <h2 className="mt-2 font-mono text-3xl text-foreground md:text-[32px]">Three steps to clarity</h2>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <h2 className="mt-2 font-mono text-3xl text-foreground dark:text-white md:text-[32px]">Three steps to clarity</h2>
+          </motion.div>
+          
           <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
-            <article className="group relative overflow-hidden rounded-2xl border border-border bg-card p-8 transition-all duration-500 hover:-translate-y-2 hover:border-amber-200 hover:shadow-[0_20px_40px_-15px_rgba(245,158,11,0.15)] dark:hover:border-amber-800">
-                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/5 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-[200%]" />
+            {[
+              {
+                icon: ClipboardPaste,
+                num: "01",
+                title: "Paste anything",
+                desc: "Full LeetCode page, GFG problem, random question — paste it raw. We extract what matters.",
+                delay: 0
+              },
+              {
+                icon: Brain,
+                num: "02",
+                title: "Think, don't memorize",
+                desc: "AI guides you to think — hints, Socratic questions, pattern reveal only when you're ready.",
+                delay: 0.2
+              },
+              {
+                icon: Target,
+                num: "03",
+                title: "Remember it",
+                desc: "Memory hook, interview recognition tips, similar problems — everything to make it stick.",
+                delay: 0.4
+              }
+            ].map((step, idx) => (
+              <motion.article 
+                key={idx}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: step.delay }}
+                className="group relative overflow-hidden rounded-2xl border border-border dark:border-zinc-800 bg-card dark:bg-zinc-950 p-8 transition-all duration-500 hover:-translate-y-2 hover:border-amber-500/50 hover:shadow-[0_20px_40px_-15px_rgba(245,158,11,0.15)]"
+              >
+                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-black/5 dark:via-white/5 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-[200%]" />
                 <div className="relative z-10 flex flex-col h-full">
                   <div className="flex items-start justify-between">
-                    <div className="inline-flex rounded-xl bg-muted p-3 transition-colors duration-500 group-hover:bg-amber-100 dark:group-hover:bg-amber-900/30">
-                      <ClipboardPaste className="h-6 w-6 text-foreground transition-colors duration-500 group-hover:text-amber-600 dark:group-hover:text-amber-400" />
+                    <div className="inline-flex rounded-xl bg-muted dark:bg-zinc-900 p-3 transition-colors duration-500 group-hover:bg-amber-100 dark:group-hover:bg-amber-900/30">
+                      <step.icon className="h-6 w-6 text-muted-foreground dark:text-zinc-400 transition-colors duration-500 group-hover:text-amber-600 dark:group-hover:text-amber-400" />
                     </div>
-                    <p className="font-mono text-[40px] leading-none font-black text-muted-foreground/20 transition-all duration-500 group-hover:text-amber-500/80 group-hover:-translate-x-2">01</p>
+                    <p className="font-mono text-[40px] leading-none font-black text-muted-foreground/20 dark:text-zinc-800 transition-all duration-500 group-hover:text-amber-500/40 dark:group-hover:text-amber-500/20 group-hover:-translate-x-2">{step.num}</p>
                   </div>
-                  
-                    <div className="flex-1 w-full py-8 flex flex-col items-center justify-center">
-                      <div className="w-full max-w-[200px] rounded-lg border border-border bg-background/50 p-3 shadow-sm transition-all duration-500 group-hover:scale-105 group-hover:shadow-md group-hover:border-amber-200/50">
-                        <div className="flex items-center gap-1.5 mb-2">
-                          <div className="h-2 w-2 rounded-full bg-red-400" />
-                          <div className="h-2 w-2 rounded-full bg-amber-400" />
-                          <div className="h-2 w-2 rounded-full bg-green-400" />
-                        </div>
-                        <div className="space-y-2">
-                          <div className="h-2 w-3/4 rounded-full bg-muted-foreground/20" />
-                          <div className="h-2 w-1/2 rounded-full bg-muted-foreground/20" />
-                          <div className="h-2 w-5/6 rounded-full bg-muted-foreground/20" />
-                        </div>
-                      </div>
-                    </div>
-<div className="mt-8">
-                    <h3 className="font-mono text-lg font-bold text-foreground transition-colors duration-500 group-hover:text-amber-600 dark:group-hover:text-amber-400">Paste anything</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground transition-colors duration-500 group-hover:text-foreground/80">
-                      Full LeetCode page, GFG problem, random question — paste it raw. We extract what matters.
+                  <div className="mt-16">
+                    <h3 className="font-mono text-lg font-bold text-foreground dark:text-white transition-colors duration-500 group-hover:text-amber-600 dark:group-hover:text-amber-400">{step.title}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground dark:text-zinc-400 transition-colors duration-500 group-hover:text-foreground dark:group-hover:text-zinc-300">
+                      {step.desc}
                     </p>
                   </div>
                 </div>
-              </article>
-              <article className="group relative overflow-hidden rounded-2xl border border-border bg-card p-8 transition-all duration-500 hover:-translate-y-2 hover:border-amber-200 hover:shadow-[0_20px_40px_-15px_rgba(245,158,11,0.15)] dark:hover:border-amber-800">
-                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/5 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-[200%] delay-75" />
-                <div className="relative z-10 flex flex-col h-full">
-                  <div className="flex items-start justify-between">
-                    <div className="inline-flex rounded-xl bg-muted p-3 transition-colors duration-500 group-hover:bg-amber-100 dark:group-hover:bg-amber-900/30">
-                      <Brain className="h-6 w-6 text-foreground transition-colors duration-500 group-hover:text-amber-600 dark:group-hover:text-amber-400" />
-                    </div>
-                    <p className="font-mono text-[40px] leading-none font-black text-muted-foreground/20 transition-all duration-500 group-hover:text-amber-500/80 group-hover:-translate-x-2">02</p>
-                  </div>
-                  
-                    <div className="flex-1 w-full py-8 flex flex-col items-center justify-center gap-3">
-                      <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-[10px] font-bold text-amber-600 shadow-sm transition-transform duration-500 group-hover:-translate-y-1 dark:bg-amber-900/30 dark:border-amber-800 dark:text-amber-400">
-                        <Zap size={12} className="fill-amber-500 text-amber-500" />
-                        <span>SLIDING WINDOW</span>
-                      </div>
-                      <div className="w-[85%] rounded-lg rounded-tr-sm bg-primary/5 p-3 border border-primary/10 shadow-sm transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1">
-                        <p className="text-[10px] font-medium text-foreground">What happens to the window size if we find a repeating character?</p>
-                      </div>
-                    </div>
-<div className="mt-8">
-                    <h3 className="font-mono text-lg font-bold text-foreground transition-colors duration-500 group-hover:text-amber-600 dark:group-hover:text-amber-400">Think, don&apos;t memorize</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground transition-colors duration-500 group-hover:text-foreground/80">
-                      AI guides you to think — hints, Socratic questions, pattern reveal only when you&apos;re ready.
-                    </p>
-                  </div>
-                </div>
-              </article>
-              <article className="group relative overflow-hidden rounded-2xl border border-border bg-card p-8 transition-all duration-500 hover:-translate-y-2 hover:border-amber-200 hover:shadow-[0_20px_40px_-15px_rgba(245,158,11,0.15)] dark:hover:border-amber-800">
-                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/5 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-[200%] delay-150" />
-                <div className="relative z-10 flex flex-col h-full">
-                  <div className="flex items-start justify-between">
-                    <div className="inline-flex rounded-xl bg-muted p-3 transition-colors duration-500 group-hover:bg-amber-100 dark:group-hover:bg-amber-900/30">
-                      <Target className="h-6 w-6 text-foreground transition-colors duration-500 group-hover:text-amber-600 dark:group-hover:text-amber-400" />
-                    </div>
-                    <p className="font-mono text-[40px] leading-none font-black text-muted-foreground/20 transition-all duration-500 group-hover:text-amber-500/80 group-hover:-translate-x-2">03</p>
-                  </div>
-                  
-                    <div className="flex-1 w-full py-8 flex items-center justify-center">
-                      <div className="relative flex w-[180px] items-center gap-4 rounded-xl border border-border bg-background/50 p-3 shadow-sm transition-all duration-500 group-hover:scale-105 group-hover:shadow-md group-hover:border-amber-200/50">
-                        <div className="flex flex-col items-center justify-center rounded-lg bg-amber-100 p-2.5 dark:bg-amber-900/40">
-                          <Timer size={16} className="text-amber-600 dark:text-amber-400" />
-                        </div>
-                        <div className="space-y-1">
-                          <p className="text-[10px] font-bold text-foreground">Next Review</p>
-                          <p className="text-[9px] text-muted-foreground">in 3 days</p>
-                        </div>
-                        <div className="absolute -right-2 -top-2 rounded-full bg-green-500 p-1 text-white shadow-sm ring-2 ring-card transition-transform duration-500 group-hover:scale-110">
-                          <CheckCircle2 size={10} className="fill-current" />
-                        </div>
-                      </div>
-                    </div>
-<div className="mt-8">
-                    <h3 className="font-mono text-lg font-bold text-foreground transition-colors duration-500 group-hover:text-amber-600 dark:group-hover:text-amber-400">Remember it</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground transition-colors duration-500 group-hover:text-foreground/80">
-                      Memory hook, interview recognition tips, similar problems — everything to make it stick.
-                    </p>
-                  </div>
-                </div>
-              </article>
+              </motion.article>
+            ))}
           </div>
         </div>
       </section>
 
       {/* What You Get — Feature Showcase */}
-      <section className="bg-background py-24">
+      <section className="bg-background py-12 md:py-16">
         <div className="mx-auto max-w-6xl px-6">
-          <p className="font-mono text-xs text-muted-foreground">{"// what you get"}</p>
-          <h2 className="mt-2 font-mono text-3xl text-foreground md:text-[32px]">Every solve gives you this</h2>
-          <p className="mt-2 text-base text-muted-foreground">Not just an answer — a full learning breakdown.</p>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="mt-2 font-mono text-3xl text-foreground md:text-[32px]">Every solve gives you this</h2>
+            <p className="mt-2 text-base text-muted-foreground">Not just an answer — a full learning breakdown.</p>
+          </motion.div>
 
           <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-
-            <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
-  <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-  <div className="relative h-full w-full rounded-xl bg-card p-6">
-              <div className="mb-4 inline-flex rounded-lg bg-amber-100 dark:bg-amber-900/30 p-2.5 transition-colors group-hover:bg-amber-200 dark:group-hover:bg-amber-800/50">
-                <Brain className="h-5 w-5 text-amber-700 dark:text-amber-400" />
-              </div>
-              <h3 className="font-mono text-sm font-bold text-foreground">Think First Prompts</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                Before any hints, you get a Socratic question designed to push you toward the right thinking direction.
-              </p>
-            </div>
-              </div>
-
-            <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
-  <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-  <div className="relative h-full w-full rounded-xl bg-card p-6">
-              <div className="mb-4 inline-flex rounded-lg bg-amber-100 dark:bg-amber-900/30 p-2.5 transition-colors group-hover:bg-amber-200 dark:group-hover:bg-amber-800/50">
-                <Fingerprint className="h-5 w-5 text-amber-700 dark:text-amber-400" />
-              </div>
-              <h3 className="font-mono text-sm font-bold text-foreground">Pattern Detection</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                AI identifies the core algorithm pattern — Sliding Window, Two Pointers, BFS, DP, and 15+ more.
-              </p>
-            </div>
-              </div>
-
-            <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
-  <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-  <div className="relative h-full w-full rounded-xl bg-card p-6">
-              <div className="mb-4 inline-flex rounded-lg bg-amber-100 dark:bg-amber-900/30 p-2.5 transition-colors group-hover:bg-amber-200 dark:group-hover:bg-amber-800/50">
-                <Lightbulb className="h-5 w-5 text-amber-700 dark:text-amber-400" />
-              </div>
-              <h3 className="font-mono text-sm font-bold text-foreground">Progressive Hints</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                Three-level hint system. Reveal one at a time — only when you&apos;re truly stuck. No spoilers.
-              </p>
-            </div>
-              </div>
-
-            <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
-  <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-  <div className="relative h-full w-full rounded-xl bg-card p-6">
-              <div className="mb-4 inline-flex rounded-lg bg-amber-100 dark:bg-amber-900/30 p-2.5 transition-colors group-hover:bg-amber-200 dark:group-hover:bg-amber-800/50">
-                <Target className="h-5 w-5 text-amber-700 dark:text-amber-400" />
-              </div>
-              <h3 className="font-mono text-sm font-bold text-foreground">Memory Hooks</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                A memorable one-liner that anchors the pattern in your brain. Recall it during interviews instantly.
-              </p>
-            </div>
-              </div>
-
-            <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
-  <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-  <div className="relative h-full w-full rounded-xl bg-card p-6">
-              <div className="mb-4 inline-flex rounded-lg bg-amber-100 dark:bg-amber-900/30 p-2.5 transition-colors group-hover:bg-amber-200 dark:group-hover:bg-amber-800/50">
-                <Layers className="h-5 w-5 text-amber-700 dark:text-amber-400" />
-              </div>
-              <h3 className="font-mono text-sm font-bold text-foreground">Similar Problems</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                Get 3 related problems to reinforce the pattern. Click-to-solve for paid users — instant practice.
-              </p>
-            </div>
-              </div>
-
-            <div className="group relative overflow-hidden rounded-xl bg-border p-[1px] transition-all hover:shadow-md">
-  <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,#8b5cf6_33%,#3b82f6_66%,#f59e0b_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-  <div className="relative h-full w-full rounded-xl bg-card p-6">
-              <div className="mb-4 inline-flex rounded-lg bg-amber-100 dark:bg-amber-900/30 p-2.5 transition-colors group-hover:bg-amber-200 dark:group-hover:bg-amber-800/50">
-                <HelpCircle className="h-5 w-5 text-amber-700 dark:text-amber-400" />
-              </div>
-              <h3 className="font-mono text-sm font-bold text-foreground">Quick Check Quiz</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                Test your understanding before seeing the full approach. Explains your reasoning like an interviewer.
-              </p>
-            </div>
-              </div>
-
+            {[
+              { icon: Brain, title: "Think First Prompts", desc: "Before hints, get a Socratic question designed to push you toward the right thinking direction." },
+              { icon: Fingerprint, title: "Pattern Detection", desc: "AI identifies the core algorithm pattern — Sliding Window, Two Pointers, BFS, DP, and 15+ more." },
+              { icon: Lightbulb, title: "Progressive Hints", desc: "Three-level hint system. Reveal one at a time — only when you're truly stuck. No spoilers." },
+              { icon: Target, title: "Memory Hooks", desc: "A memorable one-liner that anchors the pattern in your brain. Recall it during interviews instantly." },
+              { icon: Layers, title: "Similar Problems", desc: "Get 3 related problems to reinforce the pattern. Click-to-solve for paid users — instant practice." },
+              { icon: HelpCircle, title: "Quick Check Quiz", desc: "Test your understanding before seeing the full approach. Explains your reasoning like an interviewer." }
+            ].map((f, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: i * 0.1, duration: 0.4 }}
+                className="group relative rounded-xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/50 hover:shadow-[0_8px_30px_rgb(245,158,11,0.12)]"
+              >
+                <div className="mb-4 inline-flex rounded-lg bg-amber-100 dark:bg-amber-900/30 p-2.5 transition-colors group-hover:bg-amber-200 dark:group-hover:bg-amber-800/50">
+                  <f.icon className="h-5 w-5 text-amber-700 dark:text-amber-400" />
+                </div>
+                <h3 className="font-mono text-sm font-bold text-foreground">{f.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {f.desc}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -287,81 +344,94 @@ export default function Home() {
       {/* Stats */}
       <section className="border-y border-border bg-background py-8">
         <div className="mx-auto flex max-w-4xl flex-wrap justify-around gap-8 px-6">
-          <div className="text-center">
-            <p className="font-mono text-4xl text-foreground">25+</p>
-            <p className="font-mono text-xs text-muted-foreground">algorithm patterns</p>
-          </div>
-          <div className="text-center">
-            <p className="font-mono text-4xl text-foreground">5 sec</p>
-            <p className="font-mono text-xs text-muted-foreground">average solve time</p>
-          </div>
-          <div className="text-center">
-            <p className="font-mono text-4xl text-foreground">100%</p>
-            <p className="font-mono text-xs text-muted-foreground">free to start</p>
-          </div>
+          {[
+            { stat: "25+", label: "algorithm patterns" },
+            { stat: "5 sec", label: "average solve time" },
+            { stat: "100%", label: "free to start" }
+          ].map((s, i) => (
+            <motion.div 
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.2 }}
+              className="text-center"
+            >
+              <p className="font-mono text-4xl text-foreground">{s.stat}</p>
+              <p className="font-mono text-xs text-muted-foreground">{s.label}</p>
+            </motion.div>
+          ))}
         </div>
       </section>
 
       {/* Interview Mode Showcase */}
-      <section className="bg-secondary py-20">
+      <section className="bg-[#fcf8f3] dark:bg-black py-12 md:py-16 border-y border-[#f0e6d2] dark:border-zinc-900 transition-colors duration-300">
         <div className="mx-auto max-w-5xl px-6">
           <div className="flex flex-col items-center gap-10 md:flex-row md:gap-16">
             {/* Visual */}
-            <div className="flex-shrink-0">
+            <motion.div 
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="flex-shrink-0"
+            >
               <div className="relative w-full max-w-[220px] rounded-2xl border-2 border-primary bg-primary p-6 shadow-lg">
-                <p className="font-mono text-[10px] text-muted-foreground/70 mb-1">interview mode</p>
+                <p className="font-mono text-[10px] text-primary-foreground/70 dark:text-zinc-400 mb-1">interview mode</p>
                 <div className="flex items-center gap-3 mb-4">
-                  <Clock className="h-5 w-5 text-amber-700 dark:text-amber-400" />
-                  <span className="font-mono text-[32px] font-bold leading-none text-primary-foreground">18:42</span>
+                  <Clock className="h-5 w-5 text-amber-200 dark:text-amber-400" />
+                  <DynamicTimer />
                 </div>
-                <div className="h-1.5 w-full rounded-full bg-background/10 overflow-hidden">
-                  <div className="h-full w-[62%] rounded-full bg-background/60 transition-all" />
+                <div className="h-1.5 w-full rounded-full bg-black/20 dark:bg-black/40 overflow-hidden">
+                  <motion.div 
+                    initial={{ width: "100%" }}
+                    animate={{ width: "62%" }}
+                    transition={{ duration: 20, ease: "linear" }}
+                    className="h-full rounded-full bg-white transition-all" 
+                  />
                 </div>
                 <div className="mt-4 flex items-center gap-2">
                   <span className="inline-block h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-                  <span className="font-mono text-[11px] text-muted-foreground/70">timer active</span>
+                  <span className="font-mono text-[11px] text-primary-foreground/80 dark:text-zinc-300">timer active</span>
                 </div>
                 {/* Decorative glow */}
                 <div className="absolute -inset-1 -z-10 rounded-2xl bg-primary/20 blur-lg" />
               </div>
-            </div>
+            </motion.div>
+            
             {/* Text */}
-            <div className="max-w-md text-center md:text-left">
-              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 mb-4">
-                <Timer className="h-3.5 w-3.5 text-foreground" />
-                <span className="font-mono text-[11px] text-muted-foreground">Available on Basic & Pro</span>
+            <motion.div 
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="max-w-md text-center md:text-left"
+            >
+              <div className="inline-flex items-center gap-2 rounded-full border border-border dark:border-zinc-800 bg-card dark:bg-zinc-900 px-3 py-1 mb-4">
+                <Timer className="h-3.5 w-3.5 text-foreground dark:text-white" />
+                <span className="font-mono text-[11px] text-muted-foreground dark:text-zinc-400">Available on Basic & Pro</span>
               </div>
-              <h2 className="font-mono text-2xl text-foreground md:text-[28px] leading-tight">
+              <h2 className="font-mono text-2xl text-foreground dark:text-white md:text-[28px] leading-tight">
                 Practice under real
                 <br />
                 <span className="font-bold">interview pressure</span>
               </h2>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground dark:text-zinc-400">
                 Real interviews have time limits — so does Interview Mode. Get a timed challenge based on problem difficulty (Easy: 10 min, Medium: 20 min, Hard: 35 min) with a floating countdown timer. Build speed and confidence before the real thing.
               </p>
-              <div className="mt-5 flex flex-wrap gap-3 justify-center md:justify-start">
-                <div className="flex items-center gap-1.5 rounded-lg bg-card border border-border px-3 py-1.5">
-                  <span className="font-mono text-xs text-foreground font-bold">10m</span>
-                  <span className="font-mono text-[10px] text-muted-foreground/70">Easy</span>
-                </div>
-                <div className="flex items-center gap-1.5 rounded-lg bg-card border border-border px-3 py-1.5">
-                  <span className="font-mono text-xs text-foreground font-bold">20m</span>
-                  <span className="font-mono text-[10px] text-muted-foreground/70">Medium</span>
-                </div>
-                <div className="flex items-center gap-1.5 rounded-lg bg-card border border-border px-3 py-1.5">
-                  <span className="font-mono text-xs text-foreground font-bold">35m</span>
-                  <span className="font-mono text-[10px] text-muted-foreground/70">Hard</span>
-                </div>
-              </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Pricing — 3 plans */}
-      <section id="pricing" className="bg-background py-24">
-        <div className="mx-auto max-w-6xl px-6">
-          <p className="font-mono text-xs text-muted-foreground">{"// pricing"}</p>
+      <section id="pricing" className="bg-background py-12 md:py-16">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mx-auto max-w-6xl px-6"
+        >
           <h2 className="mt-2 font-mono text-3xl text-foreground md:text-[32px]">Simple, honest pricing</h2>
           <p className="mt-2 text-base text-muted-foreground">Start free. Upgrade when you&apos;re ready.</p>
 
@@ -490,21 +560,22 @@ export default function Home() {
             </article>
 
           </div>
-
-          <p className="mt-8 text-center font-mono text-xs text-muted-foreground/70">
-            Payments via Razorpay · Secure · Cancel anytime · Launching soon
-          </p>
-        </div>
+        </motion.div>
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="bg-secondary py-24">
+      <section id="faq" className="bg-[#fcf8f3] dark:bg-black py-12 md:py-16 border-y border-[#f0e6d2] dark:border-zinc-900 transition-colors duration-300">
         <div className="mx-auto max-w-3xl px-6">
-          <p className="font-mono text-xs text-muted-foreground">{"// faq"}</p>
-          <h2 className="mt-2 font-mono text-3xl text-foreground md:text-[32px]">Common questions</h2>
-          <p className="mt-2 text-base text-muted-foreground">Things people usually ask before trying.</p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="mt-2 font-mono text-3xl text-foreground dark:text-white md:text-[32px]">Common questions</h2>
+            <p className="mt-2 text-base text-muted-foreground dark:text-zinc-400">Things people usually ask before trying.</p>
+          </motion.div>
 
-          <div className="mt-12 space-y-3">
+          <div className="mt-12 flex flex-col divide-y divide-[#e8e2d9] dark:divide-zinc-800 border-y border-[#e8e2d9] dark:border-zinc-800">
             {[
               {
                 q: "How is this different from just using AI Platform?",
@@ -528,10 +599,18 @@ export default function Home() {
               },
               {
                 q: "Can I cancel my subscription anytime?",
-                a: "Yes, no lock-in. Your plan just won\u2019t renew next month. You keep access until the current billing period ends.",
+                a: "Yes, no lock-in. Your plan just won't renew next month. You keep access until the current billing period ends.",
               },
             ].map((item, i) => (
-              <FaqItem key={i} question={item.q} answer={item.a} />
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <FaqItem question={item.q} answer={item.a} />
+              </motion.div>
             ))}
           </div>
         </div>
@@ -540,10 +619,8 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-border bg-background">
         <div className="mx-auto max-w-6xl px-6 py-12">
-
+          {/* ... existing footer code ... */}
           <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
-
-            {/* Brand */}
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-2 mb-4">
                 <Image src={iconPng} alt="PatternFlow Icon" width={24} height={24} className="rounded-sm object-contain" />
@@ -554,18 +631,16 @@ export default function Home() {
               </p>
               <div className="flex items-center gap-3 mt-5">
                 <a
-                  href="https://twitter.com/Dev_code_04"
+                  href="https://x.com/Dev_code_04"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-xs font-mono text-muted-foreground hover:border-primary hover:text-foreground transition-all"
                 >
                   <X className="h-3.5 w-3.5" />
-                  Twitter
+                  Twitter / X
                 </a>
               </div>
             </div>
-
-            {/* Product */}
             <div>
               <p className="font-mono text-xs text-muted-foreground/70 mb-4 uppercase tracking-wider">Product</p>
               <ul className="space-y-3">
@@ -576,18 +651,11 @@ export default function Home() {
                   { label: "Dashboard", href: "/dashboard" },
                 ].map((link) => (
                   <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {link.label}
-                    </a>
+                    <a href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">{link.label}</a>
                   </li>
                 ))}
               </ul>
             </div>
-
-            {/* Legal */}
             <div>
               <p className="font-mono text-xs text-muted-foreground/70 mb-4 uppercase tracking-wider">Legal</p>
               <ul className="space-y-3">
@@ -597,30 +665,12 @@ export default function Home() {
                   { label: "Refund Policy", href: "/refund" },
                 ].map((link) => (
                   <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {link.label}
-                    </a>
+                    <a href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">{link.label}</a>
                   </li>
                 ))}
               </ul>
             </div>
-
           </div>
-
-          <div className="mt-12 pt-6 border-t border-border flex flex-wrap items-center justify-between gap-4">
-            <p className="font-mono text-xs text-muted-foreground/70">
-              © 2026 PatternFlow · Built for DSA Hustlers, by a developer.
-            </p>
-            <div className="flex items-center gap-4">
-              <span className="font-mono text-xs text-muted-foreground/70">Payments secured by Razorpay</span>
-              <span className="font-mono text-xs text-[#e8e2d9]">·</span>
-              <span className="font-mono text-xs text-muted-foreground/70">Made in India 🇮🇳</span>
-            </div>
-          </div>
-
         </div>
       </footer>
     </div>
@@ -631,25 +681,83 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <button
-      onClick={() => setOpen(!open)}
-      className="w-full rounded-xl border border-border bg-card p-5 text-left transition-all hover:border-border/80"
-    >
-      <div className="flex items-center justify-between gap-4">
-        <h3 className="font-mono text-sm font-medium text-foreground">{question}</h3>
-        <ChevronDown
-          className={`h-4 w-4 flex-shrink-0 text-muted-foreground/70 transition-transform duration-200 ${open ? "rotate-180" : ""
-            }`}
-        />
-      </div>
-      <div
-        className={`grid transition-all duration-200 ease-in-out ${open ? "mt-3 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-          }`}
+    <div className="py-5">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center justify-between gap-4 text-left group"
       >
-        <div className="overflow-hidden">
-          <p className="text-sm leading-relaxed text-muted-foreground">{answer}</p>
+        <h3 className="font-mono text-sm font-medium text-foreground dark:text-white transition-colors group-hover:text-amber-600 dark:group-hover:text-amber-400">{question}</h3>
+        <motion.div animate={{ rotate: open ? 180 : 0 }}>
+          <ChevronDown className="h-4 w-4 flex-shrink-0 text-muted-foreground dark:text-zinc-500 transition-colors group-hover:text-amber-600 dark:group-hover:text-amber-400" />
+        </motion.div>
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden"
+          >
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground dark:text-zinc-400">{answer}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function FloatingPatternBlock() {
+  return (
+    <motion.div
+      animate={{ y: [0, -20, 0] }}
+      transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      className="hidden xl:block absolute right-8 2xl:right-24 top-[15%] w-[260px] rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-black/60 backdrop-blur-md p-5 shadow-2xl shadow-amber-500/5 text-left z-0 pointer-events-none"
+    >
+      <div className="flex items-center gap-2 mb-5">
+        <div className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
+        <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">AI Analysis</span>
+      </div>
+      
+      {/* Skeleton of a LeetCode problem */}
+      <div className="space-y-3 mb-6 opacity-60">
+        <div className="h-2 w-1/3 bg-zinc-300 dark:bg-zinc-700 rounded-full" />
+        <div className="h-1.5 w-full bg-zinc-200 dark:bg-zinc-800 rounded-full" />
+        <div className="h-1.5 w-5/6 bg-zinc-200 dark:bg-zinc-800 rounded-full" />
+        <div className="h-1.5 w-4/5 bg-zinc-200 dark:bg-zinc-800 rounded-full" />
+      </div>
+
+      <div className="relative">
+        <div className="absolute -inset-2 bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-lg blur-sm" />
+        <div className="relative rounded-lg border border-amber-200 dark:border-amber-900/50 bg-amber-50/80 dark:bg-amber-900/20 p-3 backdrop-blur-sm">
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-amber-700 dark:text-amber-400">Extracted Pattern</span>
+            <CheckCircle2 className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+          </div>
+          <p className="font-mono text-sm font-bold text-foreground">Two Pointers</p>
         </div>
       </div>
-    </button>
+    </motion.div>
+  );
+}
+
+function FloatingTreeBlock() {
+  return (
+    <motion.div
+      animate={{ y: [0, 20, 0] }}
+      transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+      className="hidden xl:flex absolute left-8 2xl:left-24 top-[35%] flex-col items-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-black/60 backdrop-blur-md p-6 shadow-2xl shadow-amber-500/5 z-0 pointer-events-none"
+    >
+      <div className="font-mono text-[10px] text-muted-foreground mb-3 uppercase tracking-widest">Binary Tree</div>
+      <div className="h-10 w-10 rounded-full border-2 border-amber-500 bg-amber-500/10 flex items-center justify-center font-mono text-sm font-bold text-foreground">5</div>
+      <div className="flex gap-6 mt-4 relative">
+        <svg className="absolute top-[-20px] left-1/2 -translate-x-1/2 w-16 h-8 -z-10 overflow-visible">
+          <path d="M 32 0 L 0 20" stroke="currentColor" strokeWidth="1.5" className="text-zinc-300 dark:text-zinc-700" fill="none" />
+          <path d="M 32 0 L 64 20" stroke="currentColor" strokeWidth="1.5" className="text-zinc-300 dark:text-zinc-700" fill="none" />
+        </svg>
+        <div className="h-10 w-10 rounded-full border-2 border-border bg-background flex items-center justify-center font-mono text-sm text-muted-foreground">3</div>
+        <div className="h-10 w-10 rounded-full border-2 border-border bg-background flex items-center justify-center font-mono text-sm text-muted-foreground">8</div>
+      </div>
+    </motion.div>
   );
 }
