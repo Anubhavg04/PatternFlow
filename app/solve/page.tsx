@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ResultCard, type SolveResult } from "@/components/ResultCard";
 import { EXAMPLE_PROBLEMS } from "@/lib/problems";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useClerk } from "@clerk/nextjs";
 import { analytics } from "@/lib/posthog-events";
 
 const LOADING_LINES = [
@@ -46,6 +46,7 @@ export default function SolvePage() {
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const solveKeyRef = useRef("");
   const { userId } = useAuth();
+  const { openSignUp } = useClerk();
 
   // Load persisted data on mount
   useEffect(() => {
@@ -156,6 +157,15 @@ export default function SolvePage() {
 
   const handleSolve = async () => {
     if (!problem.trim()) return;
+
+    if (!userId) {
+      // Force signup if not logged in
+      openSignUp({
+        fallbackRedirectUrl: "/solve"
+      });
+      return;
+    }
+
     // Client-side limit check (server enforces too)
     if (solveLimit > 0 && solvesUsed >= solveLimit) {
       const msg = userPlan === "basic"
@@ -176,7 +186,7 @@ export default function SolvePage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          ...(userId ? { "authorization": `Bearer ${userId}` } : {}),
+          "authorization": `Bearer ${userId}`,
         },
         body: JSON.stringify({ problem }),
       });
