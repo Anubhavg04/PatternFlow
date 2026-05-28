@@ -48,7 +48,7 @@ type ResultCardProps = {
 }
 
 const headerClass = "mb-3 flex items-center gap-2"
-const labelClass = "text-xs font-mono text-[#a89f96]"
+const labelClass = "text-xs font-mono text-muted-foreground"
 
 export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
   const isPaid = plan === "basic" || plan === "pro"
@@ -260,8 +260,8 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
     }
   }
 
-  const timerColor = timeLeft < 60 ? "text-red-500" : timeLeft < 180 ? "text-amber-600" : "text-[#1a1814]"
-  const timerBorder = timeLeft < 60 ? "border-red-200 bg-red-50" : timeLeft < 180 ? "border-amber-200 bg-amber-50" : "border-[#e8e2d9] bg-white"
+  const timerColor = timeLeft < 60 ? "text-red-500" : timeLeft < 180 ? "text-amber-600" : "text-foreground"
+  const timerBorder = timeLeft < 60 ? "border-red-200 bg-red-50" : timeLeft < 180 ? "border-amber-200 bg-amber-50" : "border-border bg-card"
 
   // Whether hints should be locked (timer is active)
   const hintsLocked = timerActive
@@ -275,7 +275,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         >
           <Clock size={13} className={`flex-shrink-0 ${timerColor}`} />
           <div className="flex flex-col min-w-0">
-            <span className="text-[10px] font-mono text-[#a89f96] leading-none mb-0.5 hidden sm:block">
+            <span className="text-[10px] font-mono text-muted-foreground leading-none mb-0.5 hidden sm:block">
               interview mode
             </span>
             <span className={`font-mono font-bold leading-none ${timerColor} text-base sm:text-xl`}>
@@ -284,13 +284,13 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
           </div>
           <button
             onClick={handleFinishedEarly}
-            className="flex-shrink-0 text-[10px] font-mono text-[#a89f96] hover:text-[#1a1814] transition-colors underline hidden sm:block"
+            className="flex-shrink-0 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors underline hidden sm:block"
           >
             Done
           </button>
           <button
             onClick={stopTimer}
-            className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-full hover:bg-[#f0ede6] text-[#a89f96] hover:text-[#1a1814] transition-colors"
+            className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
             aria-label="Stop timer"
           >
             <X size={12} />
@@ -301,20 +301,20 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
       <section className="mt-10 space-y-5">
 
         {/* 1. Problem Summary */}
-        <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className={headerClass}>
-            <HelpCircle size={16} className="text-[#a89f96]" />
+            <HelpCircle size={16} className="text-muted-foreground" />
             <span className={labelClass}>{"// problem understood"}</span>
             <span className={`ml-auto text-xs font-mono font-bold ${diffColor}`}>
               {result.difficulty}
             </span>
           </div>
-          <p className="text-sm leading-relaxed text-[#1a1814]">{result.problem_summary}</p>
+          <p className="text-sm leading-relaxed text-foreground">{result.problem_summary}</p>
         </div>
 
         {/* 2. Interview Timer Prompt (Paid users — auto-shown) */}
         {isPaid && showTimerPrompt && !timerActive && !timerEnded && !timerSkipped && (
-          <div className="rounded-xl border-2 border-[#1a1814] bg-[#1a1814] p-6 text-[#faf8f3]">
+          <div className="rounded-xl border-2 border-primary bg-primary p-6 text-primary-foreground">
             <div className={headerClass}>
               <Timer size={16} className="text-amber-400" />
               <span className="text-xs font-mono font-bold text-amber-400">{"// interview simulation"}</span>
@@ -322,12 +322,12 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
             <p className="text-sm leading-relaxed mb-1">
               Want to practice this under <span className="font-bold text-amber-400">real interview conditions</span>?
             </p>
-            <p className="text-xs text-[#a89f96] mb-5">
+            <p className="text-xs text-muted-foreground mb-5">
               Timer starts, hints are locked. See how you do under pressure.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button
-                className="flex-1 bg-[#faf8f3] text-[#1a1814] hover:bg-white font-mono text-sm font-bold"
+                className="flex-1 bg-background text-foreground hover:bg-card font-mono text-sm font-bold"
                 onClick={startTimer}
               >
                 <Clock size={14} className="mr-2" />
@@ -335,7 +335,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
               </Button>
               <Button
                 variant="outline"
-                className="flex-1 border-[#a89f96]/30 text-[#a89f96] hover:text-[#faf8f3] hover:border-[#faf8f3] font-mono text-sm"
+                className="flex-1 border-[#a89f96]/30 text-muted-foreground hover:text-primary-foreground hover:border-[#faf8f3] font-mono text-sm"
                 onClick={skipTimer}
               >
                 <SkipForward size={14} className="mr-2" />
@@ -347,16 +347,16 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
 
         {/* Interview Mode section for free users (paywall) */}
         {plan === "free" && (
-          <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
+          <div className="rounded-xl border border-border bg-card p-6">
             <div className={headerClass}>
-              <Timer size={16} className="text-[#a89f96]" />
+              <Timer size={16} className="text-muted-foreground" />
               <span className={labelClass}>{"// interview simulation"}</span>
             </div>
-            <div className="rounded-lg bg-[#f0ede6] p-4 text-center">
-              <p className="text-sm text-[#6b6560] mb-2">
+            <div className="rounded-lg bg-muted p-4 text-center">
+              <p className="text-sm text-muted-foreground mb-2">
                 🔒 Practice under real interview conditions with timed challenges
               </p>
-              <a href="/#pricing" className="text-xs font-mono text-[#1a1814] underline">
+              <a href="/#pricing" className="text-xs font-mono text-foreground underline">
                 Upgrade to Basic to unlock →
               </a>
             </div>
@@ -364,18 +364,18 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         )}
 
         {/* 3. Think First */}
-        <div className="rounded-xl border-2 border-[#1a1814] bg-[#faf8f3] p-6">
+        <div className="rounded-xl border-2 border-primary bg-background p-6">
           <div className={headerClass}>
-            <Brain size={16} className="text-[#1a1814]" />
-            <span className="text-xs font-mono text-[#1a1814] font-bold">{"// think first"}</span>
+            <Brain size={16} className="text-foreground" />
+            <span className="text-xs font-mono text-foreground font-bold">{"// think first"}</span>
           </div>
-          <p className="text-[#1a1814] text-sm leading-relaxed font-medium mb-2">
+          <p className="text-foreground text-sm leading-relaxed font-medium mb-2">
             Before looking at hints — ask yourself:
           </p>
-          <p className="text-[#1a1814] text-base leading-relaxed italic border-l-2 border-[#1a1814] pl-4">
+          <p className="text-foreground text-base leading-relaxed italic border-l-2 border-primary pl-4">
             {result.thinking_prompt}
           </p>
-          <p className="text-xs text-[#a89f96] font-mono mt-4">
+          <p className="text-xs text-muted-foreground font-mono mt-4">
             {timerActive
               ? `⏱ ${formatTime(timeLeft)} remaining — try to solve it before time runs out.`
               : "Try to think for 5-10 minutes. Then use hints below if stuck."}
@@ -383,9 +383,9 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         </div>
 
         {/* 4. Progressive Hints (LOCKED during timer) */}
-        <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className={headerClass}>
-            <Lightbulb size={16} className="text-[#a89f96]" />
+            <Lightbulb size={16} className="text-muted-foreground" />
             <span className={labelClass}>{"// hints (reveal one at a time)"}</span>
             {hintsLocked && (
               <span className="ml-auto text-[10px] font-mono text-amber-600 flex items-center gap-1">
@@ -418,11 +418,11 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                   const isLocked = !isPaid && i>=2
                   if (isLocked && i <= hintsUnlocked) {
                     return (
-                      <div key={i} className="rounded-lg bg-[#f0ede6] p-3 text-center">
-                        <p className="text-xs text-[#6b6560] mb-2">🔒 Hint {i + 1} locked</p>
+                      <div key={i} className="rounded-lg bg-muted p-3 text-center">
+                        <p className="text-xs text-muted-foreground mb-2">🔒 Hint {i + 1} locked</p>
                         <a 
                           href="/#pricing" 
-                          className="text-xs font-mono text-[#1a1814] underline"
+                          className="text-xs font-mono text-foreground underline"
                           onClick={() => analytics.trackPaywallShown(`hint_${i + 1}`)}
                         >
                           Unlock next insight →
@@ -433,16 +433,16 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                   return(
                     <div key={i}>
                       {i < hintsUnlocked ? (
-                        <div className="rounded-lg bg-[#f0ede6] p-3 border-l-2 border-[#1a1814]">
-                          <span className="text-xs font-mono text-[#a89f96] block mb-1">
+                        <div className="rounded-lg bg-muted p-3 border-l-2 border-primary">
+                          <span className="text-xs font-mono text-muted-foreground block mb-1">
                             hint {i + 1}
                           </span>
-                          <p className="text-sm text-[#1a1814] leading-relaxed">{hint}</p>
+                          <p className="text-sm text-foreground leading-relaxed">{hint}</p>
                         </div>
                       ) : i === hintsUnlocked ? (
                         <Button
                           variant="outline"
-                          className="w-full border-dashed border-[#d4cdc4] text-[#6b6560] hover:border-[#1a1814] hover:text-[#1a1814] text-sm"
+                          className="w-full border-dashed border-input text-muted-foreground hover:border-primary hover:text-foreground text-sm"
                           onClick={() => {
                             setHintsUnlocked(i + 1)
                             analytics.trackHintUnlocked(i + 1)
@@ -458,20 +458,20 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
 
               {/* Free Paywall — after hint 2 */}
               {!isPaid && hintsUnlocked >= 2 && (
-                <div className="mt-4 rounded-xl border-2 border-[#1a1814] bg-[#faf8f3] p-5 text-center">
-                  <p className="text-xs font-mono text-[#a89f96] mb-2">
+                <div className="mt-4 rounded-xl border-2 border-primary bg-background p-5 text-center">
+                  <p className="text-xs font-mono text-muted-foreground mb-2">
                     2 hints used • You&apos;re close
                   </p>
-                  <div className="w-8 h-8 rounded-full bg-[#1a1814] flex items-center justify-center mx-auto mb-3">
-                    <Lightbulb size={16} className="text-[#faf8f3]" />
+                  <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center mx-auto mb-3">
+                    <Lightbulb size={16} className="text-primary-foreground" />
                   </div>
-                  <p className="font-mono text-sm font-bold text-[#1a1814] mb-1">
+                  <p className="font-mono text-sm font-bold text-foreground mb-1">
                       You&apos;re one insight away from solving this.
                   </p>
-                  <p className="text-xs text-[#6b6560] mb-4 leading-relaxed">
+                  <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
                     Unlock how top candidates recognize this pattern instantly.
                   </p>
-                  <div className="text-xs text-[#6b6560] mb-4 space-y-1">
+                  <div className="text-xs text-muted-foreground mb-4 space-y-1">
                     <p>• Final hint to unblock you</p>
                     <p>• Pattern breakdown + intuition</p>
                     <p>• Memory trick for interviews</p>
@@ -479,7 +479,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                   </div>
                   <a
                     href="/#pricing"
-                    className="inline-block bg-[#1a1814] text-[#faf8f3] font-mono text-sm px-5 py-2 rounded-lg hover:bg-[#2d2926] transition-colors"
+                    className="inline-block bg-primary text-primary-foreground font-mono text-sm px-5 py-2 rounded-lg hover:bg-primary/90 transition-colors"
                     onClick={() => analytics.trackPaywallShown('progressive_hints')}
                   >
                     Unlock pattern →
@@ -492,15 +492,15 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                   {!showQuickCheck ? (
                     <Button
                       variant="outline"
-                      className="w-full border-[#1a1814] text-[#1a1814] hover:bg-[#f0ede6] text-sm font-mono"
+                      className="w-full border-primary text-foreground hover:bg-muted text-sm font-mono"
                       onClick={() => setShowQuickCheck(true)}
                     >
                       ✦ Test your understanding before the answer
                     </Button>
                   ) : (
-                    <div className="rounded-xl border-2 border-[#1a1814] bg-[#faf8f3] p-4">
-                      <p className="text-xs font-mono text-[#a89f96] mb-1">{"// quick check"}</p>
-                      <p className="text-sm font-medium text-[#1a1814] mb-3">
+                    <div className="rounded-xl border-2 border-primary bg-background p-4">
+                      <p className="text-xs font-mono text-muted-foreground mb-1">{"// quick check"}</p>
+                      <p className="text-sm font-medium text-foreground mb-3">
                         Explain in your own words — why does this problem need an efficient lookup? What happens if you don&apos;t have one?
                       </p>
                       {answerFeedback === null && (
@@ -509,10 +509,10 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                             value={userAnswer}
                             onChange={(e) => setUserAnswer(e.target.value)}
                             placeholder="Write your answer here... (2-3 sentences is enough)"
-                            className="w-full min-h-[80px] bg-white border border-[#e8e2d9] rounded-lg p-3 text-sm font-mono text-[#1a1814] placeholder:text-[#a89f96] outline-none focus:border-[#1a1814] resize-none mb-3"
+                            className="w-full min-h-[80px] bg-card border border-border rounded-lg p-3 text-sm font-mono text-foreground placeholder:text-muted-foreground outline-none focus:border-primary resize-none mb-3"
                           />
                           <Button
-                            className="w-full bg-[#1a1814] text-[#faf8f3] hover:bg-[#2d2926] text-sm"
+                            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 text-sm"
                             disabled={userAnswer.trim().split(" ").length < 4}
                             onClick={checkAnswer}
                           >
@@ -529,7 +529,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                             </p>
                           </div>
                           <Button
-                            className="w-full bg-[#1a1814] text-[#faf8f3] hover:bg-[#2d2926] text-sm"
+                            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 text-sm"
                             onClick={() => { setShowApproach(true); setShowPattern(true) }}
                           >
                             <Eye size={14} className="mr-2" />
@@ -547,13 +547,13 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                           </div>
                           <Button
                             variant="outline"
-                            className="w-full border-[#e8e2d9] text-[#6b6560] text-sm"
+                            className="w-full border-border text-muted-foreground text-sm"
                             onClick={() => { setUserAnswer(""); setAnswerFeedback(null) }}
                           >
                             Try again
                           </Button>
                           <Button
-                            className="w-full bg-[#1a1814] text-[#faf8f3] hover:bg-[#2d2926] text-sm"
+                            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 text-sm"
                             onClick={() => { setShowApproach(true); setShowPattern(true) }}
                           >
                             <Eye size={14} className="mr-2" />
@@ -566,7 +566,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                   {!showQuickCheck && (
                     <Button
                       variant="outline"
-                      className="w-full border-dashed border-[#d4cdc4] text-[#a89f96] hover:border-[#1a1814] hover:text-[#6b6560] text-sm"
+                      className="w-full border-dashed border-input text-muted-foreground hover:border-primary hover:text-muted-foreground text-sm"
                       onClick={() => { setShowApproach(true); setShowPattern(true) }}
                     >
                       I give up — just show me
@@ -576,7 +576,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
               )}
 
               {hintsUnlocked === 0 && (
-                <p className="text-xs text-[#a89f96] font-mono mt-3 text-center">
+                <p className="text-xs text-muted-foreground font-mono mt-3 text-center">
                   Try solving first — hints are here when you need them
                 </p>
               )}
@@ -586,12 +586,12 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
 
         {/* 5. "Did You Solve It?" — appears after timer ends */}
         {timerEnded && selfSolved === null && (
-          <div className="rounded-xl border-2 border-[#1a1814] bg-[#faf8f3] p-6 animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="rounded-xl border-2 border-primary bg-background p-6 animate-in fade-in slide-in-from-top-2 duration-300">
             <div className={headerClass}>
-              <Target size={16} className="text-[#1a1814]" />
-              <span className="text-xs font-mono text-[#1a1814] font-bold">{"// time's up — how did you do?"}</span>
+              <Target size={16} className="text-foreground" />
+              <span className="text-xs font-mono text-foreground font-bold">{"// time's up — how did you do?"}</span>
             </div>
-            <p className="text-sm text-[#6b6560] mb-5">
+            <p className="text-sm text-muted-foreground mb-5">
               Were you able to solve the problem during the timed challenge?
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">
@@ -604,7 +604,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
               </Button>
               <Button
                 variant="outline"
-                className="flex-1 border-[#e8e2d9] text-[#6b6560] hover:border-[#1a1814] hover:text-[#1a1814] font-mono text-sm"
+                className="flex-1 border-border text-muted-foreground hover:border-primary hover:text-foreground font-mono text-sm"
                 onClick={handleSolvedNo}
               >
                 <XCircle size={14} className="mr-2" />
@@ -624,7 +624,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                 {currentQuizIndex + 1}/{result.quiz_questions.length}
               </span>
             </div>
-            <p className="text-sm font-medium text-[#1a1814] mb-4">
+            <p className="text-sm font-medium text-foreground mb-4">
               {result.quiz_questions[currentQuizIndex].question}
             </p>
 
@@ -634,7 +634,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                   value={quizAnswer}
                   onChange={(e) => setQuizAnswer(e.target.value)}
                   placeholder="Type your answer... (be specific)"
-                  className="w-full min-h-[80px] bg-white border border-amber-200 rounded-lg p-3 text-sm font-mono text-[#1a1814] placeholder:text-[#a89f96] outline-none focus:border-amber-400 resize-none mb-3"
+                  className="w-full min-h-[80px] bg-card border border-amber-200 rounded-lg p-3 text-sm font-mono text-foreground placeholder:text-muted-foreground outline-none focus:border-amber-400 resize-none mb-3"
                 />
                 <Button
                   className="w-full bg-amber-600 text-white hover:bg-amber-700 text-sm font-mono"
@@ -673,7 +673,7 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                   </p>
                 </div>
                 <Button
-                  className="w-full bg-[#1a1814] text-[#faf8f3] hover:bg-[#2d2926] text-sm font-mono"
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-mono"
                   onClick={nextQuizQuestion}
                 >
                   {currentQuizIndex < (result.quiz_questions?.length || 1) - 1
@@ -692,12 +692,12 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
               🎉 {quizCompleted ? "Quiz complete!" : "Great job solving it!"} Here&apos;s the full pattern breakdown:
             </p>
             {plan !== "pro" && result.quiz_questions && (
-              <p className="text-xs text-[#6b6560] mb-3">
+              <p className="text-xs text-muted-foreground mb-3">
                 <a href="/#pricing" className="underline">Upgrade to Pro</a> for AI-evaluated quizzes after each solve.
               </p>
             )}
             <Button
-              className="bg-[#1a1814] text-[#faf8f3] hover:bg-[#2d2926] text-sm font-mono"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-mono"
               onClick={() => { setShowApproach(true); setShowPattern(true) }}
             >
               <Eye size={14} className="mr-2" />
@@ -708,13 +708,13 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
 
         {/* Solved = No → gentle message and auto-reveal hints */}
         {selfSolved === false && !showPattern && (
-          <div className="rounded-xl border border-[#e8e2d9] bg-white p-5 text-center">
-            <p className="text-sm text-[#6b6560] mb-3">
+          <div className="rounded-xl border border-border bg-card p-5 text-center">
+            <p className="text-sm text-muted-foreground mb-3">
               No worries — that&apos;s how you learn. Use the hints above to work through it, or reveal the full approach:
             </p>
             <Button
               variant="outline"
-              className="border-[#1a1814] text-[#1a1814] hover:bg-[#f0ede6] text-sm font-mono"
+              className="border-primary text-foreground hover:bg-muted text-sm font-mono"
               onClick={() => { setShowApproach(true); setShowPattern(true) }}
             >
               <Eye size={14} className="mr-2" />
@@ -725,35 +725,35 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
 
         {/* Pattern Reveal */}
         {showPattern && (
-          <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
+          <div className="rounded-xl border border-border bg-card p-6">
             <div className={headerClass}>
-              <Brain size={16} className="text-[#a89f96]" />
+              <Brain size={16} className="text-muted-foreground" />
               <span className={labelClass}>{"// pattern"}</span>
             </div>
             <div className="flex flex-col gap-4 mb-4 sm:flex-row sm:items-start">
-              <div className="rounded-lg bg-[#f0ede6] px-4 py-3 text-center sm:min-w-[140px]">
-                <p className="font-mono text-lg font-bold text-[#1a1814]">
+              <div className="rounded-lg bg-muted px-4 py-3 text-center sm:min-w-[140px]">
+                <p className="font-mono text-lg font-bold text-foreground">
                   { isPaid ? result.pattern_reveal.name : "🔒 Hidden Pattern"}
                 </p>
               </div>
               {isPaid ? (
                 <div>
-                    <p className="text-sm leading-relaxed text-[#6b6560] mb-2">
+                    <p className="text-sm leading-relaxed text-muted-foreground mb-2">
                       {result.pattern_reveal.why}
                     </p>
-                    <div className="bg-[#f0ede6] rounded-lg p-3">
-                      <p className="text-xs font-mono text-[#a89f96] mb-1">the aha moment</p>
-                      <p className="text-sm font-medium text-[#1a1814]">
+                    <div className="bg-muted rounded-lg p-3">
+                      <p className="text-xs font-mono text-muted-foreground mb-1">the aha moment</p>
+                      <p className="text-sm font-medium text-foreground">
                         {result.pattern_reveal.intuition}
                       </p>
                     </div>
                   </div>
                 ) : (
                   <div className="flex-1">
-                    <p className="text-xs text-[#a89f96] font-mono mb-2">why this pattern fits</p>
-                    <div className="rounded-lg bg-[#f0ede6] p-3 text-center">
-                      <p className="text-xs text-[#6b6560] mb-2">🔒 Full explanation locked</p>
-                      <a href="/#pricing" className="text-xs font-mono text-[#1a1814] underline">
+                    <p className="text-xs text-muted-foreground font-mono mb-2">why this pattern fits</p>
+                    <div className="rounded-lg bg-muted p-3 text-center">
+                      <p className="text-xs text-muted-foreground mb-2">🔒 Full explanation locked</p>
+                      <a href="/#pricing" className="text-xs font-mono text-foreground underline">
                         Upgrade to Basic →
                       </a>
                     </div>
@@ -765,21 +765,21 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
 
         {/* Thinking Steps */}
         {showApproach && (
-          <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
+          <div className="rounded-xl border border-border bg-card p-6">
             <div className={headerClass}>
-              <BookOpen size={16} className="text-[#a89f96]" />
+              <BookOpen size={16} className="text-muted-foreground" />
               <span className={labelClass}>{"// how to think through this"}</span>
             </div>
-            <p className="text-xs text-[#a89f96] font-mono mb-4">
+            <p className="text-xs text-muted-foreground font-mono mb-4">
               No code — just the thinking process
             </p>
             <ol className="space-y-4">
               {result.thinking_steps.map((step, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-full bg-[#1a1814] text-[#faf8f3] flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                  <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
                     {i + 1}
                   </span>
-                  <span className="text-sm leading-relaxed text-[#1a1814]">{step}</span>
+                  <span className="text-sm leading-relaxed text-foreground">{step}</span>
                 </li>
               ))}
             </ol>
@@ -787,25 +787,25 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         )}
 
         {/* Memory Hook */}
-        <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className={headerClass}>
-            <Target size={16} className="text-[#a89f96]" />
+            <Target size={16} className="text-muted-foreground" />
             <span className={labelClass}>{"// memory hook"}</span>
           </div>
           {!isPaid ? (
             <div className="relative">
-              <p className="text-sm font-medium italic leading-relaxed text-[#1a1814] blur-sm select-none">
+              <p className="text-sm font-medium italic leading-relaxed text-foreground blur-sm select-none">
                 &quot;{result.memory_hook}&quot;
               </p>
               <div className="absolute inset-0 flex items-center justify-center">
-                <a href="/#pricing" className="text-xs font-mono text-[#1a1814] bg-[#f0ede6] px-3 py-1.5 rounded-lg border border-[#e8e2d9] hover:border-[#1a1814]">
+                <a href="/#pricing" className="text-xs font-mono text-foreground bg-muted px-3 py-1.5 rounded-lg border border-border hover:border-primary">
                   🔒 Upgrade to read →
                 </a>
               </div>
             </div>
           ) : (
-            <div className="border-l-2 border-[#1a1814] pl-4">
-              <p className="text-sm font-medium italic leading-relaxed text-[#1a1814]">
+            <div className="border-l-2 border-primary pl-4">
+              <p className="text-sm font-medium italic leading-relaxed text-foreground">
                 &quot;{result.memory_hook}&quot;
               </p>
             </div>
@@ -813,54 +813,54 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         </div>
 
         {/* Interview Recognition */}
-        <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className={headerClass}>
-            <GraduationCap size={16} className="text-[#a89f96]" />
+            <GraduationCap size={16} className="text-muted-foreground" />
             <span className={labelClass}>{"// spot this in interviews"}</span>
           </div>
           {plan === "free" ? (
-            <div className="rounded-lg bg-[#f0ede6] p-4 text-center">
-              <p className="text-sm text-[#6b6560] mb-2">
+            <div className="rounded-lg bg-muted p-4 text-center">
+              <p className="text-sm text-muted-foreground mb-2">
                 🔒 Learn how to spot this pattern during interviews
               </p>
-              <a href="/#pricing" className="text-xs font-mono text-[#1a1814] underline">
+              <a href="/#pricing" className="text-xs font-mono text-foreground underline">
                 Upgrade to Basic to unlock →
               </a>
             </div>
           ) : (
-            <div className="bg-[#f0ede6] rounded-lg p-3">
-              <p className="text-sm leading-relaxed text-[#1a1814]">
+            <div className="bg-muted rounded-lg p-3">
+              <p className="text-sm leading-relaxed text-foreground">
                 {result.interview_recognition}
               </p>
             </div>
           )}
           <div className="flex items-center gap-3 mt-4">
-            <p className="text-xs font-mono text-[#a89f96]">time to solve</p>
-            <span className="text-xs font-mono bg-[#f0ede6] text-[#1a1814] px-2 py-1 rounded">
+            <p className="text-xs font-mono text-muted-foreground">time to solve</p>
+            <span className="text-xs font-mono bg-muted text-foreground px-2 py-1 rounded">
               {result.solve_time}
             </span>
           </div>
         </div>
 
         {/* Missing Concepts */}
-        <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className={headerClass}>
-            <HelpCircle size={16} className="text-[#a89f96]" />
+            <HelpCircle size={16} className="text-muted-foreground" />
             <span className={labelClass}>{"// concepts you need to know first"}</span>
           </div>
           {!isPaid ? (
-            <div className="rounded-lg bg-[#f0ede6] p-4 text-center">
-              <p className="text-sm text-[#6b6560] mb-2">
+            <div className="rounded-lg bg-muted p-4 text-center">
+              <p className="text-sm text-muted-foreground mb-2">
                 🔒 See what prerequisite concepts you&apos;re missing
               </p>
-              <a href="/#pricing" className="text-xs font-mono text-[#1a1814] underline">
+              <a href="/#pricing" className="text-xs font-mono text-foreground underline">
                 Upgrade to Basic to unlock →
               </a>
             </div>
           ) : !showConcepts ? (
             <Button
               variant="outline"
-              className="w-full border-[#e8e2d9] text-[#6b6560] hover:border-[#1a1814] hover:text-[#1a1814]"
+              className="w-full border-border text-muted-foreground hover:border-primary hover:text-foreground"
               onClick={() => setShowConcepts(true)}
             >
               <ChevronDown size={14} className="mr-2" />
@@ -869,14 +869,14 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
           ) : (
             <div className="space-y-3">
               {(result.missing_concepts || []).map((c, i) => (
-                <div key={i} className="rounded-lg border border-[#e8e2d9] p-3">
-                  <p className="text-sm font-medium text-[#1a1814] mb-1">{c.concept}</p>
-                  <p className="text-xs text-[#6b6560] mb-2">{c.why_needed}</p>
+                <div key={i} className="rounded-lg border border-border p-3">
+                  <p className="text-sm font-medium text-foreground mb-1">{c.concept}</p>
+                  <p className="text-xs text-muted-foreground mb-2">{c.why_needed}</p>
                   <a
                     href={`https://www.google.com/search?q=${encodeURIComponent(c.learn_query)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs font-mono text-[#1a1814] underline hover:opacity-70"
+                    className="text-xs font-mono text-foreground underline hover:opacity-70"
                   >
                     Search: &quot;{c.learn_query}&quot; →
                   </a>
@@ -887,9 +887,9 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         </div>
 
         {/* Similar Problems */}
-        <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className={headerClass}>
-            <Layers size={16} className="text-[#a89f96]" />
+            <Layers size={16} className="text-muted-foreground" />
             <span className={labelClass}>{"// practice these next"}</span>
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -903,31 +903,31 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                     new CustomEvent("patternflow:send-to-solver", { detail: p.name })
                   )
                 }}
-                className={`group rounded-lg border border-[#e8e2d9] bg-[#faf8f3] p-3 text-left transition-all
-                  ${isPaid ? "hover:border-[#1a1814] hover:bg-white cursor-pointer" : "cursor-default opacity-70"}`}
+                className={`group rounded-lg border border-border bg-background p-3 text-left transition-all
+                  ${isPaid ? "hover:border-primary hover:bg-card cursor-pointer" : "cursor-default opacity-70"}`}
               >
-                <p className="text-sm font-medium text-[#1a1814]">{p.name}</p>
+                <p className="text-sm font-medium text-foreground">{p.name}</p>
                 <div className="mt-1 flex items-center gap-2 mb-2">
                   <span className={`text-xs font-mono ${
                     p.difficulty === "Easy" ? "text-green-600" :
                     p.difficulty === "Hard" ? "text-red-500" : "text-amber-600"
                   }`}>{p.difficulty}</span>
-                  <span className="text-xs text-[#a89f96]">{p.platform}</span>
+                  <span className="text-xs text-muted-foreground">{p.platform}</span>
                 </div>
                 {isPaid ? (
-                  <p className="text-xs text-[#a89f96] leading-relaxed">{p.why_similar}</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{p.why_similar}</p>
                 ) : (
-                  <p className="text-xs text-[#a89f96]">🔒 Upgrade to see why</p>
+                  <p className="text-xs text-muted-foreground">🔒 Upgrade to see why</p>
                 )}
               </button>
             ))}
           </div>
           {!isPaid && (
-            <div className="mt-3 rounded-lg bg-[#f0ede6] p-3 text-center">
-              <p className="text-xs text-[#6b6560] font-mono">
+            <div className="mt-3 rounded-lg bg-muted p-3 text-center">
+              <p className="text-xs text-muted-foreground font-mono">
                 Full details + click-to-solve locked for free users
               </p>
-              <a href="/#pricing" className="text-xs text-[#1a1814] underline font-mono">
+              <a href="/#pricing" className="text-xs text-foreground underline font-mono">
                 Upgrade to Basic →
               </a>
             </div>
@@ -935,24 +935,24 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
         </div>
 
         {/* Pattern Flashcards — Pro only */}
-        <div className="rounded-xl border border-[#e8e2d9] bg-white p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className={headerClass}>
-            <Lightbulb size={16} className="text-[#a89f96]" />
+            <Lightbulb size={16} className="text-muted-foreground" />
             <span className={labelClass}>{"// memorize this pattern"}</span>
           </div>
           {plan !== "pro" ? (
-            <div className="rounded-lg bg-[#f0ede6] p-4 text-center">
-              <p className="text-sm text-[#6b6560] mb-2">
+            <div className="rounded-lg bg-muted p-4 text-center">
+              <p className="text-sm text-muted-foreground mb-2">
                 🔒 Interactive flashcards to master this pattern
               </p>
-              <a href="/#pricing" className="text-xs font-mono text-[#1a1814] underline">
+              <a href="/#pricing" className="text-xs font-mono text-foreground underline">
                 Upgrade to Pro to unlock →
               </a>
             </div>
           ) : !showFlashcards ? (
             <Button
               variant="outline"
-              className="w-full border-[#e8e2d9] text-[#6b6560] hover:border-[#1a1814] hover:text-[#1a1814]"
+              className="w-full border-border text-muted-foreground hover:border-primary hover:text-foreground"
               onClick={() => { setShowFlashcards(true); setCurrentFlashcard(0); setShowAnswer(false) }}
             >
               <ChevronDown size={14} className="mr-2" />
@@ -960,25 +960,25 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
             </Button>
           ) : (
             <div className="space-y-4">
-              <div className="bg-[#f0ede6] rounded-lg p-5 min-h-[140px]">
-                <p className="text-xs font-mono text-[#a89f96] mb-3">
+              <div className="bg-muted rounded-lg p-5 min-h-[140px]">
+                <p className="text-xs font-mono text-muted-foreground mb-3">
                   Card {currentFlashcard + 1} of {flashcardQuestions.length}
                 </p>
-                <p className="text-sm font-medium text-[#1a1814] mb-4">
+                <p className="text-sm font-medium text-foreground mb-4">
                   Q: {flashcardQuestions[currentFlashcard].q}
                 </p>
                 {!showAnswer ? (
                   <Button
                     size="sm"
-                    className="bg-[#1a1814] text-[#faf8f3] hover:bg-[#2d2926]"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90"
                     onClick={() => setShowAnswer(true)}
                   >
                     See answer
                   </Button>
                 ) : (
-                  <div className="border-t border-[#d4cdc4] pt-3 mt-2">
-                    <p className="text-xs font-mono text-[#a89f96] mb-1">Answer:</p>
-                    <p className="text-sm text-[#1a1814] leading-relaxed">
+                  <div className="border-t border-input pt-3 mt-2">
+                    <p className="text-xs font-mono text-muted-foreground mb-1">Answer:</p>
+                    <p className="text-sm text-foreground leading-relaxed">
                       {flashcardQuestions[currentFlashcard].a}
                     </p>
                   </div>
