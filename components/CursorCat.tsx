@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+// @ts-expect-error - react-cursor-cat does not have TypeScript definitions
 import Oneko from "react-cursor-cat";
 
 export function CursorCat() {
