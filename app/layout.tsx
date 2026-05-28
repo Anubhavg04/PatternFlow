@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import { PHProvider, PostHogAuth } from "@/components/providers/PostHogProvider";
 import NextTopLoader from 'nextjs-toploader';
 import { Analytics } from '@vercel/analytics/next';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
@@ -80,6 +81,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </PHProvider>
           <Analytics />
         </ThemeProvider>
+        <GoogleAnalytics gaId="G-EDGJ98VT55" />
       </body>
     </html>
   );
