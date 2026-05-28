@@ -17,7 +17,7 @@ async function getUserSolves(userId: string, plan: string = "free") {
     // Free: no history (return empty), Basic: 30 days, Pro: full history
     let query = sb
       .from("solves")
-      .select("id, problem_summary, pattern_name, difficulty, created_at, confidence")
+      .select("id, problem_summary, pattern_name, difficulty, created_at, confidence, solve_time_seconds, self_solved, timer_used")
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
 
@@ -381,12 +381,19 @@ export default async function Dashboard({
                 <p className="font-mono text-2xl font-black text-foreground">{streak}d</p>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Streak</p>
               </div>
-              <div className="group rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5">
+              <div className="group rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5 relative flex flex-col justify-between">
                 <Target size={16} className="mb-3 text-muted-foreground group-hover:text-amber-500 transition-colors" />
-                <p className="font-mono text-2xl font-black text-foreground">
-                  {patternAnalysis.filter(p => p.mastery === "Mastered" || p.mastery === "Confident").length}
-                </p>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Mastered</p>
+                <div>
+                  <p className="font-mono text-2xl font-black text-foreground">
+                    {patternAnalysis.filter(p => p.mastery === "Mastered" || p.mastery === "Confident").length}
+                  </p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Mastered</p>
+                </div>
+                {/* Tooltip */}
+                <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity bottom-full mb-2 left-1/2 -translate-x-1/2 bg-foreground text-background text-[10px] px-2 py-1 rounded pointer-events-none whitespace-nowrap z-10 font-mono">
+                  Requires 6+ solves per pattern
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-foreground"></div>
+                </div>
               </div>
             </div>
 
@@ -521,13 +528,25 @@ export default async function Dashboard({
                       className="group flex items-start justify-between rounded-xl border border-border bg-card p-3 transition-all hover:border-border/80 hover:shadow-sm"
                     >
                       <div className="mr-3 min-w-0 flex-1">
-                        <div className="flex items-center gap-2 mb-1">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
                           <span className="font-mono text-[9px] text-muted-foreground">
                             {timeAgo(solve.created_at)}
                           </span>
                           <span className={`font-mono text-[9px] font-bold ${getDiffColor(solve.difficulty)}`}>
                             {solve.difficulty.toUpperCase()}
                           </span>
+                          {solve.timer_used && solve.solve_time_seconds != null && (
+                            <span className="font-mono text-[9px] text-[#6b6560] flex items-center gap-0.5">
+                              <Clock size={8} />
+                              {Math.floor(solve.solve_time_seconds / 60)}m {solve.solve_time_seconds % 60}s
+                            </span>
+                          )}
+                          {solve.self_solved === true && (
+                            <span className="rounded-full bg-green-50 px-1.5 py-0.5 text-[8px] font-bold text-green-600">✓ solved</span>
+                          )}
+                          {solve.self_solved === false && (
+                            <span className="rounded-full bg-red-50 px-1.5 py-0.5 text-[8px] font-bold text-red-500">✗ needed help</span>
+                          )}
                         </div>
                         <p className="truncate text-xs font-medium text-foreground">
                           {solve.problem_summary || "Problem solved"}
