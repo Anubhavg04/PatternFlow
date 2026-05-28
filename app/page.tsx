@@ -519,11 +519,6 @@ export default function LandingPage() {
 
             {/* PRO */}
             <article className="relative w-full max-w-xs rounded-xl border-2 border-primary dark:border-amber-500/50 bg-primary dark:bg-zinc-950 p-7 dark:shadow-[0_0_30px_-5px_rgba(245,158,11,0.25)] transition-all hover:dark:shadow-[0_0_40px_-5px_rgba(245,158,11,0.4)] dark:bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] dark:from-zinc-900 dark:to-zinc-950">
-              
-              {/* Animated Cartoon Pointer */}
-              <div className="absolute -top-10 -right-4 md:-right-8 animate-bounce text-4xl drop-shadow-xl z-10 origin-bottom hover:animate-ping cursor-default">
-                👇
-              </div>
 
               <Badge className="absolute -top-3 right-4 bg-background dark:bg-amber-500 font-mono text-[11px] text-foreground dark:text-zinc-950 hover:bg-background dark:hover:bg-amber-400 font-bold border border-border dark:border-amber-500">
                 Most popular
