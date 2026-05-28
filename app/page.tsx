@@ -447,7 +447,7 @@ export default function LandingPage() {
               <Separator className="my-5 bg-[#e8e2d9]" />
               <ul className="space-y-2.5">
                 {[
-                  "5 solves per day",
+                  "3 solves per day",
                   "Think First + hints",
                   "Pattern detection",
                   "Memory hooks",
@@ -588,7 +588,7 @@ export default function LandingPage() {
               },
               {
                 q: "Do I need to sign up to use it?",
-                a: "Yes. for testing you get 5 free solves per day after signup. Just paste a problem and go.",
+                a: "Yes. for testing you get 3 free solves per day after signup. Just paste a problem and go.",
               },
               {
                 q: "What kind of problems can I paste?",

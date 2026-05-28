@@ -39,7 +39,7 @@ export default function SolvePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [solvesUsed, setSolvesUsed] = useState(0);
-  const [solveLimit, setSolveLimit] = useState(5);
+  const [solveLimit, setSolveLimit] = useState(3);
   const [lineIndex, setLineIndex] = useState(0);
   const [copied, setCopied] = useState(false);
   const [userPlan, setUserPlan] = useState<"free" | "basic" | "pro">("free");
@@ -114,9 +114,9 @@ export default function SolvePage() {
       const key = `patternflow_solves_${new Date().toDateString()}`;
       solveKeyRef.current = key;
       const stored = Number.parseInt(localStorage.getItem(key) ?? "0", 10);
-      setSolvesUsed(Number.isNaN(stored) ? 0 : Math.min(5, stored));
-      setSolveLimit(5);
-      setSolveLimit(5);
+      setSolvesUsed(Number.isNaN(stored) ? 0 : Math.min(3, stored));
+      setSolveLimit(3);
+      setSolveLimit(3);
     }
   }, [userId]);
 
@@ -205,7 +205,7 @@ export default function SolvePage() {
           const updated = prev + 1;
           if (!userId) {
             // localStorage fallback for unauthenticated
-            const nextCount = Math.min(5, updated);
+            const nextCount = Math.min(3, updated);
             localStorage.setItem(solveKeyRef.current, String(nextCount));
           }
           return updated;
@@ -240,7 +240,7 @@ export default function SolvePage() {
         <div className="mb-4 flex items-center gap-2">
           {userPlan === "free" && (
             <div className="flex gap-1">
-              {[1, 2, 3, 4, 5].map((n) => (
+              {[1, 2, 3].map((n) => (
                 <div
                   key={n}
                   className={`h-1.5 w-6 rounded-full ${n <= solvesUsed ? "bg-primary" : "bg-[#e8e2d9]"}`}
@@ -266,7 +266,7 @@ export default function SolvePage() {
               ? "Pro plan · unlimited solves"
               : userPlan === "basic"
               ? `${Math.max(0, 100 - solvesUsed)} of 100 solves remaining this month`
-              : `${Math.max(0, 5 - solvesUsed)} of 5 free solves remaining today`}
+              : `${Math.max(0, 3 - solvesUsed)} of 3 free solves remaining today`}
           </span>
         </div>
 

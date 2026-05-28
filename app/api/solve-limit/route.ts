@@ -6,7 +6,7 @@ export async function GET() {
 
   if (!userId) {
     // Unauthenticated — can't track server-side
-    return Response.json({ plan: "free", limit: 5, used: 0, period: "day" })
+    return Response.json({ plan: "free", limit: 3, used: 0, period: "day" })
   }
 
   const sb = createClient(
@@ -50,7 +50,7 @@ export async function GET() {
     return Response.json({ plan: "basic", limit: 100, used: count || 0, period: "month" })
   }
 
-  // Free — 5/day
+  // Free — 3/day
   const startOfDay = new Date()
   startOfDay.setHours(0, 0, 0, 0)
 
@@ -60,5 +60,5 @@ export async function GET() {
     .eq("user_id", userId)
     .gte("created_at", startOfDay.toISOString())
 
-  return Response.json({ plan: "free", limit: 5, used: count || 0, period: "day" })
+  return Response.json({ plan: "free", limit: 3, used: count || 0, period: "day" })
 }

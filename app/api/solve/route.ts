@@ -85,11 +85,11 @@ export async function POST(request: Request) {
   // Validate quota (Free/Basic)
   if (userPlan !== "pro") {
     const solveCount = userPlan === "basic" ? (monthRes.count || 0) : (dayRes.count || 0)
-    const limit = userPlan === "basic" ? 100 : 5
+    const limit = userPlan === "basic" ? 100 : 3
     if (solveCount >= limit) {
       const msg = userPlan === "basic"
         ? "Monthly solve limit reached (100/month). Upgrade to Pro for unlimited solves."
-        : "Daily solve limit reached (5/day). Upgrade to Basic for 100 solves/month."
+        : "Daily solve limit reached (3/day). Upgrade to Basic for 100 solves/month."
       return Response.json({ error: msg }, { status: 429 })
     }
   }
