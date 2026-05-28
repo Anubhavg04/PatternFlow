@@ -489,6 +489,7 @@ export default function LandingPage() {
                 {[
                   "100 solves per month",
                   "Everything in Free",
+                  "Detailed AI explanations",
                   "Similar problems (full)",
                   "Missing concepts",
                   "Solve history (30 days)",
@@ -537,7 +538,7 @@ export default function LandingPage() {
               <Separator className="my-5 bg-background/20 dark:bg-zinc-800" />
               <ul className="space-y-2.5">
                 {[
-                  "High usage limit",
+                  "Unlimited solves",
                   "Everything in Basic",
                   "Full solve history",
                   "Pattern flashcards",
