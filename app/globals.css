@@ -161,3 +161,15 @@
     scroll-behavior: smooth;
   }
 }
+
+/* Fix react-cursor-cat white background */
+.cursor-pet-element {
+  mix-blend-mode: multiply;
+  opacity: 0.9;
+}
+
+.dark .cursor-pet-element {
+  mix-blend-mode: screen;
+  filter: invert(1);
+}
+

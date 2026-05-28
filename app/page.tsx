@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Navbar } from "@/components/Navbar";
 import StickyQuotes from "@/components/StickyQuotes";
 import { PaymentButton } from "@/components/PaymentButton";
+import { CursorCat } from "@/components/CursorCat";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -61,7 +62,8 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="bg-background text-foreground transition-colors duration-300">
+    <div className="min-h-screen bg-background font-sans selection:bg-primary/20 selection:text-primary">
+      <CursorCat />
       <Navbar />
 
       {/* Hero */}
@@ -516,22 +518,28 @@ export default function LandingPage() {
             </article>
 
             {/* PRO */}
-            <article className="relative w-full max-w-xs rounded-xl border-2 border-primary bg-primary p-7">
-              <Badge className="absolute -top-3 right-4 bg-background font-mono text-[11px] text-foreground hover:bg-background">
+            <article className="relative w-full max-w-xs rounded-xl border-2 border-primary dark:border-amber-500/50 bg-primary dark:bg-zinc-950 p-7 dark:shadow-[0_0_30px_-5px_rgba(245,158,11,0.25)] transition-all hover:dark:shadow-[0_0_40px_-5px_rgba(245,158,11,0.4)] dark:bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] dark:from-zinc-900 dark:to-zinc-950">
+              
+              {/* Animated Cartoon Pointer */}
+              <div className="absolute -top-10 -right-4 md:-right-8 animate-bounce text-4xl drop-shadow-xl z-10 origin-bottom hover:animate-ping cursor-default">
+                👇
+              </div>
+
+              <Badge className="absolute -top-3 right-4 bg-background dark:bg-amber-500 font-mono text-[11px] text-foreground dark:text-zinc-950 hover:bg-background dark:hover:bg-amber-400 font-bold border border-border dark:border-amber-500">
                 Most popular
               </Badge>
               <Badge
                 variant="outline"
-                className="border-[#faf8f3]/40 bg-transparent font-mono text-primary-foreground hover:bg-transparent"
+                className="border-[#faf8f3]/40 dark:border-amber-500/40 bg-transparent font-mono text-primary-foreground dark:text-amber-500 hover:bg-transparent"
               >
                 Pro
               </Badge>
               <div className="mt-5 flex items-end gap-2">
-                <p className="font-mono text-[36px] leading-none text-primary-foreground">₹299</p>
-                <p className="pb-1 text-sm text-primary-foreground/70">/month</p>
+                <p className="font-mono text-[36px] leading-none text-primary-foreground dark:text-white">₹299</p>
+                <p className="pb-1 text-sm text-primary-foreground/70 dark:text-zinc-400">/month</p>
               </div>
-              <p className="mt-1 font-mono text-xs text-muted-foreground/70">~$2.4 · less than a coffee</p>
-              <Separator className="my-5 bg-background/20" />
+              <p className="mt-1 font-mono text-xs text-muted-foreground/70 dark:text-zinc-500">~$2.4 · less than a coffee</p>
+              <Separator className="my-5 bg-background/20 dark:bg-zinc-800" />
               <ul className="space-y-2.5">
                 {[
                   "High usage limit",
@@ -542,15 +550,15 @@ export default function LandingPage() {
                   "Streak tracking",
                   "Priority support",
                 ].map((f) => (
-                  <li key={f} className="flex items-center gap-2.5 text-sm text-muted-foreground/70">
-                    <CheckCircle2 className="h-3.5 w-3.5 flex-shrink-0 text-primary-foreground" />
+                  <li key={f} className="flex items-center gap-2.5 text-sm text-muted-foreground/70 dark:text-zinc-300">
+                    <CheckCircle2 className="h-3.5 w-3.5 flex-shrink-0 text-primary-foreground dark:text-amber-500" />
                     {f}
                   </li>
                 ))}
               </ul>
               <PaymentButton
                 plan="pro"
-                className="mt-6 w-full bg-background font-mono font-bold text-sm text-foreground hover:bg-muted"
+                className="mt-6 w-full bg-background dark:bg-amber-500 font-mono font-bold text-sm text-foreground dark:text-zinc-950 hover:bg-muted dark:hover:bg-amber-400"
               >
                 Get Pro
                 <ChevronRight className="ml-1 h-4 w-4" />
