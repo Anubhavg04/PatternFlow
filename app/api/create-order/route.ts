@@ -1,5 +1,5 @@
 export async function POST(request: Request) {
-  const { plan } = await request.json()
+  const { plan, userId } = await request.json()
 
   const PLANS = {
     basic: { amount: 14900, name: "PatternFlow Basic" },
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
         amount: selected.amount,
         currency: "INR",
         receipt: `patternflow_${plan}_${Date.now()}`,
-        notes: { plan },
+        notes: { plan, userId },
       }),
     })
 

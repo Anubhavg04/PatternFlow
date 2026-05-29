@@ -52,7 +52,7 @@ export function PaymentButton({ plan, className, children }: PaymentButtonProps)
       const orderRes = await fetch("/api/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan }),
+        body: JSON.stringify({ plan, userId }),
       })
 
       const orderData = await orderRes.json()
