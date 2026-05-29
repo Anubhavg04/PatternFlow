@@ -1,7 +1,7 @@
 import { formatDistanceToNow } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { ArrowRight, Brain, Clock } from "lucide-react";
+import { ArrowRight, Clock } from "lucide-react";
 
 export interface SolveHistoryItem {
   id: string;

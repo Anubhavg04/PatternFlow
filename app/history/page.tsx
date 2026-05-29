@@ -85,7 +85,7 @@ export default function DashboardPage() {
             <History className="h-12 w-12 text-muted-foreground/50 mb-4" />
             <h3 className="text-lg font-medium text-foreground">No solves yet</h3>
             <p className="text-muted-foreground mt-1 mb-6 max-w-sm">
-              You haven't analyzed any problems yet. Head over to the Solve page to get started!
+              You haven&apos;t analyzed any problems yet. Head over to the Solve page to get started!
             </p>
             <Link href="/solve">
               <Button>Start Solving</Button>

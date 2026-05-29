@@ -51,7 +51,7 @@ export default async function SolveDetailsPage({ params }: { params: { id: strin
         <Navbar />
         <div className="flex flex-col items-center justify-center h-[80vh]">
           <h2 className="text-2xl font-bold mb-4">Solve not found</h2>
-          <p className="text-muted-foreground mb-8">This problem doesn't exist or you don't have access to it.</p>
+          <p className="text-muted-foreground mb-8">This problem doesn&apos;t exist or you don&apos;t have access to it.</p>
           <Link href="/history">
             <Button>Return to History</Button>
           </Link>
