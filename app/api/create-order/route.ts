@@ -2,8 +2,8 @@ export async function POST(request: Request) {
   const { plan } = await request.json()
 
   const PLANS = {
-    basic: { amount: 9900, name: "PatternFlow Basic" },
-    pro: { amount: 19900, name: "PatternFlow Pro" },
+    basic: { amount: 14900, name: "PatternFlow Basic" },
+    pro: { amount: 29900, name: "PatternFlow Pro" },
   }
 
   const selected = PLANS[plan as keyof typeof PLANS]
