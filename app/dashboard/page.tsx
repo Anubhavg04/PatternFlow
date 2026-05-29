@@ -324,9 +324,10 @@ export default async function Dashboard({
 
           <div className="relative flex flex-col items-start justify-between gap-5 md:flex-row md:items-center">
             <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-2.5 py-0.5 backdrop-blur-md border border-primary/20">
-                <TrendingUp size={12} className="text-amber-400" />
-                <span className="font-mono text-[8px] font-black uppercase tracking-widest text-amber-400">{streak} Day Streak</span>
+              <div className="relative inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 dark:bg-amber-400/10 px-2.5 py-0.5 backdrop-blur-md overflow-hidden group cursor-default">
+                <div className="absolute inset-0 -z-10 bg-gradient-to-r from-transparent via-white/40 dark:via-white/20 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                <TrendingUp size={12} className="text-amber-600 dark:text-amber-400" />
+                <span className="font-mono text-[8px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-400 relative z-10">{streak} Day Streak</span>
               </div>
               <h1 className="text-xl font-black tracking-tight sm:text-2xl text-amber-600 dark:text-amber-400">
                 {streak > 0 ? `Keep it up, ${name}! 🚀` : `Ready, ${name}?`}
@@ -376,10 +377,13 @@ export default async function Dashboard({
                 <p className="font-mono text-2xl font-black text-foreground">{uniquePatterns}</p>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Patterns</p>
               </div>
-              <div className={`group rounded-2xl border-2 p-5 shadow-sm transition-all hover:shadow-[0_0_20px_rgba(245,158,11,0.1)] hover:-translate-y-0.5 ${streak > 0 ? "border-amber-200 bg-amber-50 dark:bg-amber-900/20/20" : "border-border bg-card hover:border-amber-200"}`}>
-                <TrendingUp size={16} className={`mb-3 ${streak > 0 ? "text-amber-500" : "text-muted-foreground group-hover:text-amber-500 transition-colors"}`} />
-                <p className="font-mono text-2xl font-black text-foreground">{streak}d</p>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Streak</p>
+              <div className={`group relative overflow-hidden rounded-2xl border p-5 shadow-sm transition-all hover:shadow-[0_0_20px_rgba(245,158,11,0.15)] hover:-translate-y-0.5 ${streak > 0 ? "border-amber-500/30 bg-amber-500/10 backdrop-blur-xl dark:bg-amber-400/10" : "border-border bg-card hover:border-amber-200"}`}>
+                {streak > 0 && (
+                  <div className="absolute inset-0 -z-10 bg-gradient-to-br from-white/40 via-transparent to-amber-500/20 dark:from-white/10 dark:to-amber-500/10 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+                )}
+                <TrendingUp size={16} className={`mb-3 relative z-10 ${streak > 0 ? "text-amber-600 dark:text-amber-400" : "text-muted-foreground group-hover:text-amber-500 transition-colors"}`} />
+                <p className="font-mono text-2xl font-black text-foreground relative z-10">{streak}d</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground relative z-10">Streak</p>
               </div>
               <div className="group rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:-translate-y-0.5 relative flex flex-col justify-between">
                 <Target size={16} className="mb-3 text-muted-foreground group-hover:text-amber-500 transition-colors" />

@@ -3,7 +3,7 @@ import Link from "next/link"
 import Image from "next/image"
 import iconPng from "@/app/icon.png"
 import { SignInButton, SignUpButton, UserButton, useAuth } from "@clerk/nextjs"
-import { LayoutDashboard, Menu, X } from "lucide-react"
+import { LayoutDashboard, Menu, X, History } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useState } from "react"
@@ -118,6 +118,17 @@ function ClerkAuthButtons({ mobile, onAction }: { mobile?: boolean; onAction?: (
   if (isSignedIn) {
     return (
       <div className={`flex items-center gap-3 ${mobile ? "flex-col items-start" : ""}`}>
+        <Link
+          href="/history"
+          onClick={onAction}
+          className={`flex items-center gap-1.5 rounded-full px-4 py-2 font-mono text-sm font-medium transition ${pathname === "/history"
+            ? "bg-primary text-primary-foreground shadow-sm"
+            : "bg-background/80 text-muted-foreground shadow-sm backdrop-blur-md hover:bg-background hover:text-foreground border border-border/60"
+            } ${!mobile && "hidden md:flex"}`}
+        >
+          <History size={14} />
+          History
+        </Link>
         <Link
           href="/dashboard"
           onClick={onAction}
