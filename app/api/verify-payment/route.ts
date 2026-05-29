@@ -31,10 +31,10 @@ export async function POST(request: Request) {
     const { createClient } = await import("@supabase/supabase-js")
     const sb = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
 
-    await sb.from("subscriptions").upsert({
+    const { error } = await sb.from("subscriptions").upsert({
       user_id: userId,
       plan,
       razorpay_order_id,
@@ -43,6 +43,11 @@ export async function POST(request: Request) {
       started_at: new Date().toISOString(),
       expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
     })
+
+    if (error) {
+      console.error("Supabase upsert error:", error);
+      throw new Error("Database insertion failed");
+    }
 
     return Response.json({ success: true, plan })
   } catch (err) {
