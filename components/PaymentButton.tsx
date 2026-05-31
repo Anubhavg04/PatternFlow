@@ -101,10 +101,16 @@ export function PaymentButton({ plan, className, children }: PaymentButtonProps)
           const verifyData = await verifyRes.json()
 
           if (verifyData.success) {
-            analytics.trackPaymentSuccess(orderData.amount / 100, orderData.currency)
+            try {
+              analytics.trackPaymentSuccess(orderData.amount / 100, orderData.currency)
+            } catch (e) {
+              console.log("Analytics blocked, continuing...")
+            }
             window.location.href = "/dashboard?payment=success"
           } else {
+            alert("Verification failed: " + (verifyData.error || "Unknown Error"))
             setError("Payment verification failed. Contact support.")
+            setLoading(false)
           }
         },
         prefill: {},
