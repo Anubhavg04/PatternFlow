@@ -103,7 +103,7 @@ export function PaymentButton({ plan, className, children }: PaymentButtonProps)
           if (verifyData.success) {
             try {
               analytics.trackPaymentSuccess(orderData.amount / 100, orderData.currency)
-            } catch (e) {
+            } catch {
               console.log("Analytics blocked, continuing...")
             }
             window.location.href = "/dashboard?payment=success"
