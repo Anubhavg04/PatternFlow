@@ -6,6 +6,7 @@ import { Navbar } from "@/components/Navbar"
 import { Mic, MicOff, Brain, ArrowLeft, Loader2, StopCircle, Clock, BarChart, Sparkles } from "lucide-react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
+import Editor from "@monaco-editor/react"
 
 type Message = {
   role: "user" | "assistant"
@@ -24,6 +25,17 @@ export default function InterviewPage() {
   const [transcript, setTranscript] = useState("")
   const [interviewStarted, setInterviewStarted] = useState(false)
   const [timeLeft, setTimeLeft] = useState(0)
+  
+  const snippets = {
+    python: 'def solve():\n    # Write your solution here\n    pass',
+    javascript: 'function solve() {\n  // Write your solution here\n}',
+    java: 'class Solution {\n    public void solve() {\n        // Write your solution here\n    }\n}',
+    cpp: 'class Solution {\npublic:\n    void solve() {\n        // Write your solution here\n    }\n};'
+  };
+
+  // Code Editor State
+  const [language, setLanguage] = useState("python")
+  const [code, setCode] = useState(snippets.python)
   
   // Configuration State
   const [difficulty, setDifficulty] = useState("Medium")
@@ -185,6 +197,7 @@ export default function InterviewPage() {
           difficulty,
           duration,
           timeLeft,
+          code, // Pass the live code to the AI
           messages: newMessages,
         })
       })
@@ -240,7 +253,7 @@ export default function InterviewPage() {
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
       
-      <main className="flex-1 flex flex-col mx-auto w-full max-w-4xl px-4 py-8 pt-28 sm:px-6 sm:pt-32">
+      <main className={`flex-1 flex flex-col mx-auto w-full ${interviewStarted ? 'max-w-7xl' : 'max-w-4xl'} px-4 py-8 pt-24 sm:px-6 sm:pt-28 min-h-0`}>
         
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -387,8 +400,50 @@ export default function InterviewPage() {
               initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
               animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="flex-1 flex flex-col bg-card/80 backdrop-blur-xl border border-border rounded-3xl shadow-2xl overflow-hidden relative"
+              className="flex-1 grid grid-cols-1 lg:grid-cols-5 gap-6 min-h-[500px] h-[600px] lg:h-[calc(100vh-220px)]"
             >
+            
+            {/* Code Editor Pane */}
+            <div className="lg:col-span-3 flex flex-col bg-[#1e1e1e] border border-border rounded-3xl shadow-2xl overflow-hidden relative">
+              <div className="px-6 py-4 border-b border-white/10 flex justify-between items-center bg-black/20">
+                <div className="flex items-center gap-2 text-white">
+                  <span className="font-bold">Live Editor</span>
+                </div>
+                <select 
+                  value={language} 
+                  onChange={e => {
+                    const newLang = e.target.value
+                    setLanguage(newLang)
+                    setCode(snippets[newLang as keyof typeof snippets])
+                  }} 
+                  className="bg-white/10 text-white text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                >
+                  <option value="python" className="bg-zinc-800 text-white">Python</option>
+                  <option value="javascript" className="bg-zinc-800 text-white">JavaScript</option>
+                  <option value="java" className="bg-zinc-800 text-white">Java</option>
+                  <option value="cpp" className="bg-zinc-800 text-white">C++</option>
+                </select>
+              </div>
+              <div className="flex-1 pt-4">
+                <Editor
+                  height="100%"
+                  language={language}
+                  theme="vs-dark"
+                  value={code}
+                  onChange={(val) => setCode(val || "")}
+                  options={{ 
+                    minimap: { enabled: false }, 
+                    fontSize: 15,
+                    padding: { top: 10 },
+                    scrollBeyondLastLine: false,
+                    smoothScrolling: true
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Chat & Controls Pane */}
+            <div className="lg:col-span-2 flex flex-col bg-card/80 backdrop-blur-xl border border-border rounded-3xl shadow-2xl overflow-hidden relative">
             
             {/* Transcript Area */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
@@ -488,7 +543,8 @@ export default function InterviewPage() {
               )}
             </div>
 
-          </motion.div>
+            </div>
+            </motion.div>
         )}
         </AnimatePresence>
       </main>
