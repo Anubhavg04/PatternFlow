@@ -5,7 +5,8 @@ import { ConfidenceRating } from "@/components/ConfidenceRating"
 import {
   Brain, Lightbulb, Eye, BookOpen, Clock,
   Target, Layers, GraduationCap, ChevronDown, HelpCircle, X,
-  Timer, CheckCircle, XCircle, Send, Loader2, SkipForward
+  Timer, CheckCircle, XCircle, Send, Loader2, SkipForward,
+  Volume2, VolumeX
 } from "lucide-react"
 import { analytics } from "@/lib/posthog-events"
 
@@ -70,6 +71,65 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
   const [timeLeft, setTimeLeft] = useState(0)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const [timerStartedAt, setTimerStartedAt] = useState<number | null>(null)
+
+  // --- Speech state ---
+  const [speakingText, setSpeakingText] = useState<string | null>(null)
+
+  const speakText = useCallback((text: string) => {
+    if (typeof window === "undefined" || !window.speechSynthesis) return
+    
+    window.speechSynthesis.cancel()
+    
+    if (speakingText === text) {
+      // Toggle off if clicking the same text's button
+      setSpeakingText(null)
+      return
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text)
+    utterance.rate = 0.95 // slightly slower for better comprehension
+    
+    // Try to pick a clearer, higher-quality English voice
+    const voices = window.speechSynthesis.getVoices()
+    const preferredVoice = 
+      voices.find(v => v.name.includes("Google US English") || v.name.includes("Google UK English")) ||
+      voices.find(v => v.name.includes("Samantha") || v.name.includes("Daniel") || v.name.includes("Karen")) ||
+      voices.find(v => v.lang === "en-US" && v.name.includes("Premium")) ||
+      voices.find(v => v.lang === "en-US") ||
+      voices.find(v => v.lang.startsWith("en"))
+      
+    if (preferredVoice) {
+      utterance.voice = preferredVoice
+    }
+    
+    utterance.onend = () => {
+      setSpeakingText(null)
+    }
+    
+    utterance.onerror = () => {
+      setSpeakingText(null)
+    }
+
+    setSpeakingText(text)
+    window.speechSynthesis.speak(utterance)
+  }, [speakingText])
+
+  // Stop speech on unmount
+  useEffect(() => {
+    return () => {
+      if (typeof window !== "undefined" && window.speechSynthesis) {
+        window.speechSynthesis.cancel()
+      }
+    }
+  }, [])
+
+  // Autoplay thinking prompt when ResultCard loads
+  useEffect(() => {
+    if (isPaid && result?.thinking_prompt) {
+      speakText(result.thinking_prompt)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // --- New Interview Flow state ---
   const [showTimerPrompt, setShowTimerPrompt] = useState(isPaid) // auto-show for paid users
@@ -368,6 +428,15 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
           <div className={headerClass}>
             <Brain size={16} className="text-foreground" />
             <span className="text-xs font-mono text-foreground font-bold">{"// think first"}</span>
+            {isPaid && (
+              <button 
+                onClick={() => speakText(result.thinking_prompt)}
+                className="ml-auto flex items-center justify-center w-6 h-6 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                title={speakingText === result.thinking_prompt ? "Stop audio" : "Listen to prompt"}
+              >
+                {speakingText === result.thinking_prompt ? <VolumeX size={14} /> : <Volume2 size={14} />}
+              </button>
+            )}
           </div>
           <p className="text-foreground text-sm leading-relaxed font-medium mb-2">
             Before looking at hints — ask yourself:
@@ -434,9 +503,20 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                     <div key={i}>
                       {i < hintsUnlocked ? (
                         <div className="rounded-lg bg-muted p-3 border-l-2 border-primary">
-                          <span className="text-xs font-mono text-muted-foreground block mb-1">
-                            hint {i + 1}
-                          </span>
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-xs font-mono text-muted-foreground block">
+                              hint {i + 1}
+                            </span>
+                            {isPaid && (
+                              <button 
+                                onClick={() => speakText(hint)}
+                                className="flex items-center justify-center w-6 h-6 rounded-md hover:bg-background text-muted-foreground hover:text-foreground transition-colors"
+                                title={speakingText === hint ? "Stop audio" : "Listen to hint"}
+                              >
+                                {speakingText === hint ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                              </button>
+                            )}
+                          </div>
                           <p className="text-sm text-foreground leading-relaxed">{hint}</p>
                         </div>
                       ) : i === hintsUnlocked ? (
@@ -446,6 +526,9 @@ export function ResultCard({ result, plan = "free", userId }: ResultCardProps) {
                           onClick={() => {
                             setHintsUnlocked(i + 1)
                             analytics.trackHintUnlocked(i + 1)
+                            if (isPaid && result.hints[i]) {
+                              speakText(result.hints[i])
+                            }
                           }}
                         >
                           <Lightbulb size={14} className="mr-2" />

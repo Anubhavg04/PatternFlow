@@ -103,6 +103,26 @@ function getStreak(solves: { created_at: string }[]) {
   return streak
 }
 
+async function getPastInterviews(userId: string) {
+  try {
+    const sb = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+    const { data, error } = await sb
+      .from("mock_interviews")
+      .select("id, pattern, hire_probability, created_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(5)
+
+    if (error) return []
+    return data || []
+  } catch {
+    return []
+  }
+}
+
 function getDiffColor(difficulty: string) {
   if (difficulty === "Easy") return "text-green-600"
   if (difficulty === "Hard") return "text-red-500"
@@ -133,6 +153,7 @@ export default async function Dashboard({
   const { plan, expiresAt } = await getUserPlan(userId)
   const solves = await getUserSolves(userId, plan) // History (plan-filtered)
   const allStats = await getUserStats(userId) // Stats (all solves, all plans)
+  const pastInterviews = await getPastInterviews(userId)
 
   const solvedToday = allStats.filter(s => {
     const d = new Date(s.created_at)
@@ -272,6 +293,42 @@ export default async function Dashboard({
     : "Start solving to see your pattern mastery grow."
 
   const userPercentile = Math.min(99, Math.max(10, (totalSolves * 2) + (streak * 5)))
+
+  // ── Weekly Mock Interview Logic ──
+  const last7DaysSolves = allStats.filter(s => {
+    const d = new Date(s.created_at)
+    const weekAgo = new Date()
+    weekAgo.setDate(weekAgo.getDate() - 7)
+    return d > weekAgo
+  })
+  
+  const weeklyPatternStats = new Map<string, { count: number; totalConfidence: number }>()
+  for (const s of last7DaysSolves) {
+    if (!s.pattern_name) continue
+    const existing = weeklyPatternStats.get(s.pattern_name)
+    if (existing) {
+      existing.count++
+      existing.totalConfidence += (s.confidence || 0)
+    } else {
+      weeklyPatternStats.set(s.pattern_name, { count: 1, totalConfidence: s.confidence || 0 })
+    }
+  }
+  
+  let weakestWeeklyPattern: string | null = null
+  let lowestAvgConfidence = 999
+  
+  weeklyPatternStats.forEach((stats, patternName) => {
+    const avg = stats.count > 0 ? stats.totalConfidence / stats.count : 0
+    if (avg < lowestAvgConfidence) {
+      lowestAvgConfidence = avg
+      weakestWeeklyPattern = patternName
+    }
+  })
+  
+  // Fallback to absolute weakest if no solves in 7 days
+  if (!weakestWeeklyPattern && weakPatterns.length > 0) {
+    weakestWeeklyPattern = weakPatterns[0].name
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -483,13 +540,116 @@ export default async function Dashboard({
               )}
             </div>
 
-            {/* History */}
-            <div className="space-y-4">
+            {/* ── Weekly AI Mock Interview (PRO ONLY) ── */}
+            <div className={`relative overflow-hidden rounded-[2rem] border-2 p-8 shadow-sm transition-all mt-6 ${plan === "pro" ? "border-amber-200 bg-gradient-to-br from-amber-50/50 to-white dark:border-amber-900/30 dark:bg-card dark:bg-none" : "border-border bg-card"}`}>
+              {/* Decorative elements */}
+              {plan === "pro" && (
+                <>
+                  <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
+                  <div className="absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
+                </>
+              )}
+              
+              <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/50">
+                      <Brain size={20} className="text-amber-600 dark:text-amber-400" />
+                    </div>
+                    <span className="font-mono text-xs font-black uppercase tracking-widest text-amber-600 dark:text-amber-400">Weekly Event</span>
+                    {plan !== "pro" && (
+                      <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-bold uppercase text-amber-700">Pro Feature</span>
+                    )}
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-black mb-3 text-foreground">AI Voice Mock Interview</h3>
+                  <p className="text-sm text-muted-foreground max-w-xl leading-relaxed">
+                    Based on your performance this week, your weakest area is <span className="font-bold text-foreground">{weakestWeeklyPattern || "General Concepts"}</span>. 
+                    Practice a real-time, voice-to-voice interview with our friendly AI to build confidence before real FAANG interviews.
+                  </p>
+                </div>
+                
+                <div className="shrink-0 w-full md:w-auto">
+                  {plan === "pro" ? (
+                    <Link
+                      href={`/interview?pattern=${encodeURIComponent(weakestWeeklyPattern || "General")}`}
+                      className="flex w-full md:w-auto items-center justify-center gap-2 rounded-2xl bg-amber-600 px-8 py-4 font-mono text-sm font-black text-white hover:bg-amber-700 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-amber-500/25"
+                    >
+                      Start Interview
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/#pricing"
+                      className="flex w-full md:w-auto items-center justify-center gap-2 rounded-2xl bg-muted px-8 py-4 font-mono text-sm font-black text-foreground hover:bg-muted/80 transition-all"
+                    >
+                      Upgrade to Pro <ArrowRight size={16} />
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Past Interviews History */}
+            {plan === "pro" && pastInterviews.length > 0 && (
+              <div className="space-y-4 mt-8 relative">
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Past Interviews</h2>
+                  <span className="text-[10px] text-muted-foreground hidden sm:inline-block">Swipe to view more →</span>
+                </div>
+                
+                {/* Horizontal Swipe Carousel */}
+                <div 
+                  className="flex overflow-x-auto snap-x snap-mandatory pb-6 scroll-smooth"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                >
+                  <style dangerouslySetInnerHTML={{ __html: `
+                    .flex::-webkit-scrollbar { display: none; }
+                  `}} />
+                  
+                  {pastInterviews.map((interview) => (
+                    <div key={interview.id} className="w-full shrink-0 snap-center snap-always px-2 py-2">
+                      <Link
+                        href={`/interview/report?id=${interview.id}`}
+                        className="block w-full max-w-[320px] mx-auto group flex flex-col justify-between rounded-[1.5rem] border border-border bg-card p-5 transition-all hover:border-amber-400 hover:shadow-[0_8px_30px_rgba(245,158,11,0.12)] hover:-translate-y-1 relative overflow-hidden"
+                      >
+                        {/* Decorative background glow on hover */}
+                        <div className="absolute -right-10 -bottom-10 w-24 h-24 bg-amber-500/10 rounded-full blur-[30px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                        
+                        <div className="flex items-start justify-between relative z-10 mb-6">
+                          <div className="min-w-0 pr-3">
+                            <p className="font-mono text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5">
+                              {new Date(interview.created_at).toLocaleDateString()}
+                            </p>
+                            <p className="truncate text-lg font-black text-foreground">
+                              {interview.pattern}
+                            </p>
+                          </div>
+                          <div className="shrink-0 text-center bg-background border border-border rounded-xl px-3 py-2 shadow-sm group-hover:border-amber-200 transition-colors">
+                            <div className={`text-xl font-black ${interview.hire_probability >= 70 ? 'text-green-600' : interview.hire_probability >= 40 ? 'text-amber-600' : 'text-red-600'}`}>
+                              {interview.hire_probability}%
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center justify-between border-t border-border/60 pt-4 mt-auto relative z-10">
+                          <span className="text-xs font-bold text-muted-foreground group-hover:text-amber-600 transition-colors">View full report</span>
+                          <div className="w-8 h-8 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center group-hover:bg-amber-100 dark:group-hover:bg-amber-900/40 transition-colors">
+                            <ArrowRight size={14} className="text-amber-600 group-hover:translate-x-1 transition-transform" />
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Learning History (Recent Preview) */}
+            <div className="space-y-4 mt-8">
               <div className="flex items-center justify-between">
-                <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Learning History</h2>
+                <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Recent Activity</h2>
                 {isPaid && solves.length > 0 && (
-                  <Link href="/solve" className="text-[10px] text-muted-foreground underline">
-                    New solve
+                  <Link href="/history" className="text-[10px] font-bold text-foreground hover:text-amber-600 transition-colors">
+                    View full history →
                   </Link>
                 )}
               </div>
@@ -526,7 +686,7 @@ export default async function Dashboard({
                 </div>
               ) : (
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  {solves.slice(0, 6).map((solve) => (
+                  {solves.slice(0, 2).map((solve) => (
                     <div
                       key={solve.id}
                       className="group flex items-start justify-between rounded-xl border border-border bg-card p-3 transition-all hover:border-border/80 hover:shadow-sm"

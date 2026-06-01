@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Mono, Inter } from "next/font/google";
+import { Space_Mono, Outfit } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 import { PHProvider, PostHogAuth } from "@/components/providers/PostHogProvider";
@@ -9,7 +9,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-sans" });
 const spaceMono = Space_Mono({
   weight: ["400", "700"],
   subsets: ["latin"],
@@ -38,8 +38,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const clerkEnabled = clerkKey.startsWith("pk_") && !clerkKey.includes("placeholder");
 
   return (
-    <html lang="en" className={`${inter.variable} ${spaceMono.variable}`} suppressHydrationWarning>
-      <body className={inter.className}>
+    <html lang="en" className={`${outfit.variable} ${spaceMono.variable}`} suppressHydrationWarning>
+      <body className={outfit.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
