@@ -542,7 +542,7 @@ export default function LandingPage() {
                   "Pattern flashcards",
                   "6 Custom AI Mock Interviews",
                   "4 Weekly Sunday Gauntlets",
-                  "Priority support",
+                  "Priority support (anubhav@patternflowdsa.in)",
                 ].map((f) => (
                   <li key={f} className="flex items-center gap-2.5 text-sm text-muted-foreground/70 dark:text-zinc-300">
                     <CheckCircle2 className="h-3.5 w-3.5 flex-shrink-0 text-primary-foreground dark:text-amber-500" />
