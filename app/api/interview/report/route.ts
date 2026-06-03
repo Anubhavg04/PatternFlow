@@ -35,22 +35,33 @@ export async function POST(request: Request) {
     return Response.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const { pattern, transcript } = await request.json()
-  
-  if (!pattern || !transcript || transcript.length === 0) {
-    return Response.json({ error: "Missing data" }, { status: 400 })
-  }
+    const { pattern, transcript, code, language } = await request.json()
 
-  const systemPrompt = `You are a strict, senior engineering manager at FAANG (Google/Amazon) evaluating a candidate's mock interview performance.
-The interview focused on the pattern: ${pattern}.
+    if (!transcript || !Array.isArray(transcript)) {
+      return Response.json({ error: "Invalid transcript" }, { status: 400 })
+    }
 
-Here is the transcript of the interview (messages between 'user' and 'assistant').
+    const transcriptText = transcript
+      .map((t: any) => `${t.role.toUpperCase()}: ${t.content}`)
+      .join("\n")
 
-Analyze the candidate's performance based ONLY on their responses. Evaluate both their TECHNICAL logic and their COMMUNICATION clarity.
+    const systemPrompt = `You are an expert FAANG technical interviewer.
+You just completed a mock interview with a candidate focusing on the pattern: ${pattern}.
 
-Respond ONLY with valid JSON (no markdown fences):
+CANDIDATE'S FINAL WRITTEN CODE (${language}):
+\`\`\`
+${code || "(The candidate did not write any code)"}
+\`\`\`
+
+Here is the transcript of the interview:
+${transcriptText}
+
+Your task is to analyze BOTH their verbal communication in the transcript AND the final code they wrote.
+Generate a highly critical, realistic feedback report.
+
+Respond ONLY with valid JSON. Do NOT include markdown fences, and do NOT include // comments inside the JSON. Escape all newlines in the code string as \\n:
 {
-  "hire_probability": 85, // Integer 0-100. Be realistic. If they struggled, give 30-50. If they nailed it, 80-95.
+  "hire_probability": 85,
   "feedback_summary": "Two sentences summarizing their overall performance. YOU MUST explicitly mention their communication skills (e.g. if they spoke clearly, if they struggled to explain their thoughts, or gave one-word answers).",
   "strengths": [
     "Specific technical strength",
@@ -61,7 +72,9 @@ Respond ONLY with valid JSON (no markdown fences):
     "What they need to know (e.g. they need to learn about sliding window optimization)",
     "Communication issues (if any. If none, OMIT this item. DO NOT output 'None')"
   ],
-  "action_plan": "One highly specific, step-by-step piece of advice on what to study next for this pattern and how to improve their communication during interviews."
+  "action_plan": "One highly specific, step-by-step piece of advice on what to study next for this pattern and how to improve their communication during interviews.",
+  "optimal_code_language": "The programming language you are using for the optimal solution (e.g., 'python', 'javascript', 'java', 'cpp'). Default to python if unknown.",
+  "optimal_solution_code": "The complete, perfect, 100% optimal code solution. You MUST properly escape all newlines as \\n so this remains a valid JSON string."
 }`
 
   try {
@@ -72,7 +85,7 @@ Respond ONLY with valid JSON (no markdown fences):
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.0-flash-001",
+        model: "google/gemini-2.5-flash",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: JSON.stringify(transcript) }
@@ -90,7 +103,14 @@ Respond ONLY with valid JSON (no markdown fences):
 
     const rawText = aiData.choices?.[0]?.message?.content || ""
     const clean = rawText.replace(/```json|```/g, "").trim()
-    const result = JSON.parse(clean)
+    
+    let result;
+    try {
+      result = JSON.parse(clean)
+    } catch (parseError) {
+      console.error("Failed to parse JSON. Raw AI Output:", clean)
+      return Response.json({ error: "AI returned invalid JSON format" }, { status: 500 })
+    }
 
     // Save to database
     const { data: insertedData, error: dbError } = await supabase

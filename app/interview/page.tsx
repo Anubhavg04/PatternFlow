@@ -218,6 +218,8 @@ export default function InterviewPage() {
     if (typeof window !== "undefined") {
       localStorage.setItem("mock_interview_transcript", JSON.stringify(messagesRef.current))
       localStorage.setItem("mock_interview_pattern", pattern)
+      localStorage.setItem("mock_interview_code", code)
+      localStorage.setItem("mock_interview_language", language)
       router.push("/interview/report")
     }
   }

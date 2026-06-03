@@ -53,7 +53,7 @@ Respond ONLY with valid JSON, no markdown fences:
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.0-flash-001",
+        model: "google/gemini-2.5-flash",
         messages: [{ role: "user", content: evaluationPrompt }],
         max_tokens: 150,
       }),
@@ -68,7 +68,13 @@ Respond ONLY with valid JSON, no markdown fences:
 
     const rawText = aiData.choices?.[0]?.message?.content || ""
     const clean = rawText.replace(/```json|```/g, "").trim()
-    const evaluation = JSON.parse(clean)
+    let evaluation;
+    try {
+      evaluation = JSON.parse(clean)
+    } catch (e) {
+      console.error("Quiz JSON Parse Error. Raw output:", clean)
+      return Response.json({ error: "AI returned invalid JSON" }, { status: 500 })
+    }
 
     return Response.json({
       correct: evaluation.correct,

@@ -164,7 +164,7 @@ Respond ONLY with valid JSON, no markdown fences:
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.0-flash-001",
+        model: "google/gemini-2.5-flash",
         messages: [{ role: "system", content: systemPrompt }, { role: "user", content: problem }],
         max_tokens: userPlan === "free" ? 800 : 1500,
       }),
@@ -186,7 +186,13 @@ Respond ONLY with valid JSON, no markdown fences:
     const tokens = aiData?.usage?.total_tokens || 0
     const rawText = aiData.choices?.[0]?.message?.content || ""
     const clean = rawText.replace(/```json|```/g, "").trim()
-    const result = JSON.parse(clean)
+    let result;
+    try {
+      result = JSON.parse(clean)
+    } catch (e) {
+      console.error("Solve JSON Parse Error. Raw output:", clean)
+      throw new Error("Invalid JSON from AI")
+    }
 
     // ── 4. Async Finalization (Parallel saves) ──
     try {

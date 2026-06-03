@@ -8,6 +8,9 @@ import Link from "next/link"
 import { ResponsiveContainer, RadialBarChart, RadialBar, PolarAngleAxis } from "recharts"
 import { motion } from "framer-motion"
 import confetti from "canvas-confetti"
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { Code2 } from "lucide-react"
 
 type ReportData = {
   hire_probability: number
@@ -15,6 +18,8 @@ type ReportData = {
   strengths: string[]
   weaknesses: string[]
   action_plan: string
+  optimal_code_language?: string
+  optimal_solution_code?: string
 }
 
 function ReportContent() {
@@ -48,6 +53,8 @@ function ReportContent() {
         // Otherwise generate a new one
         const storedTranscript = localStorage.getItem("mock_interview_transcript")
         const storedPattern = localStorage.getItem("mock_interview_pattern") || "Data Structures"
+        const storedCode = localStorage.getItem("mock_interview_code") || ""
+        const storedLanguage = localStorage.getItem("mock_interview_language") || "python"
         
         setPattern(storedPattern)
 
@@ -62,7 +69,12 @@ function ReportContent() {
         const res = await fetch("/api/interview/report", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pattern: storedPattern, transcript })
+          body: JSON.stringify({ 
+            pattern: storedPattern, 
+            transcript,
+            code: storedCode,
+            language: storedLanguage
+          })
         })
 
         if (!res.ok) throw new Error("Failed to generate report")
@@ -88,6 +100,8 @@ function ReportContent() {
         // Clean up
         localStorage.removeItem("mock_interview_transcript")
         localStorage.removeItem("mock_interview_pattern")
+        localStorage.removeItem("mock_interview_code")
+        localStorage.removeItem("mock_interview_language")
       }
     }
 
@@ -252,6 +266,34 @@ function ReportContent() {
                 </ul>
               </motion.div>
             </div>
+
+            {/* Optimal Code Solution */}
+            {report.optimal_solution_code && (
+              <motion.div variants={itemVariants} className="bg-[#1e1e1e] border border-border rounded-xl shadow-2xl overflow-hidden mt-8 relative">
+                <div className="absolute inset-0 bg-gradient-to-b from-amber-500/5 to-transparent pointer-events-none" />
+                <div className="bg-black/40 px-6 py-4 border-b border-white/10 flex items-center gap-3 relative z-10">
+                  <Code2 className="text-amber-500" size={24} />
+                  <div>
+                    <h3 className="text-lg font-bold text-white">The Optimal Solution</h3>
+                    <p className="text-xs text-white/50">Perfectly crafted code for the specific scenario you were asked</p>
+                  </div>
+                  <div className="ml-auto flex items-center gap-2">
+                     <span className="text-xs font-mono font-bold bg-white/10 text-white/80 px-3 py-1.5 rounded-md border border-white/10 uppercase tracking-wider">
+                       {report.optimal_code_language || "python"}
+                     </span>
+                  </div>
+                </div>
+                <div className="p-0 overflow-x-auto text-[15px] relative z-10">
+                  <SyntaxHighlighter 
+                    language={(report.optimal_code_language || 'python').toLowerCase()} 
+                    style={vscDarkPlus}
+                    customStyle={{ margin: 0, padding: '2rem', background: 'transparent' }}
+                  >
+                    {report.optimal_solution_code}
+                  </SyntaxHighlighter>
+                </div>
+              </motion.div>
+            )}
 
           </motion.div>
         ) : null}
