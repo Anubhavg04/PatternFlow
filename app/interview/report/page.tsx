@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState, Suspense, useRef } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { Navbar } from "@/components/Navbar"
 import { ArrowLeft, Loader2, Target, Trophy, AlertTriangle, TrendingUp, CheckCircle, XCircle, Sparkles } from "lucide-react"
 import Link from "next/link"
@@ -18,7 +18,6 @@ type ReportData = {
 }
 
 function ReportContent() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const id = searchParams.get("id")
   
@@ -81,6 +80,7 @@ function ReportContent() {
             })
           }, 500)
         }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
         setError(e.message)
       } finally {
@@ -200,7 +200,7 @@ function ReportContent() {
                   <div>
                     <h3 className="flex items-center gap-3 text-xl font-bold mb-4">
                       <Sparkles className="text-amber-500" size={24} />
-                      Manager's Feedback & Communication Evaluation
+                      Manager&apos;s Feedback & Communication Evaluation
                     </h3>
                     <p className="text-muted-foreground leading-relaxed text-lg mb-8">
                       {report.feedback_summary}

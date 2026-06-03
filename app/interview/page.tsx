@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { Navbar } from "@/components/Navbar"
-import { Mic, MicOff, Brain, ArrowLeft, Loader2, StopCircle, Clock, BarChart, Sparkles } from "lucide-react"
+import { Mic, Brain, ArrowLeft, Loader2, StopCircle, Clock, BarChart, Sparkles } from "lucide-react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -29,6 +29,7 @@ export default function InterviewPage() {
   const [difficulty, setDifficulty] = useState("Medium")
   const [duration, setDuration] = useState(10)
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const transcriptRef = useRef("")
@@ -65,10 +66,12 @@ export default function InterviewPage() {
     if (interviewStarted && timeLeft === 0) {
       endInterview()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [interviewStarted, timeLeft])
 
   const startListening = () => {
     if (typeof window === "undefined") return
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
     if (!SpeechRecognition) {
       alert("Your browser does not support Speech Recognition. Please use Chrome.")
@@ -85,6 +88,7 @@ export default function InterviewPage() {
     recognition.interimResults = true
     recognition.lang = "en-US"
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     recognition.onresult = (event: any) => {
       let currentTranscript = ""
       for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -94,6 +98,7 @@ export default function InterviewPage() {
       transcriptRef.current = currentTranscript
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     recognition.onerror = (event: any) => {
       console.error("Speech recognition error:", event.error)
       
@@ -115,6 +120,7 @@ export default function InterviewPage() {
       recognition.start()
       recognitionRef.current = recognition
       setIsListening(true)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       console.error("Failed to start speech recognition:", e)
       alert("Failed to start microphone: " + e.message)
@@ -317,7 +323,7 @@ export default function InterviewPage() {
                       <h3 className="font-bold text-lg">Difficulty</h3>
                     </div>
                     <div className="flex flex-col gap-3">
-                      {["Easy", "Medium", "Hard"].map((lvl, idx) => (
+                      {["Easy", "Medium", "Hard"].map((lvl) => (
                         <motion.button
                           key={lvl}
                           whileHover={{ scale: 1.02 }}
