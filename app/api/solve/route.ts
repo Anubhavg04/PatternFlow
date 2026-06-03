@@ -189,7 +189,7 @@ Respond ONLY with valid JSON, no markdown fences:
     let result;
     try {
       result = JSON.parse(clean)
-    } catch (e) {
+    } catch {
       console.error("Solve JSON Parse Error. Raw output:", clean)
       throw new Error("Invalid JSON from AI")
     }

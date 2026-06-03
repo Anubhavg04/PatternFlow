@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     }
 
     const transcriptText = transcript
-      .map((t: any) => `${t.role.toUpperCase()}: ${t.content}`)
+      .map((t: { role: string; content: string }) => `${t.role.toUpperCase()}: ${t.content}`)
       .join("\n")
 
     const systemPrompt = `You are an expert FAANG technical interviewer.
@@ -107,7 +107,7 @@ Respond ONLY with valid JSON. Do NOT include markdown fences, and do NOT include
     let result;
     try {
       result = JSON.parse(clean)
-    } catch (parseError) {
+    } catch {
       console.error("Failed to parse JSON. Raw AI Output:", clean)
       return Response.json({ error: "AI returned invalid JSON format" }, { status: 500 })
     }

@@ -71,7 +71,7 @@ Respond ONLY with valid JSON, no markdown fences:
     let evaluation;
     try {
       evaluation = JSON.parse(clean)
-    } catch (e) {
+    } catch {
       console.error("Quiz JSON Parse Error. Raw output:", clean)
       return Response.json({ error: "AI returned invalid JSON" }, { status: 500 })
     }
