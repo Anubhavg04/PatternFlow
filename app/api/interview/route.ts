@@ -1,3 +1,5 @@
+import { auth } from "@clerk/nextjs/server"
+
 export async function POST(request: Request) {
   const { pattern, difficulty, duration, timeLeft, code, messages } = await request.json()
   
@@ -5,8 +7,10 @@ export async function POST(request: Request) {
     return Response.json({ error: "Pattern is required" }, { status: 400 })
   }
 
-  // In a real app we'd verify the token or use Clerk auth. 
-
+  const { userId } = await auth()
+  if (!userId) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 })
+  }
   const systemPrompt = `You are a STRICT, professional tech interviewer from a top FAANG company (Google/Amazon). 
 You are conducting a voice-to-voice mock interview with a candidate.
 The focus pattern for today's interview is: ${pattern}.
@@ -41,8 +45,27 @@ CRITICAL: The user has selected a ${duration}-minute interview at ${difficulty} 
     ...messages
   ]
   
-  // If it's the very first call, we need to prompt the AI to start
+  // If it's the very first call, we need to prompt the AI to start and verify limits
   if (messages.length === 0) {
+    try {
+      const protocol = request.headers.get("x-forwarded-proto") || "http"
+      const host = request.headers.get("host")
+      const limitRes = await fetch(`${protocol}://${host}/api/interview-limit`, {
+        headers: { cookie: request.headers.get("cookie") || "" }
+      })
+      if (limitRes.ok) {
+        const { limit, used } = await limitRes.json()
+        if (limit !== -1 && used >= limit && limit > 0) {
+          return Response.json({ error: "Monthly interview limit reached. Please upgrade to Pro for more." }, { status: 403 })
+        }
+        if (limit === 0) {
+          return Response.json({ error: "Mock interviews are only available on Basic and Pro plans." }, { status: 403 })
+        }
+      }
+    } catch (e) {
+      console.error("Failed to check limit", e)
+    }
+
     openRouterMessages.push({ role: "user", content: "Hi, I'm ready to start the interview." })
   }
 

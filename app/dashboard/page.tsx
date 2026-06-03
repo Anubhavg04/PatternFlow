@@ -123,6 +123,27 @@ async function getPastInterviews(userId: string) {
   }
 }
 
+async function getInterviewUsage(userId: string) {
+  try {
+    const sb = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+
+    const { count } = await sb
+      .from("mock_interviews")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .gte("created_at", thirtyDaysAgo.toISOString())
+
+    return count || 0
+  } catch {
+    return 0
+  }
+}
+
 function getDiffColor(difficulty: string) {
   if (difficulty === "Easy") return "text-green-600"
   if (difficulty === "Hard") return "text-red-500"
@@ -154,6 +175,10 @@ export default async function Dashboard({
   const solves = await getUserSolves(userId, plan) // History (plan-filtered)
   const allStats = await getUserStats(userId) // Stats (all solves, all plans)
   const pastInterviews = await getPastInterviews(userId)
+  
+  const interviewUsage = await getInterviewUsage(userId)
+  const interviewLimit = plan === "pro" ? 10 : plan === "basic" ? 4 : 0
+  const canInterview = interviewUsage < interviewLimit
 
   const solvedToday = allStats.filter(s => {
     const d = new Date(s.created_at)
@@ -568,14 +593,23 @@ export default async function Dashboard({
                   </p>
                 </div>
                 
-                <div className="shrink-0 w-full md:w-auto">
-                  {plan === "pro" ? (
-                    <Link
-                      href={`/interview?pattern=${encodeURIComponent(weakestWeeklyPattern || "General")}`}
-                      className="flex w-full md:w-auto items-center justify-center gap-2 rounded-2xl bg-amber-600 px-8 py-4 font-mono text-sm font-black text-white hover:bg-amber-700 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-amber-500/25"
-                    >
-                      Start Interview
-                    </Link>
+                <div className="shrink-0 w-full md:w-auto flex flex-col gap-2 items-center">
+                  {plan === "pro" || plan === "basic" ? (
+                    canInterview ? (
+                      <Link
+                        href={`/interview?pattern=${encodeURIComponent(weakestWeeklyPattern || "General")}`}
+                        className="flex w-full md:w-auto items-center justify-center gap-2 rounded-2xl bg-amber-600 px-8 py-4 font-mono text-sm font-black text-white hover:bg-amber-700 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-amber-500/25"
+                      >
+                        Start Interview
+                      </Link>
+                    ) : (
+                      <button
+                        disabled
+                        className="flex w-full md:w-auto items-center justify-center gap-2 rounded-2xl bg-zinc-400 dark:bg-zinc-800 px-8 py-4 font-mono text-sm font-black text-white cursor-not-allowed opacity-50"
+                      >
+                        Limit Reached
+                      </button>
+                    )
                   ) : (
                     <Link
                       href="/#pricing"
@@ -583,6 +617,9 @@ export default async function Dashboard({
                     >
                       Upgrade to Pro <ArrowRight size={16} />
                     </Link>
+                  )}
+                  {(plan === "pro" || plan === "basic") && (
+                    <span className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest">{interviewUsage} / {interviewLimit} this month</span>
                   )}
                 </div>
               </div>
