@@ -123,9 +123,7 @@ Respond ONLY with valid JSON. Do NOT include markdown fences, and do NOT include
           feedback_summary: result.feedback_summary,
           strengths: result.strengths,
           weaknesses: result.weaknesses,
-          action_plan: result.action_plan,
-          optimal_solution_code: result.optimal_solution_code || null,
-          optimal_code_language: result.optimal_code_language || null
+          action_plan: result.action_plan
         }
       ])
       .select()
