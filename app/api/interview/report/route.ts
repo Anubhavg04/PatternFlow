@@ -90,7 +90,7 @@ Respond ONLY with valid JSON. Do NOT include markdown fences, and do NOT include
           { role: "system", content: systemPrompt },
           { role: "user", content: JSON.stringify(transcript) }
         ],
-        max_tokens: 800,
+        max_tokens: 2500,
       }),
     })
 

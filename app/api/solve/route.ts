@@ -166,7 +166,7 @@ Respond ONLY with valid JSON, no markdown fences:
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
         messages: [{ role: "system", content: systemPrompt }, { role: "user", content: problem }],
-        max_tokens: userPlan === "free" ? 800 : 1500,
+        max_tokens: userPlan === "free" ? 1500 : 2500,
       }),
     })
 
