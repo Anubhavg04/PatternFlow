@@ -18,6 +18,7 @@ export default function InterviewPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [pattern, setPattern] = useState(searchParams.get("pattern") || "General Data Structures")
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   
   const [isListening, setIsListening] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
@@ -338,17 +339,46 @@ export default function InterviewPage() {
                       </div>
                       <h3 className="font-bold text-lg">Topic</h3>
                     </div>
-                    <div className="flex flex-col gap-3">
-                      <select 
-                        value={pattern}
-                        onChange={(e) => setPattern(e.target.value)}
-                        className="w-full bg-muted/50 border-2 border-transparent text-foreground hover:bg-muted focus:bg-background focus:border-amber-500 rounded-2xl px-4 py-4 font-bold text-left transition-all appearance-none outline-none shadow-sm"
+                    <div className="flex flex-col gap-3 relative">
+                      <button
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        className="w-full relative flex items-center justify-between border-2 border-amber-600 bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:border-amber-500 dark:text-amber-300 rounded-2xl px-4 py-4 font-bold text-left transition-all shadow-lg shadow-amber-500/10 cursor-pointer h-[60px]"
                       >
-                        <option value="General Data Structures">General Data Structures</option>
-                        {ALL_PATTERN_NAMES.map((p) => (
-                          <option key={p} value={p}>{p}</option>
-                        ))}
-                      </select>
+                        <span className="truncate pr-4">{pattern}</span>
+                        <motion.div animate={{ rotate: isDropdownOpen ? 180 : 0 }}>
+                          <svg className="h-5 w-5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                          </svg>
+                        </motion.div>
+                      </button>
+
+                      <AnimatePresence>
+                        {isDropdownOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="absolute top-[68px] left-0 w-full z-50 bg-white dark:bg-zinc-900 border border-border rounded-2xl shadow-2xl max-h-[240px] overflow-y-auto"
+                          >
+                            <div className="flex flex-col p-2">
+                              {["General Data Structures", ...ALL_PATTERN_NAMES].map((p) => (
+                                <button
+                                  key={p}
+                                  onClick={() => { setPattern(p); setIsDropdownOpen(false); }}
+                                  className={`px-4 py-3 text-left rounded-xl text-sm font-semibold transition-colors ${
+                                    pattern === p 
+                                      ? "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400" 
+                                      : "text-foreground hover:bg-muted"
+                                  }`}
+                                >
+                                  {p}
+                                </button>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+
                       <p className="text-xs text-muted-foreground mt-2 px-1">
                         Select the specific algorithmic pattern you want the AI to test you on.
                       </p>
