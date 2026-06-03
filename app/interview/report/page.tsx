@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState, Suspense, useRef } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { Navbar } from "@/components/Navbar"
 import { ArrowLeft, Loader2, Target, Trophy, AlertTriangle, TrendingUp, CheckCircle, XCircle, Sparkles } from "lucide-react"
 import Link from "next/link"
@@ -23,7 +23,6 @@ type ReportData = {
 }
 
 function ReportContent() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const id = searchParams.get("id")
   
@@ -93,6 +92,7 @@ function ReportContent() {
             })
           }, 500)
         }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
         setError(e.message)
       } finally {
@@ -119,7 +119,7 @@ function ReportContent() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+    show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 300, damping: 24 } }
   }
 
   return (
@@ -193,7 +193,7 @@ function ReportContent() {
                         startAngle={90} endAngle={-270}
                       >
                         <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
-                        <RadialBar clockWise dataKey="value" cornerRadius={10} background={{ fill: 'rgba(150, 150, 150, 0.1)' }} />
+                        <RadialBar dataKey="value" cornerRadius={10} background={{ fill: 'rgba(150, 150, 150, 0.1)' }} />
                       </RadialBarChart>
                     </ResponsiveContainer>
                     <div className="absolute inset-0 flex flex-col items-center justify-center drop-shadow-sm">
@@ -214,7 +214,7 @@ function ReportContent() {
                   <div>
                     <h3 className="flex items-center gap-3 text-xl font-bold mb-4">
                       <Sparkles className="text-amber-500" size={24} />
-                      Manager's Feedback & Communication Evaluation
+                      Manager&apos;s Feedback & Communication Evaluation
                     </h3>
                     <p className="text-muted-foreground leading-relaxed text-lg mb-8">
                       {report.feedback_summary}

@@ -1,5 +1,3 @@
-import { createClient } from "@supabase/supabase-js"
-
 export async function POST(request: Request) {
   const { pattern, difficulty, duration, timeLeft, code, messages } = await request.json()
   
@@ -7,7 +5,6 @@ export async function POST(request: Request) {
     return Response.json({ error: "Pattern is required" }, { status: 400 })
   }
 
-  const authHeader = request.headers.get("authorization")
   // In a real app we'd verify the token or use Clerk auth. 
 
   const systemPrompt = `You are a STRICT, professional tech interviewer from a top FAANG company (Google/Amazon). 
