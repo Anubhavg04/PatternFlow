@@ -459,7 +459,7 @@ export default function LandingPage() {
                     {f}
                   </li>
                 ))}
-                {["Similar problems (full)", "Missing concepts", "Solve history"].map((f) => (
+                {["Live AI Mock Interviews", "Similar problems", "Missing concepts", "Solve history"].map((f) => (
                   <li key={f} className="flex items-center gap-2.5 text-sm text-muted-foreground/70">
                     <X className="h-3.5 w-3.5 flex-shrink-0" />
                     {f}
@@ -491,10 +491,8 @@ export default function LandingPage() {
                   "Everything in Free",
                   "Detailed AI explanations",
                   "Similar problems (full)",
-                  "Missing concepts",
                   "Solve history (30 days)",
-                  "Interview recognition tips",
-                  "Interview mode",
+                  "4 AI Mock Interviews / mo",
                   "Streak tracking",
                 ].map((f) => (
                   <li key={f} className="flex items-center gap-2.5 text-sm text-muted-foreground">
@@ -502,7 +500,7 @@ export default function LandingPage() {
                     {f}
                   </li>
                 ))}
-                {["Unlimited solves"].map((f) => (
+                {["Unlimited solves", "Sunday Gauntlet Assessments"].map((f) => (
                   <li key={f} className="flex items-center gap-2.5 text-sm text-muted-foreground/70">
                     <X className="h-3.5 w-3.5 flex-shrink-0" />
                     {f}
@@ -542,8 +540,8 @@ export default function LandingPage() {
                   "Everything in Basic",
                   "Full solve history",
                   "Pattern flashcards",
-                  "Interview mode",
-                  "Streak tracking",
+                  "6 Custom AI Mock Interviews",
+                  "4 Weekly Sunday Gauntlets",
                   "Priority support",
                 ].map((f) => (
                   <li key={f} className="flex items-center gap-2.5 text-sm text-muted-foreground/70 dark:text-zinc-300">
