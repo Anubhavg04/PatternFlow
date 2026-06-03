@@ -7,6 +7,7 @@ import { Mic, Brain, ArrowLeft, Loader2, StopCircle, Clock, BarChart, Sparkles }
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import Editor from "@monaco-editor/react"
+import { ALL_PATTERN_NAMES } from "@/lib/patterns"
 
 type Message = {
   role: "user" | "assistant"
@@ -16,7 +17,7 @@ type Message = {
 export default function InterviewPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const pattern = searchParams.get("pattern") || "General Data Structures"
+  const [pattern, setPattern] = useState(searchParams.get("pattern") || "General Data Structures")
   
   const [isListening, setIsListening] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
@@ -328,7 +329,32 @@ export default function InterviewPage() {
                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
                 className="w-full bg-white/50 dark:bg-card/50 backdrop-blur-xl border border-white/20 dark:border-border rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-amber-500/5 mb-10"
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                  {/* Topic Selection */}
+                  <div>
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="p-2 rounded-xl bg-primary/10 text-primary">
+                        <Brain size={20} />
+                      </div>
+                      <h3 className="font-bold text-lg">Topic</h3>
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <select 
+                        value={pattern}
+                        onChange={(e) => setPattern(e.target.value)}
+                        className="w-full bg-muted/50 border-2 border-transparent text-foreground hover:bg-muted focus:bg-background focus:border-amber-500 rounded-2xl px-4 py-4 font-bold text-left transition-all appearance-none outline-none shadow-sm"
+                      >
+                        <option value="General Data Structures">General Data Structures</option>
+                        {ALL_PATTERN_NAMES.map((p) => (
+                          <option key={p} value={p}>{p}</option>
+                        ))}
+                      </select>
+                      <p className="text-xs text-muted-foreground mt-2 px-1">
+                        Select the specific algorithmic pattern you want the AI to test you on.
+                      </p>
+                    </div>
+                  </div>
+
                   {/* Difficulty Selection */}
                   <div>
                     <div className="flex items-center gap-3 mb-6">
