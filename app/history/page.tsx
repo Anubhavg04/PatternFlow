@@ -9,13 +9,6 @@ import { Lock, History, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-export const metadata = {
-  robots: {
-    index: false,
-    follow: false,
-  },
-};
-
 export default function DashboardPage() {
   const { isLoaded, userId } = useAuth();
   const [history, setHistory] = useState<SolveHistoryItem[]>([]);
