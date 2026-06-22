@@ -1,28 +1,32 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = 'https://www.patternflowdsa.in'
+
   return [
     {
-      url: 'https://www.patternflowdsa.in',
+      url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: 'weekly' as const,
       priority: 1,
     },
     {
-      url: 'https://www.patternflowdsa.in/patterns',
+      url: `${baseUrl}/patterns`,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
     {
-      url: 'https://www.patternflowdsa.in/solve',
+      url: `${baseUrl}/solve`,
       lastModified: new Date(),
-      changeFrequency: 'daily',
+      changeFrequency: 'daily' as const,
       priority: 0.8,
     },
     {
-      url: 'https://www.patternflowdsa.in/interview',
+      url: `${baseUrl}/interview`,
       lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
     },
   ]
 }
