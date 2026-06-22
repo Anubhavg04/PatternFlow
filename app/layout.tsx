@@ -21,6 +21,15 @@ export const metadata: Metadata = {
   description:
     "Paste any DSA problem. Get instant pattern detection, visualization, memory hooks, and similar problems. Built for interview prep.",
   keywords: "DSA, LeetCode, algorithm, pattern recognition, interview prep, visualization",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+    },
+  },
   openGraph: {
     title: "PatternFlow",
     description: "AI-powered pattern recognition for DSA problems. Free to use.",
