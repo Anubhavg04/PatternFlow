@@ -8,6 +8,12 @@ import { RANGE_DAYS, Range } from "@/components/admin/RangeSelector"
 
 const ADMIN_EMAIL = "theanubhav333@gmail.com"
 const DEFAULT_RANGE: Range = "7D"
+export const metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 async function getStats(days: number) {
   "use server"
