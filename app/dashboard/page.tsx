@@ -7,6 +7,13 @@ import Link from "next/link";
 import { DashboardNotifications } from "@/components/DashboardNotifications";
 import { ALL_PATTERN_NAMES, PATTERNS } from "@/lib/patterns";
 
+export const metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
 async function getUserSolves(userId: string, plan: string = "free") {
   try {
     const sb = createClient(
